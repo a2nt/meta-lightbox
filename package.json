@@ -1,0 +1,23 @@
+{
+    "name": "meta-lightbox",
+    "version": "1.0.0",
+    "description": "Universal Lightbox window",
+    "main": "meta-lightbox.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/a2nt/meta-lightbox.git"
+    },
+    "keywords": [
+        "lightbox",
+        "jquery"
+    ],
+    "author": "Tony Air <tony@twma.pro>",
+    "license": "BSD-2-Clause",
+    "bugs": {
+        "url": "https://github.com/a2nt/meta-lightbox/issues"
+    },
+    "homepage": "https://github.com/a2nt/meta-lightbox#readme"
+}

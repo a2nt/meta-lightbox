@@ -1,0 +1,88 @@
+$link-color: #007bff;
+$grid-float-breakpoint-max: 641px;
+
+.meta-lightbox-theme-default.meta-lightbox-overlay {
+    background: #666;
+    background: rgba(0, 0, 0, 0.6);
+}
+
+.meta-lightbox-theme-default .meta-lightbox-nav {
+    top: 10%;
+    width: 8%;
+    height: 80%;
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+    opacity: 0.5;
+    color: #fff;
+    font-size: 3em;
+    text-decoration: none;
+    text-shadow: 1px 1px 0 #000;
+
+    .fa {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin-top: -1em;
+        margin-left: -0.2em;
+    }
+
+    &:hover {
+        color: $link-color;
+        opacity: 1;
+        background-color: rgba(0, 0, 0, 0.5);
+    }
+}
+
+.meta-lightbox-theme-default .meta-lightbox-close {
+    display: block;
+    opacity: 0.5;
+    color: #fff;
+    text-decoration: none;
+    font-size: 2em;
+    text-shadow: 1px 1px 0 #000;
+    text-align: center;
+    width: 1.2em;
+    height: 1.2em;
+
+    &:focus {
+        color: $link-color;
+        opacity: 1;
+        background-color: rgba(0, 0, 0, 0.5);
+    }
+}
+
+.meta-lightbox-theme-default .meta-lightbox-title {
+    background: #000;
+    color: #fff;
+    padding: 7px 15px;
+}
+
+.meta-lightbox-theme-default .meta-lightbox-ajax,
+.meta-lightbox-theme-default .meta-lightbox-inline {
+    background: #fff;
+    padding: 2em;
+    box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.4);
+}
+
+@media (max-width: $grid-float-breakpoint-max) {
+    .meta-lightbox-wrap {
+        top: 5px !important;
+        bottom: 5px;
+        left: 5px;
+        right: 5px;
+    }
+
+    .meta-lightbox-theme-default .meta-lightbox-nav {
+        height: 100%;
+        opacity: 1;
+        font-size: 2em;
+
+        .fa {
+            margin-left: -.4em;
+        }
+    }
+
+    .meta-lightbox-theme-default .meta-lightbox-close {
+        opacity: 1;
+    }
+}
