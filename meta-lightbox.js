@@ -1,10 +1,9 @@
 /*
- * MetaLightbox v0.5
- * http://twma.pro
+ * Meta-Lightbox
+ * https://tony.twma.pro
  *
+ * Use jquery-zoom/jquery.zoom.js if u need to support lightbox image-zoom
  */
-
-//=require ../../bower_components/jquery-zoom/jquery.zoom.js
 
 (function($, window, document) {
 
