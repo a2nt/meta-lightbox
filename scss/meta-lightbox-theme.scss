@@ -1,5 +1,5 @@
-$link-color: #007bff;
-$grid-float-breakpoint-max: 576px;
+$lightbox-link-hover-color: #007bff !default;
+$lightbox-breakpoint: 576px !default;
 
 .meta-lightbox-theme-default.meta-lightbox-overlay {
     background: #666;
@@ -27,7 +27,7 @@ $grid-float-breakpoint-max: 576px;
     }
 
     &:hover {
-        color: $link-color;
+        color: $lightbox-link-hover-color;
         opacity: 1;
         background-color: rgba(0, 0, 0, 0.5);
     }
@@ -45,7 +45,7 @@ $grid-float-breakpoint-max: 576px;
     height: 1.2em;
 
     &:focus {
-        color: $link-color;
+        color: $lightbox-link-hover-color;
         opacity: 1;
         background-color: rgba(0, 0, 0, 0.5);
     }
@@ -64,7 +64,7 @@ $grid-float-breakpoint-max: 576px;
     box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.4);
 }
 
-@media (max-width: $grid-float-breakpoint-max) {
+@media (max-width: $lightbox-breakpoint) {
     .meta-lightbox-wrap {
         top: 5px !important;
         bottom: 5px;
