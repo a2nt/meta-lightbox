@@ -2,8 +2,140 @@
  * Meta-Lightbox
  * https://tony.twma.pro
  *
- * Use jquery-zoom/jquery.zoom.js if u need to support lightbox image-zoom
+ * Use jquery-zoom/jquery.zoom.js if you need to support lightbox image-zoom
  */
+
+/*"use strict";
+
+import $ from 'jquery';
+
+const Events = {
+  AJAX: 'ajax-load',
+  LOADED: 'load',
+};
+
+const MetaUI = (($) => {
+  // Constants
+  const W = window;
+  const D = document;
+  const $Body = $('body');
+
+  const NAME = 'jsMetaUI';
+  const DATA_KEY = NAME;
+
+  class MetaUI {
+
+    constructor(el) {
+      const ui = this;
+      const $el = $(el);
+
+      ui.$el = $el;
+
+      $el.on('click', () => {
+          ui.showLightbox();
+      });
+
+      $el.addClass(`${NAME}-active`);
+    }
+
+    // Static methods
+    static init() {
+      this.dispose();
+
+      console.log(`Initializing: ${NAME}`);
+    }
+
+    static showLightbox(el) {
+      this.el = el;
+      this.$el = $(this.el);
+
+      var $this = this,
+        lightbox, content, currentLink, galleryItems;
+
+      this.options.beforeShowLightbox.call(this);
+
+      lightbox = this.constructLightbox();
+      if (!lightbox) return;
+      content = lightbox.find('.meta-lightbox-content');
+      if (!content) return;
+      currentLink = this.$el;
+      $('body').addClass('meta-lightbox-body-effect-' + this.options.effect);
+
+      // Add content
+      this.processContent(content, currentLink);
+
+      // Nav
+      if (this.$el.data('lightbox-gallery')) {
+        galleryItems = $('[data-lightbox-gallery="' + this.$el.data('lightbox-gallery') + '"]');
+
+        if (galleryItems.length === 1) {
+          $('.meta-lightbox-nav').hide();
+        } else {
+          $('.meta-lightbox-nav').show();
+        }
+
+        // Prev
+        $('.meta-lightbox-prev').off('click').on('click', function(e) {
+          e.preventDefault();
+          var index = galleryItems.index(currentLink);
+          currentLink = galleryItems.eq(index - 1);
+          if (!$(currentLink).length) currentLink = galleryItems.last();
+          $this.processContent(content, currentLink);
+          $this.options.onPrev.call(this, [currentLink]);
+        });
+
+        // Next
+        $('.meta-lightbox-next').off('click').on('click', function(e) {
+          e.preventDefault();
+          var index = galleryItems.index(currentLink);
+          currentLink = galleryItems.eq(index + 1);
+          if (!$(currentLink).length) currentLink = galleryItems.first();
+          $this.processContent(content, currentLink);
+          $this.options.onNext.call(this, [currentLink]);
+        });
+      }
+
+      setTimeout(function() {
+        lightbox.addClass('meta-lightbox-open');
+        $this.options.afterShowLightbox.call(this, [lightbox]);
+      }, 1); // For CSS transitions
+    }
+
+    static dispose() {
+      console.log(`Destroying: ${NAME}`);
+    }
+
+    static _jQueryInterface() {
+      return this.each(function() {
+        // attach functionality to el
+        const $el = $(this);
+        let data = $el.data(DATA_KEY);
+
+        if (!data) {
+          data = new MetaUI(this);
+          $el.data(DATA_KEY, data);
+        }
+      });
+    }
+  }
+
+  // jQuery interface
+  $.fn[NAME] = MetaUI._jQueryInterface;
+  $.fn[NAME].Constructor = MetaUI;
+  $.fn[NAME].noConflict = function() {
+    $.fn[NAME] = JQUERY_NO_CONFLICT;
+    return MetaUI._jQueryInterface;
+  };
+
+  // auto-apply
+  $(window).on(`${Events.AJAX} ${Events.LOADED}`, () => {
+    $('[data-toggle="lightbox"]').jsMetaUI();
+  });
+
+  return MetaUI;
+})($);
+
+export default MetaUI;*/
 
 (function($, window, document) {
 
@@ -18,14 +150,14 @@
       afterShowLightbox: function(lightbox) {},
       beforeHideLightbox: function() {},
       afterHideLightbox: function() {},
-      onPrev: function(element) {},
-      onNext: function(element) {},
+      onPrev: function(el) {},
+      onNext: function(el) {},
       errorMessage: 'The requested content cannot be loaded. Please try again later.'
     };
 
-  function MetaLightbox(element, options) {
-    /*this.el = element;
-		this.$el = $(this.el);*/
+  function MetaLightbox(el, options) {
+    /*this.el = el;
+        this.$el = $(this.el);*/
 
     this.options = $.extend({}, defaults, options);
 
@@ -82,8 +214,8 @@
 
     },
 
-    showLightbox: function(element) {
-      this.el = element;
+    showLightbox: function(el) {
+      this.el = el;
       this.$el = $(this.el);
 
       var $this = this,
@@ -455,50 +587,60 @@
 
 
     constructLightbox: function() {
-      var $this = this,
-        overlay = $('<div>', {
+      const $this = this,
+        $overlay = $('<div>', {
           'class': 'meta-lightbox-overlay meta-lightbox-theme-' + this.options.theme + ' meta-lightbox-effect-' + this.options.effect
         }),
-        wrap = $('<div>', {
+        $wrap = $('<div>', {
           'class': 'meta-lightbox-wrap'
         }),
-        content = $('<div>', {
+        $content = $('<div>', {
           'class': 'meta-lightbox-content'
         }),
-        nav = $('<a href="#" class="meta-lightbox-nav meta-lightbox-prev"><i class="fa fa-chevron-left"></i> <span class="sr-only">Previous</span></a><a href="#" class="meta-lightbox-nav meta-lightbox-next"><i class="fa fa-chevron-right"></i> <span class="sr-only">Next</span></a>'),
-        close = $('<a href="#" class="meta-lightbox-close fa fa-times" title="Close"><span class="sr-only">Close</span></a>'),
-        title = $('<div>', {
+        nav = '<a href="#" class="meta-lightbox-nav meta-lightbox-prev"><i class="fa fa-chevron-left"></i> <span class="sr-only">Previous</span></a>' +
+        '<a href="#" class="meta-lightbox-nav meta-lightbox-next"><i class="fa fa-chevron-right"></i> <span class="sr-only">Next</span></a>' +
+        '<a href="#" class="meta-lightbox-close fa fa-times" title="Close"><span class="sr-only">Close</span></a>',
+        $title = $('<div>', {
           'class': 'meta-lightbox-title-wrap'
         }),
-        isMSIE = /*@cc_on!@*/ 0,
-        $overlay = $('.meta-lightbox-overlay');
+        isMSIE = /*@cc_on!@*/ 0;
 
-      if ($overlay.length) return $overlay;
+      if ($('.meta-lightbox-overlay').length) {
+        return $('.meta-lightbox-overlay');
+      }
 
 
-      if (isMSIE) overlay.addClass('meta-lightbox-ie');
+      if (isMSIE) {
+        overlay.addClass('meta-lightbox-ie');
+      }
 
-      wrap.append(content);
-      wrap.append(title);
-      overlay.append(wrap);
-      overlay.append(nav);
-      overlay.append(close);
-      $('body').append(overlay);
+      $wrap.append($content);
+      $wrap.append($title);
+      $overlay.append($wrap);
+      $overlay.append($(nav));
+      $content.append($(nav));
+      $('body').append($overlay);
 
       if ($this.options.clickOverlayToClose) {
-        overlay.on('click', function(e) {
-          if (e.target === this ||
-            $(e.target).hasClass('meta-lightbox-content') ||
-            $(e.target).hasClass('meta-lightbox-image')) $this.destructLightbox();
+        $overlay.on('click', (e) => {
+          const $target = $(e.target);
+
+          if (
+            $target.hasClass('meta-lightbox-zoom-wrapper') ||
+            $target.hasClass('meta-lightbox-content') ||
+            $target.hasClass('meta-lightbox-image')
+          ) {
+            $this.destructLightbox();
+          }
         });
       }
 
-      close.on('click', function(e) {
+      $overlay.find('.meta-lightbox-close').on('click', function(e) {
         e.preventDefault();
         $this.destructLightbox();
       });
 
-      return overlay;
+      return $overlay;
     },
 
     destructLightbox: function() {
@@ -561,9 +703,9 @@
 
     isHidpi: function() {
       var mediaQuery = "(-webkit-min-device-pixel-ratio: 1.5),\
-					(min--moz-device-pixel-ratio: 1.5),\
-					(-o-min-device-pixel-ratio: 3/2),\
-					(min-resolution: 1.5dppx)";
+                    (min--moz-device-pixel-ratio: 1.5),\
+                    (-o-min-device-pixel-ratio: 3/2),\
+                    (min-resolution: 1.5dppx)";
       if (window.devicePixelRatio > 1) return true;
       return (window.matchMedia && window.matchMedia(mediaQuery).matches);
     }
