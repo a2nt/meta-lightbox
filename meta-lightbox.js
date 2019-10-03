@@ -1,141 +1,10 @@
 /*
- * Meta-Lightbox
+ * MetaLightbox v0.61
  * https://tony.twma.pro
  *
- * Use jquery-zoom/jquery.zoom.js if you need to support lightbox image-zoom
  */
 
-/*"use strict";
-
-import $ from 'jquery';
-
-const Events = {
-  AJAX: 'ajax-load',
-  LOADED: 'load',
-};
-
-const MetaUI = (($) => {
-  // Constants
-  const W = window;
-  const D = document;
-  const $Body = $('body');
-
-  const NAME = 'jsMetaUI';
-  const DATA_KEY = NAME;
-
-  class MetaUI {
-
-    constructor(el) {
-      const ui = this;
-      const $el = $(el);
-
-      ui.$el = $el;
-
-      $el.on('click', () => {
-          ui.showLightbox();
-      });
-
-      $el.addClass(`${NAME}-active`);
-    }
-
-    // Static methods
-    static init() {
-      this.dispose();
-
-      console.log(`Initializing: ${NAME}`);
-    }
-
-    static showLightbox(el) {
-      this.el = el;
-      this.$el = $(this.el);
-
-      var $this = this,
-        lightbox, content, currentLink, galleryItems;
-
-      this.options.beforeShowLightbox.call(this);
-
-      lightbox = this.constructLightbox();
-      if (!lightbox) return;
-      content = lightbox.find('.meta-lightbox-content');
-      if (!content) return;
-      currentLink = this.$el;
-      $('body').addClass('meta-lightbox-body-effect-' + this.options.effect);
-
-      // Add content
-      this.processContent(content, currentLink);
-
-      // Nav
-      if (this.$el.data('lightbox-gallery')) {
-        galleryItems = $('[data-lightbox-gallery="' + this.$el.data('lightbox-gallery') + '"]');
-
-        if (galleryItems.length === 1) {
-          $('.meta-lightbox-nav').hide();
-        } else {
-          $('.meta-lightbox-nav').show();
-        }
-
-        // Prev
-        $('.meta-lightbox-prev').off('click').on('click', function(e) {
-          e.preventDefault();
-          var index = galleryItems.index(currentLink);
-          currentLink = galleryItems.eq(index - 1);
-          if (!$(currentLink).length) currentLink = galleryItems.last();
-          $this.processContent(content, currentLink);
-          $this.options.onPrev.call(this, [currentLink]);
-        });
-
-        // Next
-        $('.meta-lightbox-next').off('click').on('click', function(e) {
-          e.preventDefault();
-          var index = galleryItems.index(currentLink);
-          currentLink = galleryItems.eq(index + 1);
-          if (!$(currentLink).length) currentLink = galleryItems.first();
-          $this.processContent(content, currentLink);
-          $this.options.onNext.call(this, [currentLink]);
-        });
-      }
-
-      setTimeout(function() {
-        lightbox.addClass('meta-lightbox-open');
-        $this.options.afterShowLightbox.call(this, [lightbox]);
-      }, 1); // For CSS transitions
-    }
-
-    static dispose() {
-      console.log(`Destroying: ${NAME}`);
-    }
-
-    static _jQueryInterface() {
-      return this.each(function() {
-        // attach functionality to el
-        const $el = $(this);
-        let data = $el.data(DATA_KEY);
-
-        if (!data) {
-          data = new MetaUI(this);
-          $el.data(DATA_KEY, data);
-        }
-      });
-    }
-  }
-
-  // jQuery interface
-  $.fn[NAME] = MetaUI._jQueryInterface;
-  $.fn[NAME].Constructor = MetaUI;
-  $.fn[NAME].noConflict = function() {
-    $.fn[NAME] = JQUERY_NO_CONFLICT;
-    return MetaUI._jQueryInterface;
-  };
-
-  // auto-apply
-  $(window).on(`${Events.AJAX} ${Events.LOADED}`, () => {
-    $('[data-toggle="lightbox"]').jsMetaUI();
-  });
-
-  return MetaUI;
-})($);
-
-export default MetaUI;*/
+//=require ../../bower_components/jquery-zoom/jquery.zoom.js
 
 (function($, window, document) {
 
@@ -150,14 +19,14 @@ export default MetaUI;*/
       afterShowLightbox: function(lightbox) {},
       beforeHideLightbox: function() {},
       afterHideLightbox: function() {},
-      onPrev: function(el) {},
-      onNext: function(el) {},
+      onPrev: function(element) {},
+      onNext: function(element) {},
       errorMessage: 'The requested content cannot be loaded. Please try again later.'
     };
 
-  function MetaLightbox(el, options) {
-    /*this.el = el;
-        this.$el = $(this.el);*/
+  function MetaLightbox(element, options) {
+    /*this.el = element;
+    this.$el = $(this.el);*/
 
     this.options = $.extend({}, defaults, options);
 
@@ -183,7 +52,7 @@ export default MetaUI;*/
       if ('ontouchstart' in document) $html.removeClass('meta-lightbox-notouch');
 
       // Setup the click
-      $(document).on('click', '[data-toggle="lightbox"]', function(e) {
+      $(document).on('click', '[data-toggle="lightbox"],[data-lightbox-gallery]', function(e) {
         e.preventDefault();
         e.stopPropagation();
 
@@ -214,8 +83,8 @@ export default MetaUI;*/
 
     },
 
-    showLightbox: function(el) {
-      this.el = el;
+    showLightbox: function(element) {
+      this.el = element;
       this.$el = $(this.el);
 
       var $this = this,
@@ -272,8 +141,12 @@ export default MetaUI;*/
 
     processContent: function(content, link) {
       var $this = this,
-        href = link.attr('href'),
         img, video, src, classTerm, iframe, wrap;
+
+      href = link.attr('href');
+      if (!href) {
+        href = link.data('href');
+      }
 
       content.html('').addClass('meta-lightbox-loading');
 
@@ -347,19 +220,21 @@ export default MetaUI;*/
         src = '';
         classTerm = 'meta-lightbox-video';
 
-        if (video[1] == 'youtube' || video[1] == 'youtu' || video[1] == 'youtube-nocookie') {
-          const YouTubeGetID = (url) => {
-            url = url.split(/(vi\/|v%3D|v=|\/v\/|youtu\.be\/|\/embed\/)/);
-            return undefined !== url[2] ? url[2].split(/[^0-9a-z_\-]/i)[0] : url[0];
-          };
-
-          src = '//www.youtube-nocookie.com/embed/' + YouTubeGetID(href);
-          classTerm = classTerm + 'meta-lightbox-youtube';
+        if (video[1] == 'youtube') {
+          src = '//www.youtube.com/embed/' + video[4];
+          classTerm = 'meta-lightbox-youtube';
         }
-
+        if (video[1] == 'youtu') {
+          src = '//www.youtube.com/embed/' + video[3];
+          classTerm = 'meta-lightbox-youtube';
+        }
+        if (video[1] == 'youtube-nocookie') {
+          src = '//www.youtube-nocookie.com/embed/' + video[4];
+          classTerm = 'nivo-lightbox-youtube';
+        }
         if (video[1] == 'vimeo') {
           src = '//player.vimeo.com/video/' + video[3];
-          classTerm = classTerm + 'meta-lightbox-vimeo';
+          classTerm = 'meta-lightbox-vimeo';
         }
 
         if (src) {
@@ -587,60 +462,58 @@ export default MetaUI;*/
 
 
     constructLightbox: function() {
-      const $this = this,
-        $overlay = $('<div>', {
+      var $this = this,
+        overlay = $('<div>', {
           'class': 'meta-lightbox-overlay meta-lightbox-theme-' + this.options.theme + ' meta-lightbox-effect-' + this.options.effect
         }),
-        $wrap = $('<div>', {
+        wrap = $('<div>', {
           'class': 'meta-lightbox-wrap'
         }),
-        $content = $('<div>', {
+        content = $('<div>', {
           'class': 'meta-lightbox-content'
         }),
-        nav = '<a href="#" class="meta-lightbox-nav meta-lightbox-prev"><i class="fa fa-chevron-left"></i> <span class="sr-only">Previous</span></a>' +
-        '<a href="#" class="meta-lightbox-nav meta-lightbox-next"><i class="fa fa-chevron-right"></i> <span class="sr-only">Next</span></a>' +
-        '<a href="#" class="meta-lightbox-close fa fa-times" title="Close"><span class="sr-only">Close</span></a>',
-        $title = $('<div>', {
+        nav = $('<a href="#" class="meta-lightbox-nav meta-lightbox-prev"><i class="fa fa-chevron-left"></i> <span class="sr-only">Previous</span></a><a href="#" class="meta-lightbox-nav meta-lightbox-next"><i class="fa fa-chevron-right"></i> <span class="sr-only">Next</span></a>'),
+        close = $('<a href="#" class="meta-lightbox-close fa fa-times" title="Close"><span class="sr-only">Close</span></a>'),
+        title = $('<div>', {
           'class': 'meta-lightbox-title-wrap'
         }),
-        isMSIE = /*@cc_on!@*/ 0;
+        isMSIE = /*@cc_on!@*/ 0,
+        $overlay = $('.meta-lightbox-overlay');
 
-      if ($('.meta-lightbox-overlay').length) {
-        return $('.meta-lightbox-overlay');
-      }
+      if ($overlay.length) return $overlay;
 
 
-      if (isMSIE) {
-        overlay.addClass('meta-lightbox-ie');
-      }
+      if (isMSIE) overlay.addClass('meta-lightbox-ie');
 
-      $wrap.append($content);
-      $wrap.append($title);
-      $overlay.append($wrap);
-      $overlay.append($(nav));
-      $content.append($(nav));
-      $('body').append($overlay);
+      wrap.append(content);
+      wrap.append(title);
+      overlay.append(wrap);
+      overlay.append(nav);
+      overlay.append(close);
+      $('body').append(overlay);
 
       if ($this.options.clickOverlayToClose) {
-        $overlay.on('click', (e) => {
-          const $target = $(e.target);
+        overlay.on('click', function(e) {
+          var $target = $(e.target);
 
           if (
             $target.hasClass('meta-lightbox-zoom-wrapper') ||
             $target.hasClass('meta-lightbox-content') ||
-            $target.hasClass('meta-lightbox-image')
+            $target.hasClass('meta-lightbox-wrap') ||
+            $target.hasClass('meta-lightbox-image') ||
+            $target.hasClass('meta-lightbox-overlay')
           ) {
             $this.destructLightbox();
           }
         });
       }
 
-      $overlay.find('.meta-lightbox-close').on('click', function(e) {
+      close.on('click', function(e) {
         e.preventDefault();
         $this.destructLightbox();
       });
 
-      return $overlay;
+      return overlay;
     },
 
     destructLightbox: function() {
@@ -703,9 +576,9 @@ export default MetaUI;*/
 
     isHidpi: function() {
       var mediaQuery = "(-webkit-min-device-pixel-ratio: 1.5),\
-                    (min--moz-device-pixel-ratio: 1.5),\
-                    (-o-min-device-pixel-ratio: 3/2),\
-                    (min-resolution: 1.5dppx)";
+          (min--moz-device-pixel-ratio: 1.5),\
+          (-o-min-device-pixel-ratio: 3/2),\
+          (min-resolution: 1.5dppx)";
       if (window.devicePixelRatio > 1) return true;
       return (window.matchMedia && window.matchMedia(mediaQuery).matches);
     }
