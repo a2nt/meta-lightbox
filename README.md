@@ -3,6 +3,7 @@
 Universal jquery lightbox.
 Compatible to bootstrap4 and fontawesome
 
-Demo
+## Demo
 https://rawcdn.githack.com/a2nt/meta-lightbox/master/dist/index.html
 
+It's module of UI kit (https://github.com/a2nt/webpack-bootstrap-ui-kit), but can be used independentelly.
