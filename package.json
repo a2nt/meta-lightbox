@@ -19,5 +19,6 @@
     "bugs": {
         "url": "https://github.com/a2nt/meta-lightbox/issues"
     },
-    "homepage": "https://github.com/a2nt/meta-lightbox#readme"
-}
+    "homepage": "https://github.com/a2nt/meta-lightbox#readme",
+    "publishConfig": { "registry": "https://npm.pkg.github.com/" }
+  }
