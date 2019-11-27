@@ -1,5 +1,5 @@
 /*
- * MetaLightbox v0.7
+ * MetaLightbox
  * https://tony.twma.pro
  *
  */
