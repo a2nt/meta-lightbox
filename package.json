@@ -1,8 +1,17 @@
 {
   "name": "@a2nt/meta-lightbox",
-  "version": "1.2.2",
+  "version": "1.2.4",
   "description": "Universal Lightbox window",
   "main": "meta-lightbox.js",
+  "author": "Tony Air <tony@twma.pro>",
+  "license": "BSD-2-Clause",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/a2nt/meta-lightbox.git"
+  },
+  "engines": {
+    "yarn": ">= 1.0.0"
+  },
   "scripts": {
     "start": "cross-env NODE_ENV=development webpack-dev-server --https -d --config webpack.config.js",
     "dash": "cross-env NODE_ENV=development webpack-dashboard -- webpack-dev-server --config webpack.config.js",
@@ -12,70 +21,89 @@
     "lint:js": "eslint ./src --config .eslintrc",
     "lint:sass": "sass-lint ./src --config .sasslintrc -v -q",
     "prebuild": "yarn lint:fix && rimraf dist",
-    "prepare": "yarn lint:fix && yarn build"
+    "prepare": "yarn lint:fix && yarn build",
+    "prunecaches": "rimraf ./node_modules/.cache/",
+    "postinstall": "npm run prunecaches",
+    "postuninstall": "npm run prunecaches"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/a2nt/meta-lightbox.git"
-  },
-  "keywords": [
-    "lightbox",
-    "jquery"
-  ],
-  "author": "Tony Air <tony@twma.pro>",
-  "license": "BSD-2-Clause",
-  "bugs": {
-    "url": "https://github.com/a2nt/meta-lightbox/issues"
-  },
-  "homepage": "https://github.com/a2nt/meta-lightbox#readme",
-  "publishConfig": {
-    "registry": "https://npm.pkg.github.com/"
-  },
-  "browserslist": [
-    "defaults"
-  ],
   "dependencies": {
+    "@a2nt/meta-lightbox": "^1.2.2",
+    "@google/markerclusterer": "^1.0.3",
+    "animate.css": "^3.7.0",
+    "bootbox": "^4.4.0",
+    "bootstrap": "^4.4.1",
+    "bootstrap-confirmation2": "^4.1.0",
+    "bootstrap-datepicker": "^1.9.0",
+    "bootstrap-offcanvas": "^1.0.0",
+    "bootstrap-table": "^1.16.0",
+    "bootstrap-timepicker": "^0.5.2",
+    "browserslist": "^4.8.6",
+    "caniuse-lite": "^1.0.30001027",
+    "core-util-is": "^1.0.2",
+    "croppie": "^2.6.4",
+    "exif-js": "^2.3.0",
+    "font-awesome": "^4.7.0",
+    "foundation-emails": "^2.2.1",
+    "gijgo": "^1.9.13",
+    "inputmask": "^5.0.3",
     "jquery": "^3.4.1",
     "jquery-hammerjs": "^2.0.0",
     "jquery-hoverintent": "^1.10.1",
     "jquery-zoom": "^1.7.21",
     "jquery.appear": "^1.0.1",
-    "jquery.inputmask": "^3.3.4",
-    "yarn": "^1.17.3"
+    "laravel-mix": "^4.1.2",
+    "mapbox-gl": "^1.7.0",
+    "offcanvas-bootstrap": "^2.5.2",
+    "popper.js": "^1.16.1",
+    "pouchdb": "^6.4.3",
+    "quill": "^1.3.7",
+    "react-bootstrap4-form-validation": "^1.0.10",
+    "routie": "0.0.1",
+    "select2": "^4.0.13",
+    "smooth-scroll": "^14.2.1",
+    "sticky-sidebar": "^3.3.1",
+    "yarn": "^1.22.0"
   },
   "devDependencies": {
+    "@a2nt/image-sprite-webpack-plugin": "^0.2.5",
+    "@babel/core": "^7.8.4",
+    "@babel/plugin-proposal-object-rest-spread": "^7.8.3",
+    "@babel/plugin-transform-react-jsx": "*",
+    "@babel/preset-env": "^7.8.4",
     "autoprefixer": "^7.2.5",
-    "babel-core": "^6.26.3",
     "babel-eslint": "^8.2.6",
-    "babel-loader": "^7.1.2",
-    "babel-plugin-transform-react-jsx": "^6.24.1",
-    "babel-preset-es2015": "^6.24.1",
-    "babel-preset-react": "^6.24.1",
-    "babel-preset-stage-2": "^6.24.1",
+    "babel-loader": "^8.0.6",
     "browser-sync": "^2.24.5",
     "browser-sync-webpack-plugin": "^2.2.2",
     "copy-webpack-plugin": "^4.6.0",
     "copyfiles": "^1.2.0",
     "cross-env": "^5.1.6",
-    "css-loader": "^3.2.0",
+    "css-loader": "^3.4.2",
     "eslint": "^4.18.1",
-    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-import": "^2.20.1",
     "eslint-plugin-jquery": "^1.5.1",
-    "eslint-plugin-react": "^7.14.3",
+    "eslint-plugin-react": "^7.18.3",
     "exports-loader": "^0.7.0",
     "extract-text-webpack-plugin": "^4.0.0-beta.0",
     "favicons-webpack-plugin": "^1.0.2",
     "file-loader": "^1.1.5",
+    "hard-source-webpack-plugin": "^0.13.1",
     "html-loader": "^0.5.5",
-    "html-webpack-plugin": "^4.0.0-beta.8",
+    "html-webpack-plugin": "^4.0.0-beta.11",
+    "imagemin-gifsicle": "^7.0.0",
+    "imagemin-jpegtran": "^6.0.0",
+    "imagemin-optipng": "^7.1.0",
+    "imagemin-svgo": "^7.0.0",
+    "imagemin-webpack": "^5.1.1",
+    "loglevel": "^1.6.7",
     "lost": "^8.3.1",
     "material-design-color": "^2.3.2",
-    "node-sass": "^4.12.0",
+    "node-sass": "^4.13.1",
     "object-assign": "^4.1.1",
     "optimize-css-assets-webpack-plugin": "^5.0.3",
     "postcss-loader": "^2.1.5",
-    "react": "^16.9.0",
-    "react-dom": "^16.9.0",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0",
     "react-hot-loader": "^3.1.3",
     "redux": "^3.7.2",
     "redux-devtools-extension": "^2.13.8",
@@ -87,14 +115,62 @@
     "script-ext-html-webpack-plugin": "^2.1.4",
     "style-loader": "^0.19.0",
     "svg-url-loader": "^2.3.3",
-    "terser-webpack-plugin": "^2.1.3",
-    "uglify-js": "git://github.com/mishoo/UglifyJS2.git#harmony-v2.8.22",
-    "uglifyjs-webpack-plugin": "^2.2.0",
+    "terser-webpack-plugin": "^2.3.4",
     "url-loader": "^0.6.2",
-    "webpack": "^4.39.1",
-    "webpack-cli": "^3.3.6",
-    "webpack-dev-server": "^3.8.0",
+    "webpack": "^4.41.6",
+    "webpack-cli": "^3.3.11",
+    "webpack-dev-server": "^3.10.3",
     "webpack-manifest-plugin": "^1.3.2",
     "webpack-merge": "^4.1.1"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
+  },
+  "browserslist": [
+    "defaults",
+    "ie>=11"
+  ],
+  "stylelint": {
+    "rules": {
+      "block-no-empty": null,
+      "color-no-invalid-hex": true,
+      "comment-empty-line-before": [
+        "always",
+        {
+          "ignore": [
+            "stylelint-commands",
+            "after-comment"
+          ]
+        }
+      ],
+      "declaration-colon-space-after": "always",
+      "indentation": [
+        4,
+        {
+          "except": [
+            "value"
+          ]
+        }
+      ],
+      "max-empty-lines": 2,
+      "rule-empty-line-before": [
+        "always",
+        {
+          "except": [
+            "first-nested"
+          ],
+          "ignore": [
+            "after-comment"
+          ]
+        }
+      ],
+      "unit-whitelist": [
+        "em",
+        "rem",
+        "%",
+        "s",
+        "px"
+      ]
+    }
   }
 }
