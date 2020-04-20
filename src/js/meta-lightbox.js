@@ -521,10 +521,10 @@
           class: 'meta-lightbox-content',
         }),
         nav = $(
-          '<a href="#" class="meta-lightbox-nav meta-lightbox-prev"><i class="fa fa-chevron-left"></i> <span class="sr-only">Previous</span></a><a href="#" class="meta-lightbox-nav meta-lightbox-next"><i class="fa fa-chevron-right"></i> <span class="sr-only">Next</span></a>',
+          '<a href="#" class="meta-lightbox-nav meta-lightbox-prev"><i class="fas fa fa-chevron-left"></i> <span class="sr-only">Previous</span></a><a href="#" class="meta-lightbox-nav meta-lightbox-next"><i class="fa fas fa-chevron-right"></i> <span class="sr-only">Next</span></a>',
         ),
         close = $(
-          '<a href="#" class="meta-lightbox-close fa fa-times" title="Close"><span class="sr-only">Close</span></a>',
+          '<a href="#" class="meta-lightbox-close fas fa fa-times" title="Close"><span class="sr-only">Close</span></a>',
         ),
         title = $('<div>', {
           class: 'meta-lightbox-title-wrap',

@@ -1,6 +1,6 @@
 {
   "name": "@a2nt/meta-lightbox",
-  "version": "1.2.5",
+  "version": "1.2.7",
   "description": "Universal Lightbox window",
   "main": "meta-lightbox.js",
   "author": "Tony Air <tony@twma.pro>",
