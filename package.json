@@ -1,6 +1,6 @@
 {
 	"name": "@a2nt/meta-lightbox",
-	"version": "2.0.9",
+	"version": "2.1.0",
 	"description": "Universal Lightbox window",
 	"main": "meta-lightbox.js",
 	"author": "Tony Air <tony@twma.pro>",
@@ -32,7 +32,6 @@
 		"ie>=11"
 	],
 	"dependencies": {
-		"@a2nt/ss-bootstrap-ui-webpack-boilerplate": "^2.0.7",
 		"bootbox": "^4.4.0",
 		"bootstrap": "^4.5.0",
 		"bootstrap-confirmation2": "^4.1.0",
@@ -50,9 +49,7 @@
 		"jquery.appear": "^1.0.1",
 		"mapbox-gl": "^1.10.0",
 		"material-design-color": "^2.3.2",
-		"offcanvas-bootstrap": "^2.5.2",
 		"popper.js": "*",
-		"pouchdb": "^6.4.3",
 		"select2": "^4.0.8",
 		"smooth-scroll": "^14.2.1",
 		"sticky-sidebar": "^3.3.1",
