@@ -1,123 +1,74 @@
 /*
- * MetaLightbox v0.61
+ * MetaLightbox
  * https://tony.twma.pro
  *
  */
 
+// optional:
 //=require ../../bower_components/jquery-zoom/jquery.zoom.js
 
-(function($, window, document) {
-  var pluginName = 'metaLightbox',
-    defaults = {
-      effect: 'fade',
-      theme: 'default',
-      keyboardNav: true,
-      clickOverlayToClose: true,
-      onInit: function() {},
-      beforeShowLightbox: function() {},
-      afterShowLightbox: function(lightbox) {},
-      beforeHideLightbox: function() {},
-      afterHideLightbox: function() {},
-      onPrev: function(element) {},
-      onNext: function(element) {},
-      errorMessage:
-        'The requested content cannot be loaded. Please try again later.',
-    };
+"use strict";
 
-  function MetaLightbox(element, options) {
-    /*this.el = element;
-    this.$el = $(this.el);*/
+import $ from 'jquery';
 
-    this.options = $.extend({}, defaults, options);
+import Events from './_events';
 
-    this._defaults = defaults;
-    this._name = pluginName;
+const MetaLightboxUI = (($) => {
+  const W = window;
+  const D = document;
+  const $Body = $('body');
 
-    this.init();
-  }
+  const NAME = 'MetaLightboxUI';
 
-  MetaLightbox.prototype = {
-    init: function() {
-      var $this = this,
-        $html = $('html');
+  class MetaLightboxUI {
+    static init() {
+      console.log(`Initializing: ${NAME}`);
 
-      this.ajaxLoaded = false;
+      const ui = this;
+      ui.isMSIE = /*@cc_on!@*/ 0;
+      ui.isHidpi = ui.isHidpi();
 
-      // make object globally accessible
-      document.MetaLightbox = this;
 
-      // Need this so we don't use CSS transitions in mobile
-      if (!$html.hasClass('meta-lightbox-notouch'))
-        $html.addClass('meta-lightbox-notouch');
-      if ('ontouchstart' in document)
-        $html.removeClass('meta-lightbox-notouch');
-
-      // Setup the click
-      $(document).on(
-        'click',
-        '[data-toggle="lightbox"],[data-lightbox-gallery]',
-        function(e) {
-          e.preventDefault();
+      $(`.js${NAME},[data-toggle="lightbox"],[data-lightbox-gallery]`).on('click', (e) => {
+        e.preventDefault();
           e.stopPropagation();
+          const $link = $(e.currentTarget);
 
-          $this.showLightbox(this);
-          return false;
-        },
-      );
+          ui.show($link);
+      });
+    }
 
-      // keyboardNav
-      if (this.options.keyboardNav) {
-        $('body')
-          .off('keyup')
-          .on('keyup', (e) => {
-            var code = e.keyCode ? e.keyCode : e.which;
-            // Escape
-            if (code === 27) {
-              $this.destructLightbox();
-            }
-            // Left
-            if (code === 37) {
-              $('.meta-lightbox-prev').trigger('click');
-            }
-            // Right
-            if (code === 39) {
-              $('.meta-lightbox-next').trigger('click');
-            }
-          });
-      }
+    static isHidpi() {
+      console.log(`${NAME}: isHidpi`);
+      const mediaQuery =
+        '(-webkit-min-device-pixel-ratio: 1.5),\
+          (min--moz-device-pixel-ratio: 1.5),\
+          (-o-min-device-pixel-ratio: 3/2),\
+          (min-resolution: 1.5dppx)';
+      if (W.devicePixelRatio > 1) return true;
+      return W.matchMedia && W.matchMedia(mediaQuery).matches;
+    }
 
-      this.options.onInit.call(this);
-    },
+    static show($link) {
+      console.log(`${NAME}: show`);
+      const ui = this;
 
-    showLightbox: function(element) {
-      this.el = element;
-      this.$el = $(this.el);
+      const $lightbox = this.constructLightbox();
+      if (!$lightbox) return;
 
-      var $this = this,
-        lightbox,
-        content,
-        currentLink,
-        galleryItems;
+      const $content = ui.$content;
+      if (!$content) return;
 
-      this.options.beforeShowLightbox.call(this);
-
-      lightbox = this.constructLightbox();
-      if (!lightbox) return;
-      content = lightbox.find('.meta-lightbox-content');
-      if (!content) return;
-      currentLink = this.$el;
-      $('body').addClass(`meta-lightbox-body-effect-${this.options.effect}`);
+      $('body').addClass(`meta-lightbox-body-effect-fade`);
 
       // Add content
-      this.processContent(content, currentLink);
+      ui.process($content, $link);
 
       // Nav
-      if (this.$el.data('lightbox-gallery')) {
-        galleryItems = $(
-          `[data-lightbox-gallery="${this.$el.data('lightbox-gallery')}"]`,
-        );
+      if ($link.data('lightbox-gallery')) {
+        const $galleryItems = $(`[data-lightbox-gallery="${$link.data('lightbox-gallery')}"]`);
 
-        if (galleryItems.length === 1) {
+        if ($galleryItems.length === 1) {
           $('.meta-lightbox-nav').hide();
         } else {
           $('.meta-lightbox-nav').show();
@@ -126,66 +77,110 @@
         // Prev
         $('.meta-lightbox-prev')
           .off('click')
-          .on('click', function(e) {
+          .on('click', (e) => {
             e.preventDefault();
-            var index = galleryItems.index(currentLink);
-            currentLink = galleryItems.eq(index - 1);
-            if (!$(currentLink).length) currentLink = galleryItems.last();
-            $this.processContent(content, currentLink);
-            $this.options.onPrev.call(this, [currentLink]);
+            const index = $galleryItems.index(currentLink);
+            let $currentLink = $galleryItems.eq(index - 1);
+            if (!$currentLink.length) $currentLink = $galleryItems.last();
+            $this.process($content, $currentLink);
           });
 
         // Next
         $('.meta-lightbox-next')
           .off('click')
-          .on('click', function(e) {
+          .on('click', (e) => {
             e.preventDefault();
-            var index = galleryItems.index(currentLink);
-            currentLink = galleryItems.eq(index + 1);
-            if (!$(currentLink).length) currentLink = galleryItems.first();
-            $this.processContent(content, currentLink);
-            $this.options.onNext.call(this, [currentLink]);
+            const index = $galleryItems.index(currentLink);
+            $currentLink = $galleryItems.eq(index + 1);
+            if (!$currentLink.length) $currentLink = $galleryItems.first();
+            $this.process($content, $currentLink);
           });
       }
 
-      setTimeout(function() {
-        lightbox.addClass('meta-lightbox-open');
-        $this.options.afterShowLightbox.call(this, [lightbox]);
+      setTimeout(() => {
+        ui.$overlay.addClass('meta-lightbox-open');
       }, 1); // For CSS transitions
-    },
+    }
 
-    processContent: function(content, link) {
-      var $this = this,
-        img,
-        video,
-        src,
-        classTerm,
-        iframe,
-        wrap;
+    static constructLightbox() {
+      console.log(`${NAME}: constructLightbox`);
+      const ui = this;
 
-      href = link.attr('href');
-      if (!href) {
-        href = link.data('href');
+      const overlay = $('<div>', {
+        class: 'meta-lightbox-overlay meta-lightbox-theme-default meta-lightbox-effect-fade',
+      });
+      const wrap = $('<div>', {
+        class: 'meta-lightbox-wrap',
+      });
+      const content = $('<div>', {
+          class: 'meta-lightbox-content',
+      });
+      const nav = $(
+        '<a href="#" class="meta-lightbox-nav meta-lightbox-prev"><i class="fas fa fa-chevron-left"></i> <span class="sr-only">Previous</span></a><a href="#" class="meta-lightbox-nav meta-lightbox-next"><i class="fa fas fa-chevron-right"></i> <span class="sr-only">Next</span></a>',
+      );
+      const close = $(
+        '<a href="#" class="meta-lightbox-close fas fa fa-times" title="Close"><span class="sr-only">Close</span></a>',
+      );
+      const title = $('<div>', {
+        class: 'meta-lightbox-title-wrap',
+      });
+
+      if (ui.$overlay) return ui.$overlay;
+
+      if (ui.isMSIE) overlay.addClass('meta-lightbox-ie');
+
+      wrap.append(content);
+      wrap.append(title);
+      overlay.append(wrap);
+      overlay.append(nav);
+      overlay.append(close);
+      $('body').append(overlay);
+
+      overlay.on('click', (e) => {
+        e.preventDefault();
+        ui.hide();
+      });
+
+      close.on('click', (e) => {
+        e.preventDefault();
+        ui.hide();
+      });
+
+      ui.$overlay = overlay;
+      ui.$content = content;
+      ui.$title = title;
+
+      return ui.$overlay;
+    }
+
+    static setTitle(str) {
+      const ui = this;
+
+      ui.$title.html(str);
+    }
+
+    static process($content, $link) {
+      console.log(`${NAME}: process`);
+      const ui = this;
+
+      const href = $link.attr('href').length ? $link.attr('href') : $link.data('href');
+      if (!href.length) {
+        console.log($link);
+        console.error(NAME + ': href(attr/data) is missing');
       }
 
-      content.html('').addClass('meta-lightbox-loading');
-
-      // Is HiDPI?
-      if (this.isHidpi() && link.data('lightbox-hidpi')) {
-        href = link.data('lightbox-hidpi');
-      }
+      const $pageSpinner = $('#PageLoading');
+      const loadingContent = $pageSpinner.length ? $pageSpinner.html() : '';
+      ui.$content.html(loadingContent).addClass('meta-lightbox-loading');
 
       // Image
-      if (href.match(/\.(jpeg|jpg|gif|png)$/i) != null) {
-        /*if ($(window).width() < 768) {
-            window.open(href, '_blank');
-        }*/
-        img = $('<img>', {
+      if (href.match(/\.(jpeg|jpg|gif|png|svg)$/i)) {
+        const img = $('<img>', {
           src: href,
         });
+
         img.on('load', () => {
-          var wrap = $('<div class="meta-lightbox-image"></div>'),
-            $content = $('.meta-lightbox-content'),
+          const wrap = $('<div class="meta-lightbox-image"></div>'),
             imgwrapper = $('<span class="meta-lightbox-zoom-wrapper"></span>');
 
           imgwrapper.append(img);
@@ -196,6 +191,7 @@
             'line-height': `${$content.height()}px`,
             height: `${$content.height()}px`, // For Firefox
           });
+
           $(window).resize(() => {
             wrap.css({
               'line-height': `${$content.height()}px`,
@@ -207,29 +203,22 @@
             imgwrapper.zoom();
           }
 
-          content.html(wrap).removeClass('meta-lightbox-loading');
-          $this.contentLoaded();
+          ui.$content.html(wrap);
+          ui.contentLoaded();
         });
-        /*.each(function () {
-                            if (this.complete) $(this).load();
-                        });*/
 
         img.on('error', () => {
-          var wrap = $(
-            `<div class="meta-lightbox-error"><p>${$this.options.errorMessage}</p></div>`,
+          const wrap = $(
+            `<div class="meta-lightbox-error"><p class="alert alert-error alert-danger">${$this.options.errorMessage}</p></div>`,
           );
-          content.html(wrap).removeClass('meta-lightbox-loading');
-          $this.contentLoaded();
+
+          ui.$content.html(wrap);
+          ui.contentLoaded();
         });
 
         // Set the title
-        if (link.data('title')) {
-          $this.setTitle(link.data('title'));
-        } else if (link.attr('title')) {
-          $this.setTitle(link.attr('title'));
-        } else {
-          $('.meta-lightbox-title-wrap').html('');
-        }
+        const title = $link.data('title') ? $link.data('title') :  $link.attr('title');
+        ui.setTitle(title);
 
         // google analytics
         if (typeof ga === 'function') {
@@ -237,33 +226,30 @@
         }
       }
       // Video (Youtube/Vimeo)
-      else if (
-        (video = href.match(
-          /(youtube|youtube-nocookie|youtu|vimeo)\.(com|be)\/(watch\?v=([\w-]+)|([\w-]+))/,
-        ))
-      ) {
-        src = '';
-        classTerm = 'meta-lightbox-video';
+      else if (href.match(/(youtube|youtube-nocookie|youtu|vimeo)\.(com|be)\/(watch\?v=([\w-]+)|([\w-]+))/)) {
+        let video = href.match(/(youtube|youtube-nocookie|youtu|vimeo)\.(com|be)\/(watch\?v=([\w-]+)|([\w-]+))/);
+        let classTerm = 'meta-lightbox-video';
+        let src;
 
         if (video[1] == 'youtube') {
           src = `https://www.youtube.com/embed/${video[4]}`;
-          classTerm = 'meta-lightbox-youtube';
+          classTerm = classTerm + ' meta-lightbox-youtube';
         }
         if (video[1] == 'youtu') {
           src = `https://www.youtube.com/embed/${video[3]}`;
-          classTerm = 'meta-lightbox-youtube';
+          classTerm = classTerm + ' meta-lightbox-youtube';
         }
         if (video[1] == 'youtube-nocookie') {
           src = `https://www.youtube-nocookie.com/embed/${video[4]}`;
-          classTerm = 'nivo-lightbox-youtube';
+          classTerm = classTerm+' meta-lightbox-youtube';
         }
         if (video[1] == 'vimeo') {
           src = `https://player.vimeo.com/video/${video[3]}`;
-          classTerm = 'meta-lightbox-vimeo';
+          classTerm = classTerm + ' meta-lightbox-vimeo';
         }
 
         if (src) {
-          iframe = $('<iframe>', {
+          const $iframe = $('<iframe>', {
             src,
             class: classTerm,
             frameborder: 0,
@@ -271,21 +257,24 @@
             hspace: 0,
             scrolling: 'auto',
           });
-          content.html(iframe);
-          iframe.on('load', () => {
-            content.removeClass('meta-lightbox-loading');
-            $this.contentLoaded();
+
+          $Body.append('<div id="IFramePreload" class="hidden d-none iframe-preload" style="display:none"></div>');
+          const $preload = $('#IFramePreload');
+          $preload.html($iframe);
+
+          $iframe.on('load', () => {
+            console.log(`${NAME}: the iframe was loaded`);
+            $preload.html('');
+            $preload.remove();
+
+            ui.$content.html($iframe);
+            ui.contentLoaded();
           });
         }
 
         // Set the title
-        if (link.data('title')) {
-          $this.setTitle(link.data('title'));
-        } else if (link.attr('title')) {
-          $this.setTitle(link.attr('title'));
-        } else {
-          $('.meta-lightbox-title-wrap').html('');
-        }
+        const title = $link.data('title') ? $link.data('title') : $link.attr('title');
+        ui.setTitle(title);
 
         // google analytics
         if (typeof ga === 'function') {
@@ -296,11 +285,7 @@
       else if (href.substring(0, 1) == '#') {
         if ($(href).length) {
           wrap = $('<div class="meta-lightbox-inline" />');
-          wrap.append(
-            $(href)
-              .clone()
-              .show(),
-          );
+          wrap.append($(href).clone().show());
 
           // Vertically center html
           if (wrap.outerHeight() < content.height()) {
@@ -320,14 +305,14 @@
             }
           });
 
-          content.html(wrap).removeClass('meta-lightbox-loading');
-          $this.contentLoaded();
+          ui.$content.html(wrap);
+          ui.contentLoaded();
         } else {
           wrap = $(
             `<div class="meta-lightbox-error"><p>${$this.options.errorMessage}</p></div>`,
           );
-          content.html(wrap).removeClass('meta-lightbox-loading');
-          $this.contentLoaded();
+          ui.$content.html(wrap);
+          ui.contentLoaded();
         }
 
         $('.meta-lightbox-title-wrap').html('');
@@ -347,30 +332,30 @@
           method: 'GET',
           cache: false,
           statusCode: {
-            404: function() {
+            404: function () {
               console.log('page not found');
               window.location.href = url;
             },
-            302: function() {
+            302: function () {
               console.log('redirect 302');
               window.location.href = url;
             },
           },
-          error: function(jqXHR) {
+          error: function (jqXHR) {
             console.log(`AJAX request failure.${jqXHR.statusText}`);
 
             var wrap = $(
               `<div class="meta-lightbox-error"><p>${$this.options.errorMessage}</p></div>`,
             );
-            content.html(wrap).removeClass('meta-lightbox-loading');
-            $this.contentLoaded();
+            ui.$content.html(wrap);
+            ui.contentLoaded();
 
             // google analytics
             if (typeof ga === 'function') {
               ga('send', 'event', 'error', 'AJAX ERROR', jqXHR.statusText);
             }
           },
-          success: function(data, status, jqXHR) {
+          success: function (data, status, jqXHR) {
             try {
               const dataJson = $.parseJSON(data);
               if (typeof dataJson === 'object') {
@@ -485,93 +470,29 @@
               }
             }, 500);
 
-            $this.contentLoaded();
+            ui.contentLoaded();
           },
         });
       }
-    },
+    };
 
-    setTitle: function(text) {
-      var titleWrap = $('<div>', {
-        class: 'meta-lightbox-title',
-      });
-      titleWrap.text(text);
-      $('.meta-lightbox-title-wrap').html(titleWrap);
-    },
+    static contentLoaded() {
+      const ui = this;
 
-    contentLoaded: function() {
+      ui.$content.removeClass('meta-lightbox-loading');
       setTimeout(() => {
-        $(window).trigger('meta-lightbox-loaded');
+        $(W).trigger('meta-lightbox-loaded');
       }, 1); // For CSS transitions
 
       setTimeout(() => {
-        $('body').addClass('meta-lightbox-body-effect-fade');
+        $Body.addClass('meta-lightbox-body-effect-fade');
       }, 600);
-    },
+    };
 
-    constructLightbox: function() {
-      var $this = this,
-        overlay = $('<div>', {
-          class: `meta-lightbox-overlay meta-lightbox-theme-${this.options.theme} meta-lightbox-effect-${this.options.effect}`,
-        }),
-        wrap = $('<div>', {
-          class: 'meta-lightbox-wrap',
-        }),
-        content = $('<div>', {
-          class: 'meta-lightbox-content',
-        }),
-        nav = $(
-          '<a href="#" class="meta-lightbox-nav meta-lightbox-prev"><i class="fas fa fa-chevron-left"></i> <span class="sr-only">Previous</span></a><a href="#" class="meta-lightbox-nav meta-lightbox-next"><i class="fa fas fa-chevron-right"></i> <span class="sr-only">Next</span></a>',
-        ),
-        close = $(
-          '<a href="#" class="meta-lightbox-close fas fa fa-times" title="Close"><span class="sr-only">Close</span></a>',
-        ),
-        title = $('<div>', {
-          class: 'meta-lightbox-title-wrap',
-        }),
-        isMSIE = /*@cc_on!@*/ 0,
-        $overlay = $('.meta-lightbox-overlay');
+    static hide(callback) {
+      const ui = this;
 
-      if ($overlay.length) return $overlay;
-
-      if (isMSIE) overlay.addClass('meta-lightbox-ie');
-
-      wrap.append(content);
-      wrap.append(title);
-      overlay.append(wrap);
-      overlay.append(nav);
-      overlay.append(close);
-      $('body').append(overlay);
-
-      if ($this.options.clickOverlayToClose) {
-        overlay.on('click', (e) => {
-          var $target = $(e.target);
-
-          if (
-            $target.hasClass('meta-lightbox-zoom-wrapper') ||
-            $target.hasClass('meta-lightbox-content') ||
-            $target.hasClass('meta-lightbox-wrap') ||
-            $target.hasClass('meta-lightbox-image') ||
-            $target.hasClass('meta-lightbox-overlay')
-          ) {
-            $this.destructLightbox();
-          }
-        });
-      }
-
-      close.on('click', (e) => {
-        e.preventDefault();
-        $this.destructLightbox();
-      });
-
-      return overlay;
-    },
-
-    destructLightbox: function() {
-      var $this = this,
-        $overlay = $('.meta-lightbox-overlay'),
-        isMSIE = /*@cc_on!@*/ 0;
-      this.options.beforeHideLightbox.call(this);
+      const $overlay = ui.$overlay;
 
       var title = $('.meta-lightbox-ajax').data('curr-title'),
         link = $('.meta-lightbox-ajax').data('curr-link');
@@ -606,15 +527,11 @@
 
       $overlay.removeClass('meta-lightbox-open');
       $('.meta-lightbox-nav').hide();
-      $('body').removeClass(
-        `meta-lightbox-body-effect-${$this.options.effect}`,
-      );
-      $('.meta-lightbox-content .meta-lightbox-zoom-wrapper').trigger(
-        'zoom.destroy',
-      );
+      $Body.removeClass('meta-lightbox-body-effect-fade');
+      $('.meta-lightbox-content .meta-lightbox-zoom-wrapper').trigger('zoom.destroy');
 
       // For IE
-      if (isMSIE) {
+      if (ui.isMSIE) {
         $overlay.find('iframe').attr('src', ' ');
         $overlay.find('iframe').remove();
       }
@@ -626,29 +543,17 @@
       // Empty content (for videos)
       $('.meta-lightbox-content').empty();
 
-      $('body').removeClass('meta-lightbox-body-effect-fade');
+      $Body.removeClass('meta-lightbox-body-effect-fade');
+    }
+  }
 
-      this.options.afterHideLightbox.call(this);
-    },
+  $(W).on(`${Events.AJAX} ${Events.LOADED}`, () => {
+    MetaLightboxUI.init();
+  });
 
-    isHidpi: function() {
-      var mediaQuery =
-        '(-webkit-min-device-pixel-ratio: 1.5),\
-          (min--moz-device-pixel-ratio: 1.5),\
-          (-o-min-device-pixel-ratio: 3/2),\
-          (min-resolution: 1.5dppx)';
-      if (window.devicePixelRatio > 1) return true;
-      return window.matchMedia && window.matchMedia(mediaQuery).matches;
-    },
-  };
+  W.MetaLightboxUI = MetaLightboxUI;
 
-  $.fn[pluginName] = function(options) {
-    return this.each(function() {
-      if (!$.data(this, pluginName)) {
-        $.data(this, pluginName, new MetaLightbox(this, options));
-      }
-    });
-  };
+  return MetaLightboxUI;
+})($);
 
-  $(document).metaLightbox();
-})(jQuery, this, document);
+export default MetaLightboxUI;
