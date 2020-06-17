@@ -31,10 +31,10 @@ const MetaLightboxUI = (($) => {
 
       $(`.js${NAME},[data-toggle="lightbox"],[data-lightbox-gallery]`).on('click', (e) => {
         e.preventDefault();
-          e.stopPropagation();
-          const $link = $(e.currentTarget);
+        e.stopPropagation();
+        const $link = $(e.currentTarget);
 
-          ui.show($link);
+        ui.show($link);
       });
     }
 
@@ -113,7 +113,7 @@ const MetaLightboxUI = (($) => {
         class: 'meta-lightbox-wrap',
       });
       const content = $('<div>', {
-          class: 'meta-lightbox-content',
+        class: 'meta-lightbox-content',
       });
       const nav = $(
         '<a href="#" class="meta-lightbox-nav meta-lightbox-prev"><i class="fas fa fa-chevron-left"></i> <span class="sr-only">Previous</span></a><a href="#" class="meta-lightbox-nav meta-lightbox-next"><i class="fa fas fa-chevron-right"></i> <span class="sr-only">Next</span></a>',
@@ -166,7 +166,7 @@ const MetaLightboxUI = (($) => {
       const href = $link.attr('href').length ? $link.attr('href') : $link.data('href');
       if (!href.length) {
         console.log($link);
-        console.error(NAME + ': href(attr/data) is missing');
+        console.error(`${NAME  }: href(attr/data) is missing`);
       }
 
       const $pageSpinner = $('#PageLoading');
@@ -227,25 +227,25 @@ const MetaLightboxUI = (($) => {
       }
       // Video (Youtube/Vimeo)
       else if (href.match(/(youtube|youtube-nocookie|youtu|vimeo)\.(com|be)\/(watch\?v=([\w-]+)|([\w-]+))/)) {
-        let video = href.match(/(youtube|youtube-nocookie|youtu|vimeo)\.(com|be)\/(watch\?v=([\w-]+)|([\w-]+))/);
+        const video = href.match(/(youtube|youtube-nocookie|youtu|vimeo)\.(com|be)\/(watch\?v=([\w-]+)|([\w-]+))/);
         let classTerm = 'meta-lightbox-video';
         let src;
 
         if (video[1] == 'youtube') {
           src = `https://www.youtube.com/embed/${video[4]}`;
-          classTerm = classTerm + ' meta-lightbox-youtube';
+          classTerm = `${classTerm  } meta-lightbox-youtube`;
         }
         if (video[1] == 'youtu') {
           src = `https://www.youtube.com/embed/${video[3]}`;
-          classTerm = classTerm + ' meta-lightbox-youtube';
+          classTerm = `${classTerm  } meta-lightbox-youtube`;
         }
         if (video[1] == 'youtube-nocookie') {
           src = `https://www.youtube-nocookie.com/embed/${video[4]}`;
-          classTerm = classTerm+' meta-lightbox-youtube';
+          classTerm = `${classTerm} meta-lightbox-youtube`;
         }
         if (video[1] == 'vimeo') {
           src = `https://player.vimeo.com/video/${video[3]}`;
-          classTerm = classTerm + ' meta-lightbox-vimeo';
+          classTerm = `${classTerm  } meta-lightbox-vimeo`;
         }
 
         if (src) {
