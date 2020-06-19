@@ -7,7 +7,7 @@
 // optional:
 //=require ../../bower_components/jquery-zoom/jquery.zoom.js
 
-"use strict";
+'use strict';
 
 import $ from 'jquery';
 
@@ -26,22 +26,28 @@ const MetaLightboxUI = (($) => {
 
       const ui = this;
       ui.isMSIE = /*@cc_on!@*/ 0;
-      ui.isHidpi = ui.isHidpi();
+      try {
+        ui.isHidpi = ui.is_hdpi();
+      } catch (e) {
+        console.log(ui);
+      }
 
+      $(`.js${NAME},[data-toggle="lightbox"],[data-lightbox-gallery]`).on(
+        'click',
+        (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          const $link = $(e.currentTarget);
 
-      $(`.js${NAME},[data-toggle="lightbox"],[data-lightbox-gallery]`).on('click', (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        const $link = $(e.currentTarget);
-
-        ui.show($link);
-      });
+          ui.show($link);
+        },
+      );
     }
 
-    static isHidpi() {
+    static is_hdpi() {
       console.log(`${NAME}: isHidpi`);
       const mediaQuery =
-        '(-webkit-min-device-pixel-ratio: 1.5),\
+				'(-webkit-min-device-pixel-ratio: 1.5),\
           (min--moz-device-pixel-ratio: 1.5),\
           (-o-min-device-pixel-ratio: 3/2),\
           (min-resolution: 1.5dppx)';
@@ -66,7 +72,11 @@ const MetaLightboxUI = (($) => {
 
       // Nav
       if ($link.data('lightbox-gallery')) {
-        const $galleryItems = $(`[data-lightbox-gallery="${$link.data('lightbox-gallery')}"]`);
+        const $galleryItems = $(
+          `[data-lightbox-gallery="${$link.data(
+            'lightbox-gallery',
+          )}"]`,
+        );
 
         if ($galleryItems.length === 1) {
           $('.meta-lightbox-nav').hide();
@@ -81,7 +91,8 @@ const MetaLightboxUI = (($) => {
             e.preventDefault();
             const index = $galleryItems.index(currentLink);
             let $currentLink = $galleryItems.eq(index - 1);
-            if (!$currentLink.length) $currentLink = $galleryItems.last();
+            if (!$currentLink.length)
+              $currentLink = $galleryItems.last();
             $this.process($content, $currentLink);
           });
 
@@ -92,7 +103,8 @@ const MetaLightboxUI = (($) => {
             e.preventDefault();
             const index = $galleryItems.index(currentLink);
             $currentLink = $galleryItems.eq(index + 1);
-            if (!$currentLink.length) $currentLink = $galleryItems.first();
+            if (!$currentLink.length)
+              $currentLink = $galleryItems.first();
             $this.process($content, $currentLink);
           });
       }
@@ -107,7 +119,8 @@ const MetaLightboxUI = (($) => {
       const ui = this;
 
       const overlay = $('<div>', {
-        class: 'meta-lightbox-overlay meta-lightbox-theme-default meta-lightbox-effect-fade',
+        class:
+					'meta-lightbox-overlay meta-lightbox-theme-default meta-lightbox-effect-fade',
       });
       const wrap = $('<div>', {
         class: 'meta-lightbox-wrap',
@@ -163,14 +176,18 @@ const MetaLightboxUI = (($) => {
       console.log(`${NAME}: process`);
       const ui = this;
 
-      const href = $link.attr('href').length ? $link.attr('href') : $link.data('href');
+      const href = $link.attr('href').length
+        ? $link.attr('href')
+        : $link.data('href');
       if (!href.length) {
         console.log($link);
-        console.error(`${NAME  }: href(attr/data) is missing`);
+        console.error(`${NAME}: href(attr/data) is missing`);
       }
 
       const $pageSpinner = $('#PageLoading');
-      const loadingContent = $pageSpinner.length ? $pageSpinner.html() : '';
+      const loadingContent = $pageSpinner.length
+        ? $pageSpinner.html()
+        : '';
       ui.$content.html(loadingContent).addClass('meta-lightbox-loading');
 
       // Image
@@ -181,7 +198,9 @@ const MetaLightboxUI = (($) => {
 
         img.on('load', () => {
           const wrap = $('<div class="meta-lightbox-image"></div>'),
-            imgwrapper = $('<span class="meta-lightbox-zoom-wrapper"></span>');
+            imgwrapper = $(
+              '<span class="meta-lightbox-zoom-wrapper"></span>',
+            );
 
           imgwrapper.append(img);
           wrap.append(imgwrapper);
@@ -217,7 +236,9 @@ const MetaLightboxUI = (($) => {
         });
 
         // Set the title
-        const title = $link.data('title') ? $link.data('title') :  $link.attr('title');
+        const title = $link.data('title')
+          ? $link.data('title')
+          : $link.attr('title');
         ui.setTitle(title);
 
         // google analytics
@@ -226,18 +247,24 @@ const MetaLightboxUI = (($) => {
         }
       }
       // Video (Youtube/Vimeo)
-      else if (href.match(/(youtube|youtube-nocookie|youtu|vimeo)\.(com|be)\/(watch\?v=([\w-]+)|([\w-]+))/)) {
-        const video = href.match(/(youtube|youtube-nocookie|youtu|vimeo)\.(com|be)\/(watch\?v=([\w-]+)|([\w-]+))/);
+      else if (
+        href.match(
+          /(youtube|youtube-nocookie|youtu|vimeo)\.(com|be)\/(watch\?v=([\w-]+)|([\w-]+))/,
+        )
+      ) {
+        const video = href.match(
+          /(youtube|youtube-nocookie|youtu|vimeo)\.(com|be)\/(watch\?v=([\w-]+)|([\w-]+))/,
+        );
         let classTerm = 'meta-lightbox-video';
         let src;
 
         if (video[1] == 'youtube') {
           src = `https://www.youtube.com/embed/${video[4]}`;
-          classTerm = `${classTerm  } meta-lightbox-youtube`;
+          classTerm = `${classTerm} meta-lightbox-youtube`;
         }
         if (video[1] == 'youtu') {
           src = `https://www.youtube.com/embed/${video[3]}`;
-          classTerm = `${classTerm  } meta-lightbox-youtube`;
+          classTerm = `${classTerm} meta-lightbox-youtube`;
         }
         if (video[1] == 'youtube-nocookie') {
           src = `https://www.youtube-nocookie.com/embed/${video[4]}`;
@@ -245,7 +272,7 @@ const MetaLightboxUI = (($) => {
         }
         if (video[1] == 'vimeo') {
           src = `https://player.vimeo.com/video/${video[3]}`;
-          classTerm = `${classTerm  } meta-lightbox-vimeo`;
+          classTerm = `${classTerm} meta-lightbox-vimeo`;
         }
 
         if (src) {
@@ -258,7 +285,9 @@ const MetaLightboxUI = (($) => {
             scrolling: 'auto',
           });
 
-          $Body.append('<div id="IFramePreload" class="hidden d-none iframe-preload" style="display:none"></div>');
+          $Body.append(
+            '<div id="IFramePreload" class="hidden d-none iframe-preload" style="display:none"></div>',
+          );
           const $preload = $('#IFramePreload');
           $preload.html($iframe);
 
@@ -273,7 +302,9 @@ const MetaLightboxUI = (($) => {
         }
 
         // Set the title
-        const title = $link.data('title') ? $link.data('title') : $link.attr('title');
+        const title = $link.data('title')
+          ? $link.data('title')
+          : $link.attr('title');
         ui.setTitle(title);
 
         // google analytics
@@ -352,7 +383,13 @@ const MetaLightboxUI = (($) => {
 
             // google analytics
             if (typeof ga === 'function') {
-              ga('send', 'event', 'error', 'AJAX ERROR', jqXHR.statusText);
+              ga(
+                'send',
+                'event',
+                'error',
+                'AJAX ERROR',
+                jqXHR.statusText,
+              );
             }
           },
           success: function (data, status, jqXHR) {
@@ -362,11 +399,18 @@ const MetaLightboxUI = (($) => {
                 // Replace regions
                 if (
                   typeof dataJson['regions'] === 'object' &&
-                  typeof dataJson['regions']['LayoutAjax'] !== 'undefinded'
+									typeof dataJson['regions']['LayoutAjax'] !==
+										'undefinded'
                 ) {
-                  var wrap = $('<div class="meta-lightbox-ajax" />');
-                  wrap.html(dataJson['regions']['LayoutAjax']);
-                  content.html(wrap).removeClass('meta-lightbox-loading');
+                  var wrap = $(
+                    '<div class="meta-lightbox-ajax" />',
+                  );
+                  wrap.html(
+                    dataJson['regions']['LayoutAjax'],
+                  );
+                  content
+                    .html(wrap)
+                    .removeClass('meta-lightbox-loading');
                 }
 
                 // trigger events
@@ -381,30 +425,42 @@ const MetaLightboxUI = (($) => {
 
                 if (
                   title &&
-                  title.length &&
-                  link &&
-                  link.length &&
-                  link !== window.location.href &&
-                  link.substring(0, link.indexOf('#')) !==
-                    window.location.href.replace($('base').attr('href'), '/')
+									title.length &&
+									link &&
+									link.length &&
+									link !== window.location.href &&
+									link.substring(0, link.indexOf('#')) !==
+										window.location.href.replace(
+										  $('base').attr('href'),
+										  '/',
+										)
                 ) {
-                  $('.meta-lightbox-ajax').data('curr-title', document.title);
+                  $('.meta-lightbox-ajax').data(
+                    'curr-title',
+                    document.title,
+                  );
                   $('.meta-lightbox-ajax').data(
                     'curr-link',
                     window.location.href,
                   );
 
                   if (
-                    typeof window.localStorage !== 'undefined' &&
-                    link !== '/'
+                    typeof window.localStorage !==
+											'undefined' &&
+										link !== '/'
                   ) {
-                    window.localStorage.setItem('current-page', link);
+                    window.localStorage.setItem(
+                      'current-page',
+                      link,
+                    );
                   }
 
                   if (
                     document.URL !== link &&
-                    document.URL !== $('base').attr('href') + link &&
-                    document.URL !== `${$('base').attr('href')}/${link}`
+										document.URL !==
+											$('base').attr('href') + link &&
+										document.URL !==
+											`${$('base').attr('href')}/${link}`
                   ) {
                     window.history.pushState(
                       {
@@ -429,7 +485,10 @@ const MetaLightboxUI = (($) => {
                   // google analytics
                   if (typeof ga === 'function') {
                     ga('set', {
-                      page: link.replace($('base').attr('href'), ''),
+                      page: link.replace(
+                        $('base').attr('href'),
+                        '',
+                      ),
                       title,
                     });
                     ga('send', 'pageview');
@@ -439,7 +498,9 @@ const MetaLightboxUI = (($) => {
             } catch (e) {
               var wrap = $('<div class="meta-lightbox-ajax" />');
               wrap.append(data);
-              content.html(wrap).removeClass('meta-lightbox-loading');
+              content
+                .html(wrap)
+                .removeClass('meta-lightbox-loading');
             }
 
             // Vertically center html
@@ -455,7 +516,9 @@ const MetaLightboxUI = (($) => {
                 wrap.css({
                   position: 'relative',
                   top: '50%',
-                  'margin-top': `${-(wrap.outerHeight() / 2)}px`,
+                  'margin-top': `${-(
+                    wrap.outerHeight() / 2
+                  )}px`,
                 });
               }
             });
@@ -474,7 +537,7 @@ const MetaLightboxUI = (($) => {
           },
         });
       }
-    };
+    }
 
     static contentLoaded() {
       const ui = this;
@@ -487,7 +550,7 @@ const MetaLightboxUI = (($) => {
       setTimeout(() => {
         $Body.addClass('meta-lightbox-body-effect-fade');
       }, 600);
-    };
+    }
 
     static hide(callback) {
       const ui = this;
@@ -497,14 +560,17 @@ const MetaLightboxUI = (($) => {
       var title = $('.meta-lightbox-ajax').data('curr-title'),
         link = $('.meta-lightbox-ajax').data('curr-link');
       if (title && link) {
-        if (typeof window.localStorage !== 'undefined' && link !== '/') {
+        if (
+          typeof window.localStorage !== 'undefined' &&
+					link !== '/'
+        ) {
           window.localStorage.setItem('current-page', link);
         }
 
         if (
           document.URL !== link &&
-          document.URL !== $('base').attr('href') + link &&
-          document.URL !== `${$('base').attr('href')}/${link}`
+					document.URL !== $('base').attr('href') + link &&
+					document.URL !== `${$('base').attr('href')}/${link}`
         ) {
           window.history.replaceState(
             {
@@ -528,7 +594,9 @@ const MetaLightboxUI = (($) => {
       $overlay.removeClass('meta-lightbox-open');
       $('.meta-lightbox-nav').hide();
       $Body.removeClass('meta-lightbox-body-effect-fade');
-      $('.meta-lightbox-content .meta-lightbox-zoom-wrapper').trigger('zoom.destroy');
+      $('.meta-lightbox-content .meta-lightbox-zoom-wrapper').trigger(
+        'zoom.destroy',
+      );
 
       // For IE
       if (ui.isMSIE) {
