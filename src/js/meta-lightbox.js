@@ -19,6 +19,8 @@ const MetaLightboxUI = (($) => {
   const $Body = $('body');
 
   const NAME = 'MetaLightboxUI';
+  const NETWORK_ERROR =
+    '<div class="meta-lightbox-error"><div class="alert alert-error alert-danger">Connection failure.</div></div>';
 
   class MetaLightboxUI {
     static init() {
@@ -59,7 +61,7 @@ const MetaLightboxUI = (($) => {
       console.log(`${NAME}: show`);
       const ui = this;
 
-      const $lightbox = this.constructLightbox();
+      const $lightbox = ui.constructLightbox();
       if (!$lightbox) return;
 
       const $content = ui.$content;
@@ -193,53 +195,52 @@ const MetaLightboxUI = (($) => {
         console.error(`${NAME}: href(attr/data) is missing`);
       }
 
-      const $pageSpinner = $('#PageLoading');
-      const loadingContent = $pageSpinner.length ? $pageSpinner.html() : '';
-      ui.$content.html(loadingContent).addClass('meta-lightbox-loading');
+      const $pageSpinner = $('#PageLoading .loading-spinner');
+      const loadingContent = $pageSpinner.length ? $pageSpinner.clone() : '';
+      ui.$content.append(loadingContent).addClass('meta-lightbox-loading');
 
       // Image
       if (href.match(/\.(jpeg|jpg|gif|png|svg)$/i)) {
-        const img = $('<img>', {
-          src: href,
-        });
+        $.ajax({
+          url: href,
+          success: () => {
+            const img = $('<img>', { src: href });
+            const wrap = $('<div class="meta-lightbox-image"></div>');
+            const imgwrapper = $(
+              '<span class="meta-lightbox-zoom-wrapper"></span>',
+            );
 
-        img.on('load', () => {
-          const wrap = $('<div class="meta-lightbox-image"></div>'),
-            imgwrapper = $('<span class="meta-lightbox-zoom-wrapper"></span>');
+            imgwrapper.append(img);
+            wrap.append(imgwrapper);
 
-          imgwrapper.append(img);
-          wrap.append(imgwrapper);
-
-          // Vertically center images
-          wrap.css({
-            'line-height': `${$content.height()}px`,
-            height: `${$content.height()}px`, // For Firefox
-          });
-
-          $(window).resize(() => {
+            // Vertically center images
             wrap.css({
               'line-height': `${$content.height()}px`,
               height: `${$content.height()}px`, // For Firefox
             });
-          });
 
-          if (typeof imgwrapper['zoom'] !== 'undefined') {
-            imgwrapper.zoom();
-          } else {
-            imgwrapper.addClass('no-zoom');
-          }
+            $(window).resize(() => {
+              wrap.css({
+                'line-height': `${$content.height()}px`,
+                height: `${$content.height()}px`, // For Firefox
+              });
+            });
 
-          ui.$content.html(wrap);
-          ui.contentLoaded();
-        });
+            if (typeof imgwrapper['zoom'] !== 'undefined') {
+              imgwrapper.zoom();
+            } else {
+              imgwrapper.addClass('no-zoom');
+            }
 
-        img.on('error', () => {
-          const wrap = $(
-            `<div class="meta-lightbox-error"><p class="alert alert-error alert-danger">${$this.options.errorMessage}</p></div>`,
-          );
+            ui.$content.html(wrap);
+            ui.contentLoaded();
+          },
+          error: (jqXHR, status) => {
+            const wrap = $(NETWORK_ERROR);
 
-          ui.$content.html(wrap);
-          ui.contentLoaded();
+            ui.$content.html(wrap);
+            ui.contentLoaded();
+          },
         });
 
         // Set the title
@@ -346,9 +347,7 @@ const MetaLightboxUI = (($) => {
           ui.$content.html(wrap);
           ui.contentLoaded();
         } else {
-          wrap = $(
-            `<div class="meta-lightbox-error"><p>${$this.options.errorMessage}</p></div>`,
-          );
+          wrap = $(NETWORK_ERROR);
           ui.$content.html(wrap);
           ui.contentLoaded();
         }
@@ -379,12 +378,10 @@ const MetaLightboxUI = (($) => {
               window.location.href = url;
             },
           },
-          error: function (jqXHR) {
+          error: function (jqXHR, status) {
             console.log(`AJAX request failure.${jqXHR.statusText}`);
 
-            var wrap = $(
-              `<div class="meta-lightbox-error"><p>${$this.options.errorMessage}</p></div>`,
-            );
+            var wrap = $(NETWORK_ERROR);
             ui.$content.html(wrap);
             ui.contentLoaded();
 
@@ -454,13 +451,6 @@ const MetaLightboxUI = (($) => {
                       link,
                     );
                   }
-
-                  // update redirect urls
-                  /*var pattern = new RegExp('\\b(redirect_uri=).*?(&|$)');
-                  $('a').each(function () {
-                      var $this = $(this);
-                      $this.attr('href', $this.attr('href').replace(pattern, 'redirect_uri=' + encodeURI($('base').attr('href') + link)));
-                  });*/
 
                   $('.meta-lightbox-title-wrap').html('');
 
@@ -554,13 +544,6 @@ const MetaLightboxUI = (($) => {
             link,
           );
         }
-
-        // update redirect urls
-        /*var pattern = new RegExp('\\b(redirect_uri=).*?(&|$)');
-        $('a').each(function () {
-            var $this = $(this);
-            $this.attr('href', $this.attr('href').replace(pattern, 'redirect_uri=' + encodeURI($('base').attr('href') + link)));
-        });*/
       }
 
       $overlay.removeClass('meta-lightbox-open');
