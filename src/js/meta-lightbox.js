@@ -474,7 +474,7 @@ const MetaLightboxUI = (($) => {
             }
 
             // Vertically center html
-            if (wrap.outerHeight() < ui.$content.height()) {
+            /*if (wrap.outerHeight() < ui.$content.height()) {
               wrap.css({
                 position: 'relative',
                 top: '50%',
@@ -489,9 +489,9 @@ const MetaLightboxUI = (($) => {
                   'margin-top': `${-(wrap.outerHeight() / 2)}px`,
                 });
               }
-            });
+            });*/
 
-            setTimeout(() => {
+            /*setTimeout(() => {
               $(window).resize();
 
               if (typeof window.imagesLoaded === 'function') {
@@ -499,7 +499,7 @@ const MetaLightboxUI = (($) => {
                   $(window).resize();
                 });
               }
-            }, 500);
+            }, 500);*/
 
             ui.contentLoaded();
           },
