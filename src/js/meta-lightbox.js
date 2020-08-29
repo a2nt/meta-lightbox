@@ -327,7 +327,7 @@ const MetaLightboxUI = (($) => {
           wrap.append($(href).clone().show());
 
           // Vertically center html
-          if (wrap.outerHeight() < content.height()) {
+          if (wrap.outerHeight() < ui.$content.height()) {
             wrap.css({
               position: 'relative',
               top: '50%',
@@ -335,7 +335,7 @@ const MetaLightboxUI = (($) => {
             });
           }
           $(window).resize(() => {
-            if (wrap.outerHeight() < content.height()) {
+            if (wrap.outerHeight() < ui.$content.height()) {
               wrap.css({
                 position: 'relative',
                 top: '50%',
@@ -361,6 +361,7 @@ const MetaLightboxUI = (($) => {
       }
       // AJAX/iFrame (default)
       else {
+        console.log(ui);
         $.ajax({
           sync: false,
           async: true,
@@ -401,7 +402,8 @@ const MetaLightboxUI = (($) => {
                 ) {
                   var wrap = $('<div class="meta-lightbox-ajax" />');
                   wrap.html(dataJson['regions']['LayoutAjax']);
-                  content.html(wrap).removeClass('meta-lightbox-loading');
+                  ui.$content.html(wrap);
+                  ui.contentLoaded();
                 }
 
                 // trigger events
@@ -467,11 +469,12 @@ const MetaLightboxUI = (($) => {
             } catch (e) {
               var wrap = $('<div class="meta-lightbox-ajax" />');
               wrap.append(data);
-              content.html(wrap).removeClass('meta-lightbox-loading');
+              ui.$content.html(wrap);
+              ui.contentLoaded();
             }
 
             // Vertically center html
-            if (wrap.outerHeight() < content.height()) {
+            if (wrap.outerHeight() < ui.$content.height()) {
               wrap.css({
                 position: 'relative',
                 top: '50%',
@@ -479,7 +482,7 @@ const MetaLightboxUI = (($) => {
               });
             }
             $(window).resize(() => {
-              if (wrap.outerHeight() < content.height()) {
+              if (wrap.outerHeight() < ui.$content.height()) {
                 wrap.css({
                   position: 'relative',
                   top: '50%',
