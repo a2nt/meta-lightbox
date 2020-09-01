@@ -19,6 +19,8 @@ const MetaLightboxUI = (($) => {
   const $Body = $('body');
 
   const NAME = 'MetaLightboxUI';
+  const NETWORK_ERROR =
+    '<div class="meta-lightbox-error"><div class="alert alert-error alert-danger">Connection failure.</div></div>';
 
   class MetaLightboxUI {
     static init() {
@@ -47,7 +49,7 @@ const MetaLightboxUI = (($) => {
     static is_hdpi() {
       console.log(`${NAME}: isHidpi`);
       const mediaQuery =
-				'(-webkit-min-device-pixel-ratio: 1.5),\
+        '(-webkit-min-device-pixel-ratio: 1.5),\
           (min--moz-device-pixel-ratio: 1.5),\
           (-o-min-device-pixel-ratio: 3/2),\
           (min-resolution: 1.5dppx)';
@@ -59,7 +61,7 @@ const MetaLightboxUI = (($) => {
       console.log(`${NAME}: show`);
       const ui = this;
 
-      const $lightbox = this.constructLightbox();
+      const $lightbox = ui.constructLightbox();
       if (!$lightbox) return;
 
       const $content = ui.$content;
@@ -73,10 +75,13 @@ const MetaLightboxUI = (($) => {
       // Nav
       if ($link.data('lightbox-gallery')) {
         const $galleryItems = $(
-          `[data-lightbox-gallery="${$link.data(
-            'lightbox-gallery',
-          )}"]`,
+          `[data-lightbox-gallery="${$link.data('lightbox-gallery')}"]`,
         );
+
+        console.log(
+          `[data-lightbox-gallery="${$link.data('lightbox-gallery')}"]`,
+        );
+        console.log($galleryItems);
 
         if ($galleryItems.length === 1) {
           $('.meta-lightbox-nav').hide();
@@ -91,9 +96,12 @@ const MetaLightboxUI = (($) => {
             e.preventDefault();
             const index = $galleryItems.index($link);
             let $currentLink = $galleryItems.eq(index - 1);
-            if (!$currentLink.length)
-              $currentLink = $galleryItems.last();
-            $this.process($content, $currentLink);
+            if (!$currentLink.length) $currentLink = $galleryItems.last();
+
+            //ui.hide();
+            setTimeout(() => {
+              ui.show($currentLink);
+            }, 10);
           });
 
         // Next
@@ -102,10 +110,13 @@ const MetaLightboxUI = (($) => {
           .on('click', (e) => {
             e.preventDefault();
             const index = $galleryItems.index($link);
-            $currentLink = $galleryItems.eq(index + 1);
-            if (!$currentLink.length)
-              $currentLink = $galleryItems.first();
-            $this.process($content, $currentLink);
+            let $currentLink = $galleryItems.eq(index + 1);
+            if (!$currentLink.length) $currentLink = $galleryItems.first();
+
+            //ui.hide();
+            setTimeout(() => {
+              ui.show($currentLink);
+            }, 10);
           });
       }
 
@@ -120,7 +131,7 @@ const MetaLightboxUI = (($) => {
 
       const overlay = $('<div>', {
         class:
-					'meta-lightbox-overlay meta-lightbox-theme-default meta-lightbox-effect-fade',
+          'meta-lightbox-overlay meta-lightbox-theme-default meta-lightbox-effect-fade',
       });
       const wrap = $('<div>', {
         class: 'meta-lightbox-wrap',
@@ -184,55 +195,52 @@ const MetaLightboxUI = (($) => {
         console.error(`${NAME}: href(attr/data) is missing`);
       }
 
-      const $pageSpinner = $('#PageLoading');
-      const loadingContent = $pageSpinner.length
-        ? $pageSpinner.html()
-        : '';
-      ui.$content.html(loadingContent).addClass('meta-lightbox-loading');
+      const $pageSpinner = $('#PageLoading .loading-spinner');
+      const loadingContent = $pageSpinner.length ? $pageSpinner.clone() : '';
+      ui.$content.append(loadingContent).addClass('meta-lightbox-loading');
 
       // Image
       if (href.match(/\.(jpeg|jpg|gif|png|svg)$/i)) {
-        const img = $('<img>', {
-          src: href,
-        });
-
-        img.on('load', () => {
-          const wrap = $('<div class="meta-lightbox-image"></div>'),
-            imgwrapper = $(
+        $.ajax({
+          url: href,
+          success: () => {
+            const img = $('<img>', { src: href });
+            const wrap = $('<div class="meta-lightbox-image"></div>');
+            const imgwrapper = $(
               '<span class="meta-lightbox-zoom-wrapper"></span>',
             );
 
-          imgwrapper.append(img);
-          wrap.append(imgwrapper);
+            imgwrapper.append(img);
+            wrap.append(imgwrapper);
 
-          // Vertically center images
-          wrap.css({
-            'line-height': `${$content.height()}px`,
-            height: `${$content.height()}px`, // For Firefox
-          });
-
-          $(window).resize(() => {
+            // Vertically center images
             wrap.css({
               'line-height': `${$content.height()}px`,
               height: `${$content.height()}px`, // For Firefox
             });
-          });
 
-          if (typeof imgwrapper['zoom'] !== 'undefined') {
-            imgwrapper.zoom();
-          }
+            $(window).resize(() => {
+              wrap.css({
+                'line-height': `${$content.height()}px`,
+                height: `${$content.height()}px`, // For Firefox
+              });
+            });
 
-          ui.$content.html(wrap);
-          ui.contentLoaded();
-        });
+            if (typeof imgwrapper['zoom'] !== 'undefined') {
+              imgwrapper.zoom();
+            } else {
+              imgwrapper.addClass('no-zoom');
+            }
 
-        img.on('error', () => {
-          const wrap = $(
-            `<div class="meta-lightbox-error"><p class="alert alert-error alert-danger">${$this.options.errorMessage}</p></div>`,
-          );
+            ui.$content.html(wrap);
+            ui.contentLoaded();
+          },
+          error: (jqXHR, status) => {
+            const wrap = $(NETWORK_ERROR);
 
-          ui.$content.html(wrap);
-          ui.contentLoaded();
+            ui.$content.html(wrap);
+            ui.contentLoaded();
+          },
         });
 
         // Set the title
@@ -319,7 +327,7 @@ const MetaLightboxUI = (($) => {
           wrap.append($(href).clone().show());
 
           // Vertically center html
-          if (wrap.outerHeight() < content.height()) {
+          if (wrap.outerHeight() < ui.$content.height()) {
             wrap.css({
               position: 'relative',
               top: '50%',
@@ -327,7 +335,7 @@ const MetaLightboxUI = (($) => {
             });
           }
           $(window).resize(() => {
-            if (wrap.outerHeight() < content.height()) {
+            if (wrap.outerHeight() < ui.$content.height()) {
               wrap.css({
                 position: 'relative',
                 top: '50%',
@@ -339,9 +347,7 @@ const MetaLightboxUI = (($) => {
           ui.$content.html(wrap);
           ui.contentLoaded();
         } else {
-          wrap = $(
-            `<div class="meta-lightbox-error"><p>${$this.options.errorMessage}</p></div>`,
-          );
+          wrap = $(NETWORK_ERROR);
           ui.$content.html(wrap);
           ui.contentLoaded();
         }
@@ -355,6 +361,7 @@ const MetaLightboxUI = (($) => {
       }
       // AJAX/iFrame (default)
       else {
+        console.log(ui);
         $.ajax({
           sync: false,
           async: true,
@@ -372,24 +379,16 @@ const MetaLightboxUI = (($) => {
               window.location.href = url;
             },
           },
-          error: function (jqXHR) {
+          error: function (jqXHR, status) {
             console.log(`AJAX request failure.${jqXHR.statusText}`);
 
-            var wrap = $(
-              `<div class="meta-lightbox-error"><p>${$this.options.errorMessage}</p></div>`,
-            );
+            var wrap = $(NETWORK_ERROR);
             ui.$content.html(wrap);
             ui.contentLoaded();
 
             // google analytics
             if (typeof ga === 'function') {
-              ga(
-                'send',
-                'event',
-                'error',
-                'AJAX ERROR',
-                jqXHR.statusText,
-              );
+              ga('send', 'event', 'error', 'AJAX ERROR', jqXHR.statusText);
             }
           },
           success: function (data, status, jqXHR) {
@@ -399,18 +398,12 @@ const MetaLightboxUI = (($) => {
                 // Replace regions
                 if (
                   typeof dataJson['regions'] === 'object' &&
-									typeof dataJson['regions']['LayoutAjax'] !==
-										'undefinded'
+                  typeof dataJson['regions']['LayoutAjax'] !== 'undefinded'
                 ) {
-                  var wrap = $(
-                    '<div class="meta-lightbox-ajax" />',
-                  );
-                  wrap.html(
-                    dataJson['regions']['LayoutAjax'],
-                  );
-                  content
-                    .html(wrap)
-                    .removeClass('meta-lightbox-loading');
+                  var wrap = $('<div class="meta-lightbox-ajax" />');
+                  wrap.html(dataJson['regions']['LayoutAjax']);
+                  ui.$content.html(wrap);
+                  ui.contentLoaded();
                 }
 
                 // trigger events
@@ -425,42 +418,30 @@ const MetaLightboxUI = (($) => {
 
                 if (
                   title &&
-									title.length &&
-									link &&
-									link.length &&
-									link !== window.location.href &&
-									link.substring(0, link.indexOf('#')) !==
-										window.location.href.replace(
-										  $('base').attr('href'),
-										  '/',
-										)
+                  title.length &&
+                  link &&
+                  link.length &&
+                  link !== window.location.href &&
+                  link.substring(0, link.indexOf('#')) !==
+                    window.location.href.replace($('base').attr('href'), '/')
                 ) {
-                  $('.meta-lightbox-ajax').data(
-                    'curr-title',
-                    document.title,
-                  );
+                  $('.meta-lightbox-ajax').data('curr-title', document.title);
                   $('.meta-lightbox-ajax').data(
                     'curr-link',
                     window.location.href,
                   );
 
                   if (
-                    typeof window.localStorage !==
-											'undefined' &&
-										link !== '/'
+                    typeof window.localStorage !== 'undefined' &&
+                    link !== '/'
                   ) {
-                    window.localStorage.setItem(
-                      'current-page',
-                      link,
-                    );
+                    window.localStorage.setItem('current-page', link);
                   }
 
                   if (
                     document.URL !== link &&
-										document.URL !==
-											$('base').attr('href') + link &&
-										document.URL !==
-											`${$('base').attr('href')}/${link}`
+                    document.URL !== $('base').attr('href') + link &&
+                    document.URL !== `${$('base').attr('href')}/${link}`
                   ) {
                     window.history.pushState(
                       {
@@ -473,22 +454,12 @@ const MetaLightboxUI = (($) => {
                     );
                   }
 
-                  // update redirect urls
-                  /*var pattern = new RegExp('\\b(redirect_uri=).*?(&|$)');
-                  $('a').each(function () {
-                      var $this = $(this);
-                      $this.attr('href', $this.attr('href').replace(pattern, 'redirect_uri=' + encodeURI($('base').attr('href') + link)));
-                  });*/
-
                   $('.meta-lightbox-title-wrap').html('');
 
                   // google analytics
                   if (typeof ga === 'function') {
                     ga('set', {
-                      page: link.replace(
-                        $('base').attr('href'),
-                        '',
-                      ),
+                      page: link.replace($('base').attr('href'), ''),
                       title,
                     });
                     ga('send', 'pageview');
@@ -498,13 +469,12 @@ const MetaLightboxUI = (($) => {
             } catch (e) {
               var wrap = $('<div class="meta-lightbox-ajax" />');
               wrap.append(data);
-              content
-                .html(wrap)
-                .removeClass('meta-lightbox-loading');
+              ui.$content.html(wrap);
+              ui.contentLoaded();
             }
 
             // Vertically center html
-            if (wrap.outerHeight() < content.height()) {
+            /*if (wrap.outerHeight() < ui.$content.height()) {
               wrap.css({
                 position: 'relative',
                 top: '50%',
@@ -512,18 +482,16 @@ const MetaLightboxUI = (($) => {
               });
             }
             $(window).resize(() => {
-              if (wrap.outerHeight() < content.height()) {
+              if (wrap.outerHeight() < ui.$content.height()) {
                 wrap.css({
                   position: 'relative',
                   top: '50%',
-                  'margin-top': `${-(
-                    wrap.outerHeight() / 2
-                  )}px`,
+                  'margin-top': `${-(wrap.outerHeight() / 2)}px`,
                 });
               }
-            });
+            });*/
 
-            setTimeout(() => {
+            /*setTimeout(() => {
               $(window).resize();
 
               if (typeof window.imagesLoaded === 'function') {
@@ -531,7 +499,7 @@ const MetaLightboxUI = (($) => {
                   $(window).resize();
                 });
               }
-            }, 500);
+            }, 500);*/
 
             ui.contentLoaded();
           },
@@ -560,17 +528,14 @@ const MetaLightboxUI = (($) => {
       var title = $('.meta-lightbox-ajax').data('curr-title'),
         link = $('.meta-lightbox-ajax').data('curr-link');
       if (title && link) {
-        if (
-          typeof window.localStorage !== 'undefined' &&
-					link !== '/'
-        ) {
+        if (typeof window.localStorage !== 'undefined' && link !== '/') {
           window.localStorage.setItem('current-page', link);
         }
 
         if (
           document.URL !== link &&
-					document.URL !== $('base').attr('href') + link &&
-					document.URL !== `${$('base').attr('href')}/${link}`
+          document.URL !== $('base').attr('href') + link &&
+          document.URL !== `${$('base').attr('href')}/${link}`
         ) {
           window.history.replaceState(
             {
@@ -582,17 +547,9 @@ const MetaLightboxUI = (($) => {
             link,
           );
         }
-
-        // update redirect urls
-        /*var pattern = new RegExp('\\b(redirect_uri=).*?(&|$)');
-        $('a').each(function () {
-            var $this = $(this);
-            $this.attr('href', $this.attr('href').replace(pattern, 'redirect_uri=' + encodeURI($('base').attr('href') + link)));
-        });*/
       }
 
       $overlay.removeClass('meta-lightbox-open');
-      $('.meta-lightbox-nav').hide();
       $Body.removeClass('meta-lightbox-body-effect-fade');
       $('.meta-lightbox-content .meta-lightbox-zoom-wrapper').trigger(
         'zoom.destroy',
