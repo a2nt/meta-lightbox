@@ -24,14 +24,14 @@ const MetaLightboxUI = (($) => {
 
   class MetaLightboxUI {
     static init() {
-      console.log(`Initializing: ${NAME}`);
+      console.log(`${NAME}: init ...`);
 
       const ui = this;
       ui.isMSIE = /*@cc_on!@*/ 0;
       try {
         ui.isHidpi = ui.is_hdpi();
       } catch (e) {
-        console.log(ui);
+        console.log(`${NAME}: catch`);
       }
 
       $(`.js${NAME},[data-toggle="lightbox"],[data-lightbox-gallery]`).on(
@@ -77,11 +77,6 @@ const MetaLightboxUI = (($) => {
         const $galleryItems = $(
           `[data-lightbox-gallery="${$link.data('lightbox-gallery')}"]`,
         );
-
-        console.log(
-          `[data-lightbox-gallery="${$link.data('lightbox-gallery')}"]`,
-        );
-        console.log($galleryItems);
 
         if ($galleryItems.length === 1) {
           $('.meta-lightbox-nav').hide();
@@ -284,29 +279,7 @@ const MetaLightboxUI = (($) => {
         }
 
         if (src) {
-          const $iframe = $('<iframe>', {
-            src,
-            class: classTerm,
-            frameborder: 0,
-            vspace: 0,
-            hspace: 0,
-            scrolling: 'auto',
-          });
-
-          $Body.append(
-            '<div id="IFramePreload" class="hidden d-none iframe-preload" style="display:none"></div>',
-          );
-          const $preload = $('#IFramePreload');
-          $preload.html($iframe);
-
-          $iframe.on('load', () => {
-            console.log(`${NAME}: the iframe was loaded`);
-            $preload.html('');
-            $preload.remove();
-
-            ui.$content.html($iframe);
-            ui.contentLoaded();
-          });
+          ui.loadIframe(src, classTerm);
         }
 
         // Set the title
@@ -361,7 +334,13 @@ const MetaLightboxUI = (($) => {
       }
       // AJAX/iFrame (default)
       else {
-        console.log(ui);
+        if ($link.data('force-iframe')) {
+          console.log(`${NAME}: IFrame forced`);
+
+          return ui.loadIframe(href, 'meta-lightbox-iframe-content');
+        }
+
+        console.log(`${NAME}: loading AJAX`);
         $.ajax({
           sync: false,
           async: true,
@@ -371,16 +350,16 @@ const MetaLightboxUI = (($) => {
           cache: false,
           statusCode: {
             404: function () {
-              console.log('page not found');
+              console.log(`${NAME}: page not found`);
               window.location.href = url;
             },
             302: function () {
-              console.log('redirect 302');
+              console.log(`${NAME}: redirect 302`);
               window.location.href = url;
             },
           },
           error: function (jqXHR, status) {
-            console.log(`AJAX request failure.${jqXHR.statusText}`);
+            console.log(`${NAME}: AJAX request failure.${jqXHR.statusText}`);
 
             var wrap = $(NETWORK_ERROR);
             ui.$content.html(wrap);
@@ -467,9 +446,9 @@ const MetaLightboxUI = (($) => {
                 }
               }
             } catch (e) {
-              var wrap = $('<div class="meta-lightbox-ajax" />');
-              wrap.append(data);
-              ui.$content.html(wrap);
+              const $wrap = $('<div class="meta-lightbox-ajax" />');
+              $wrap.append(data);
+              ui.$content.html($wrap);
               ui.contentLoaded();
             }
 
@@ -505,6 +484,45 @@ const MetaLightboxUI = (($) => {
           },
         });
       }
+    }
+
+    static loadIframe(href, classTerm) {
+      const ui = this;
+
+      const $iframe = $('<iframe>', {
+        src: href,
+        class: classTerm,
+        frameborder: 0,
+        vspace: 0,
+        hspace: 0,
+        scrolling: 'auto',
+        allowtransparency: 'true',
+      });
+
+      console.log(`${NAME}: loading iframe`);
+
+      $Body.append(
+        '<div id="IFramePreload" class="hidden d-none iframe-preload" style="display:none"></div>',
+      );
+      const $preload = $('#IFramePreload');
+      $preload.html($iframe);
+
+      $iframe.on('load', () => {
+        console.log(`${NAME}: the iframe was loaded`);
+        $preload.html('');
+        $preload.remove();
+
+        ui.$content.addClass('iframe-delay');
+
+        ui.$content.html($iframe);
+        ui.contentLoaded();
+
+        setTimeout(() => {
+          ui.$content.removeClass('iframe-delay');
+        }, 1000);
+      });
+
+      return $iframe;
     }
 
     static contentLoaded() {
@@ -572,7 +590,7 @@ const MetaLightboxUI = (($) => {
     }
   }
 
-  $(W).on(`${Events.AJAX} ${Events.LOADED}`, () => {
+  $(W).on(`MetaLightboxUI.init ${Events.AJAX} ${Events.LOADED}`, () => {
     MetaLightboxUI.init();
   });
 
