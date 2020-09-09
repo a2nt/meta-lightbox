@@ -68,7 +68,7 @@ const MetaLightboxUI = (($) => {
       const $content = ui.$content;
       if (!$content) return;
 
-      $('body').addClass(`meta-lightbox-body-effect-fade`);
+      $Body.addClass(`meta-lightbox-body-effect-fade`);
 
       // Add content
       ui.process($content, $link);
@@ -154,7 +154,7 @@ const MetaLightboxUI = (($) => {
       overlay.append(wrap);
       overlay.append(nav);
       overlay.append(close);
-      $('body').append(overlay);
+      $Body.append(overlay);
 
       overlay.on('click', (e) => {
         e.preventDefault();
@@ -186,6 +186,11 @@ const MetaLightboxUI = (($) => {
       const href = $link.attr('href').length
         ? $link.attr('href')
         : $link.data('href');
+
+      // add custom link specific class
+      ui.$content.attr('class', 'meta-lightbox-content');
+      ui.$content.addClass($link.data('lightbox-class'));
+
       if (!href.length) {
         console.log($link);
         console.error(`${NAME}: href(attr/data) is missing`);
@@ -352,11 +357,11 @@ const MetaLightboxUI = (($) => {
           statusCode: {
             404: function () {
               console.log(`${NAME}: page not found`);
-              window.location.href = url;
+              W.location.href = url;
             },
             302: function () {
               console.log(`${NAME}: redirect 302`);
-              window.location.href = url;
+              W.location.href = url;
             },
           },
           error: function (jqXHR, status) {
@@ -389,7 +394,7 @@ const MetaLightboxUI = (($) => {
                 // trigger events
                 /*if (typeof (data['events']) === 'object') {
                     for (var eventName in data.events) {
-                        $(document).trigger(eventName, [data['events'][eventName]]);
+                        $(D).trigger(eventName, [data['events'][eventName]]);
                     }
                 }*/
 
@@ -401,29 +406,23 @@ const MetaLightboxUI = (($) => {
                   title.length &&
                   link &&
                   link.length &&
-                  link !== window.location.href &&
+                  link !== W.location.href &&
                   link.substring(0, link.indexOf('#')) !==
-                    window.location.href.replace($('base').attr('href'), '/')
+                    W.location.href.replace($('base').attr('href'), '/')
                 ) {
-                  $('.meta-lightbox-ajax').data('curr-title', document.title);
-                  $('.meta-lightbox-ajax').data(
-                    'curr-link',
-                    window.location.href,
-                  );
+                  $('.meta-lightbox-ajax').data('curr-title', D.title);
+                  $('.meta-lightbox-ajax').data('curr-link', W.location.href);
 
-                  if (
-                    typeof window.localStorage !== 'undefined' &&
-                    link !== '/'
-                  ) {
-                    window.localStorage.setItem('current-page', link);
+                  if (typeof W.localStorage !== 'undefined' && link !== '/') {
+                    W.localStorage.setItem('current-page', link);
                   }
 
                   if (
-                    document.URL !== link &&
-                    document.URL !== $('base').attr('href') + link &&
-                    document.URL !== `${$('base').attr('href')}/${link}`
+                    D.URL !== link &&
+                    D.URL !== $('base').attr('href') + link &&
+                    D.URL !== `${$('base').attr('href')}/${link}`
                   ) {
-                    window.history.pushState(
+                    W.history.pushState(
                       {
                         title,
                         page: link,
@@ -474,8 +473,8 @@ const MetaLightboxUI = (($) => {
             /*setTimeout(() => {
               $W.resize();
 
-              if (typeof window.imagesLoaded === 'function') {
-                window.imagesLoaded().then(() => {
+              if (typeof W.imagesLoaded === 'function') {
+                W.imagesLoaded().then(() => {
                   $W.resize();
                 });
               }
@@ -547,16 +546,16 @@ const MetaLightboxUI = (($) => {
       var title = $('.meta-lightbox-ajax').data('curr-title'),
         link = $('.meta-lightbox-ajax').data('curr-link');
       if (title && link) {
-        if (typeof window.localStorage !== 'undefined' && link !== '/') {
-          window.localStorage.setItem('current-page', link);
+        if (typeof W.localStorage !== 'undefined' && link !== '/') {
+          W.localStorage.setItem('current-page', link);
         }
 
         if (
-          document.URL !== link &&
-          document.URL !== $('base').attr('href') + link &&
-          document.URL !== `${$('base').attr('href')}/${link}`
+          D.URL !== link &&
+          D.URL !== $('base').attr('href') + link &&
+          D.URL !== `${$('base').attr('href')}/${link}`
         ) {
-          window.history.replaceState(
+          W.history.replaceState(
             {
               title,
               page: link,
