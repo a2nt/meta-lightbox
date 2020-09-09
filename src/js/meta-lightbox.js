@@ -15,6 +15,7 @@ import Events from './_events';
 
 const MetaLightboxUI = (($) => {
   const W = window;
+  const $W = $(W);
   const D = document;
   const $Body = $('body');
 
@@ -214,7 +215,7 @@ const MetaLightboxUI = (($) => {
               height: `${$content.height()}px`, // For Firefox
             });
 
-            $(window).resize(() => {
+            $W.resize(() => {
               wrap.css({
                 'line-height': `${$content.height()}px`,
                 height: `${$content.height()}px`, // For Firefox
@@ -307,7 +308,7 @@ const MetaLightboxUI = (($) => {
               'margin-top': `${-(wrap.outerHeight() / 2)}px`,
             });
           }
-          $(window).resize(() => {
+          $W.resize(() => {
             if (wrap.outerHeight() < ui.$content.height()) {
               wrap.css({
                 position: 'relative',
@@ -460,7 +461,7 @@ const MetaLightboxUI = (($) => {
                 'margin-top': `${-(wrap.outerHeight() / 2)}px`,
               });
             }
-            $(window).resize(() => {
+            $W.resize(() => {
               if (wrap.outerHeight() < ui.$content.height()) {
                 wrap.css({
                   position: 'relative',
@@ -471,11 +472,11 @@ const MetaLightboxUI = (($) => {
             });*/
 
             /*setTimeout(() => {
-              $(window).resize();
+              $W.resize();
 
               if (typeof window.imagesLoaded === 'function') {
                 window.imagesLoaded().then(() => {
-                  $(window).resize();
+                  $W.resize();
                 });
               }
             }, 500);*/
@@ -530,7 +531,7 @@ const MetaLightboxUI = (($) => {
 
       ui.$content.removeClass('meta-lightbox-loading');
       setTimeout(() => {
-        $(W).trigger('meta-lightbox-loaded');
+        $W.trigger('meta-lightbox-loaded');
       }, 1); // For CSS transitions
 
       setTimeout(() => {
@@ -590,7 +591,7 @@ const MetaLightboxUI = (($) => {
     }
   }
 
-  $(W).on(`MetaLightboxUI.init ${Events.AJAX} ${Events.LOADED}`, () => {
+  $W.on(`MetaLightboxUI.init ${Events.AJAX} ${Events.LOADED}`, () => {
     MetaLightboxUI.init();
   });
 
