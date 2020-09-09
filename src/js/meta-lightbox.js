@@ -183,9 +183,10 @@ const MetaLightboxUI = (($) => {
       console.log(`${NAME}: process`);
       const ui = this;
 
-      const href = $link.attr('href').length
-        ? $link.attr('href')
-        : $link.data('href');
+      const href =
+        $link.attr('href') && $link.attr('href').length
+          ? $link.attr('href')
+          : $link.data('href');
 
       // add custom link specific class
       ui.$content.attr('class', 'meta-lightbox-content');
