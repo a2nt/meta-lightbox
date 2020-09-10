@@ -292,8 +292,10 @@ const MetaLightboxUI = (($) => {
 
         const $iframe = ui.loadIframe(src, classTerm);
         if (!$iframe) {
+          $link.addClass('meta-offline');
           return false;
         }
+        $link.removeClass('meta-offline');
 
         // Set the title
         const title = $link.data('title')
@@ -352,9 +354,11 @@ const MetaLightboxUI = (($) => {
 
           const $iframe = ui.loadIframe(href, 'meta-lightbox-iframe-content');
           if (!$iframe) {
+            $link.addClass('meta-offline');
             return false;
           }
 
+          $link.removeClass('meta-offline');
           return true;
         }
 
