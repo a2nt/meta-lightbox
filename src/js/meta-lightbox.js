@@ -21,7 +21,7 @@ const MetaLightboxUI = (($) => {
 
   const NAME = 'MetaLightboxUI';
   const NETWORK_ERROR =
-    '<div class="meta-lightbox-error"><div class="alert alert-error alert-danger">Connection failure.</div></div>';
+		'<div class="meta-lightbox-error"><div class="alert alert-error alert-danger">Connection failure.</div></div>';
 
   class MetaLightboxUI {
     static init() {
@@ -50,7 +50,7 @@ const MetaLightboxUI = (($) => {
     static is_hdpi() {
       console.log(`${NAME}: isHidpi`);
       const mediaQuery =
-        '(-webkit-min-device-pixel-ratio: 1.5),\
+				'(-webkit-min-device-pixel-ratio: 1.5),\
           (min--moz-device-pixel-ratio: 1.5),\
           (-o-min-device-pixel-ratio: 3/2),\
           (min-resolution: 1.5dppx)';
@@ -76,7 +76,9 @@ const MetaLightboxUI = (($) => {
       // Nav
       if ($link.data('lightbox-gallery')) {
         const $galleryItems = $(
-          `[data-lightbox-gallery="${$link.data('lightbox-gallery')}"]`,
+          `[data-lightbox-gallery="${$link.data(
+            'lightbox-gallery',
+          )}"]`,
         );
 
         if ($galleryItems.length === 1) {
@@ -92,7 +94,8 @@ const MetaLightboxUI = (($) => {
             e.preventDefault();
             const index = $galleryItems.index($link);
             let $currentLink = $galleryItems.eq(index - 1);
-            if (!$currentLink.length) $currentLink = $galleryItems.last();
+            if (!$currentLink.length)
+              $currentLink = $galleryItems.last();
 
             //ui.hide();
             setTimeout(() => {
@@ -107,7 +110,8 @@ const MetaLightboxUI = (($) => {
             e.preventDefault();
             const index = $galleryItems.index($link);
             let $currentLink = $galleryItems.eq(index + 1);
-            if (!$currentLink.length) $currentLink = $galleryItems.first();
+            if (!$currentLink.length)
+              $currentLink = $galleryItems.first();
 
             //ui.hide();
             setTimeout(() => {
@@ -127,7 +131,7 @@ const MetaLightboxUI = (($) => {
 
       const overlay = $('<div>', {
         class:
-          'meta-lightbox-overlay meta-lightbox-theme-default meta-lightbox-effect-fade',
+					'meta-lightbox-overlay meta-lightbox-theme-default meta-lightbox-effect-fade',
       });
       const wrap = $('<div>', {
         class: 'meta-lightbox-wrap',
@@ -184,9 +188,9 @@ const MetaLightboxUI = (($) => {
       const ui = this;
 
       const href =
-        $link.attr('href') && $link.attr('href').length
-          ? $link.attr('href')
-          : $link.data('href');
+				$link.attr('href') && $link.attr('href').length
+				  ? $link.attr('href')
+				  : $link.data('href');
 
       // add custom link specific class
       ui.$content.attr('class', 'meta-lightbox-content');
@@ -198,8 +202,12 @@ const MetaLightboxUI = (($) => {
       }
 
       const $pageSpinner = $('#PageLoading .loading-spinner');
-      const loadingContent = $pageSpinner.length ? $pageSpinner.clone() : '';
-      ui.$content.append(loadingContent).addClass('meta-lightbox-loading');
+      const loadingContent = $pageSpinner.length
+        ? $pageSpinner.clone()
+        : '';
+      ui.$content
+        .append(loadingContent)
+        .addClass('meta-lightbox-loading');
 
       // Image
       if (href.match(/\.(jpeg|jpg|gif|png|svg)$/i)) {
@@ -207,7 +215,9 @@ const MetaLightboxUI = (($) => {
           url: href,
           success: () => {
             const img = $('<img>', { src: href });
-            const wrap = $('<div class="meta-lightbox-image"></div>');
+            const wrap = $(
+              '<div class="meta-lightbox-image"></div>',
+            );
             const imgwrapper = $(
               '<span class="meta-lightbox-zoom-wrapper"></span>',
             );
@@ -352,7 +362,10 @@ const MetaLightboxUI = (($) => {
         if ($link.data('force-iframe')) {
           console.log(`${NAME}: IFrame forced`);
 
-          const $iframe = ui.loadIframe(href, 'meta-lightbox-iframe-content');
+          const $iframe = ui.loadIframe(
+            href,
+            'meta-lightbox-iframe-content',
+          );
           if (!$iframe) {
             $link.addClass('meta-offline');
             return false;
@@ -381,7 +394,9 @@ const MetaLightboxUI = (($) => {
             },
           },
           error: function (jqXHR, status) {
-            console.log(`${NAME}: AJAX request failure.${jqXHR.statusText}`);
+            console.log(
+              `${NAME}: AJAX request failure.${jqXHR.statusText}`,
+            );
 
             var wrap = $(NETWORK_ERROR);
             ui.$content.html(wrap);
@@ -389,7 +404,13 @@ const MetaLightboxUI = (($) => {
 
             // google analytics
             if (typeof ga === 'function') {
-              ga('send', 'event', 'error', 'AJAX ERROR', jqXHR.statusText);
+              ga(
+                'send',
+                'event',
+                'error',
+                'AJAX ERROR',
+                jqXHR.statusText,
+              );
             }
           },
           success: function (data, status, jqXHR) {
@@ -399,10 +420,15 @@ const MetaLightboxUI = (($) => {
                 // Replace regions
                 if (
                   typeof dataJson['regions'] === 'object' &&
-                  typeof dataJson['regions']['LayoutAjax'] !== 'undefinded'
+									typeof dataJson['regions']['LayoutAjax'] !==
+										'undefinded'
                 ) {
-                  var wrap = $('<div class="meta-lightbox-ajax" />');
-                  wrap.html(dataJson['regions']['LayoutAjax']);
+                  var wrap = $(
+                    '<div class="meta-lightbox-ajax" />',
+                  );
+                  wrap.html(
+                    dataJson['regions']['LayoutAjax'],
+                  );
                   ui.$content.html(wrap);
                   ui.contentLoaded();
                 }
@@ -419,24 +445,41 @@ const MetaLightboxUI = (($) => {
 
                 if (
                   title &&
-                  title.length &&
-                  link &&
-                  link.length &&
-                  link !== W.location.href &&
-                  link.substring(0, link.indexOf('#')) !==
-                    W.location.href.replace($('base').attr('href'), '/')
+									title.length &&
+									link &&
+									link.length &&
+									link !== W.location.href &&
+									link.substring(0, link.indexOf('#')) !==
+										W.location.href.replace(
+										  $('base').attr('href'),
+										  '/',
+										)
                 ) {
-                  $('.meta-lightbox-ajax').data('curr-title', D.title);
-                  $('.meta-lightbox-ajax').data('curr-link', W.location.href);
+                  $('.meta-lightbox-ajax').data(
+                    'curr-title',
+                    D.title,
+                  );
+                  $('.meta-lightbox-ajax').data(
+                    'curr-link',
+                    W.location.href,
+                  );
 
-                  if (typeof W.localStorage !== 'undefined' && link !== '/') {
-                    W.localStorage.setItem('current-page', link);
+                  if (
+                    typeof W.localStorage !== 'undefined' &&
+										link !== '/'
+                  ) {
+                    W.localStorage.setItem(
+                      'current-page',
+                      link,
+                    );
                   }
 
                   if (
                     D.URL !== link &&
-                    D.URL !== $('base').attr('href') + link &&
-                    D.URL !== `${$('base').attr('href')}/${link}`
+										D.URL !==
+											$('base').attr('href') + link &&
+										D.URL !==
+											`${$('base').attr('href')}/${link}`
                   ) {
                     W.history.pushState(
                       {
@@ -454,7 +497,10 @@ const MetaLightboxUI = (($) => {
                   // google analytics
                   if (typeof ga === 'function') {
                     ga('set', {
-                      page: link.replace($('base').attr('href'), ''),
+                      page: link.replace(
+                        $('base').attr('href'),
+                        '',
+                      ),
                       title,
                     });
                     ga('send', 'pageview');
@@ -462,7 +508,9 @@ const MetaLightboxUI = (($) => {
                 }
               }
             } catch (e) {
-              const $wrap = $('<div class="meta-lightbox-ajax" />');
+              const $wrap = $(
+                '<div class="meta-lightbox-ajax" />',
+              );
               $wrap.append(data);
               ui.$content.html($wrap);
               ui.contentLoaded();
@@ -529,15 +577,26 @@ const MetaLightboxUI = (($) => {
           console.warn(`${NAME}: Unable to load iframe offline`);
           return false;
         }
-
-        ui.finishIFrameLoading($preload, $iframe);
+        ui.finishIFrameLoading();
       });
 
       return $iframe;
     }
 
-    static finishIFrameLoading($preload, $iframe) {
+    static finishIFrameLoading() {
       const ui = this;
+
+      const $preload = $('#MetaIFramePreload');
+      if (!$preload.length) {
+        console.warn(`${NAME}: iframe preload not found`);
+        return false;
+      }
+
+      const $iframe = $preload.find('iframe');
+      if (!$iframe.length) {
+        console.warn(`${NAME}: iframe preload > iframe not found`);
+        return false;
+      }
 
       console.log(`${NAME}: the iframe was loaded`);
       $preload.html('');
@@ -580,8 +639,8 @@ const MetaLightboxUI = (($) => {
 
         if (
           D.URL !== link &&
-          D.URL !== $('base').attr('href') + link &&
-          D.URL !== `${$('base').attr('href')}/${link}`
+					D.URL !== $('base').attr('href') + link &&
+					D.URL !== `${$('base').attr('href')}/${link}`
         ) {
           W.history.replaceState(
             {
@@ -626,14 +685,7 @@ const MetaLightboxUI = (($) => {
     $('.meta-offline').removeClass('meta-offline');
 
     console.log(`${NAME}: reloading iframe`);
-
-    const $preload = $('#MetaIFramePreload');
-    if ($preload.length) {
-      const $iframe = $preload.find('iframe');
-      if ($iframe.length) {
-        MetaLightboxUI.finishIFrameLoading($preload, $iframe);
-      }
-    }
+    MetaLightboxUI.finishIFrameLoading();
 
     const $iframe = $('.meta-lightbox-content iframe');
     if ($iframe.length) {
