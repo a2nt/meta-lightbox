@@ -505,12 +505,6 @@ const MetaLightboxUI = (($) => {
     static loadIframe(href, classTerm) {
       const ui = this;
 
-      // don't load on offline
-      if ($Body.hasClass('is-offline')) {
-        console.warn(`${NAME}: Unable to load iframe offline`);
-        return false;
-      }
-
       const $iframe = $('<iframe>', {
         src: href,
         class: classTerm,
@@ -524,27 +518,39 @@ const MetaLightboxUI = (($) => {
       console.log(`${NAME}: loading iframe`);
 
       $Body.append(
-        '<div id="IFramePreload" class="hidden d-none iframe-preload" style="display:none"></div>',
+        '<div id="MetaIFramePreload" class="hidden d-none iframe-preload" style="display:none"></div>',
       );
-      const $preload = $('#IFramePreload');
+      const $preload = $('#MetaIFramePreload');
       $preload.html($iframe);
 
       $iframe.on('load', () => {
-        console.log(`${NAME}: the iframe was loaded`);
-        $preload.html('');
-        $preload.remove();
+        // don't load on offline
+        if ($Body.hasClass('is-offline')) {
+          console.warn(`${NAME}: Unable to load iframe offline`);
+          return false;
+        }
 
-        ui.$content.addClass('iframe-delay');
-
-        ui.$content.html($iframe);
-        ui.contentLoaded();
-
-        setTimeout(() => {
-          ui.$content.removeClass('iframe-delay');
-        }, 1000);
+        ui.finishIFrameLoading($preload, $iframe);
       });
 
       return $iframe;
+    }
+
+    static finishIFrameLoading() {
+      const ui = this;
+
+      console.log(`${NAME}: the iframe was loaded`);
+      $preload.html('');
+      $preload.remove();
+
+      ui.$content.addClass('iframe-delay');
+
+      ui.$content.html($iframe);
+      ui.contentLoaded();
+
+      setTimeout(() => {
+        ui.$content.removeClass('iframe-delay');
+      }, 1000);
     }
 
     static contentLoaded() {
@@ -617,8 +623,17 @@ const MetaLightboxUI = (($) => {
   });
 
   $W.on(`${Events.BACKONLINE}`, () => {
-    const $iframe = $('.meta-lightbox-content iframe');
     console.log(`${NAME}: reloading iframe`);
+
+    const $preload = $('#MetaIFramePreload');
+    if ($preload.length) {
+      const $iframe = $preload.find('iframe');
+      if ($iframe.length) {
+        ui.finishIFrameLoading($preload, $iframe);
+      }
+    }
+
+    const $iframe = $('.meta-lightbox-content iframe');
     $iframe.attr('src', $iframe.attr('src'));
   });
 
