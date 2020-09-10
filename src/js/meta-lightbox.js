@@ -525,7 +525,7 @@ const MetaLightboxUI = (($) => {
 
       $Body.on(`${Events.BACKONLINE}`, () => {
         console.log(`${NAME}: reloading iframe`);
-        $iframe[0].contentDocument.location.reload(true);
+        $iframe.attr('src', $iframe.attr('src'));
       });
 
       return $iframe;
