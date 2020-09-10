@@ -623,18 +623,22 @@ const MetaLightboxUI = (($) => {
   });
 
   $W.on(`${Events.BACKONLINE}`, () => {
+    $('.meta-offline').removeClass('meta-offline');
+
     console.log(`${NAME}: reloading iframe`);
 
     const $preload = $('#MetaIFramePreload');
     if ($preload.length) {
       const $iframe = $preload.find('iframe');
       if ($iframe.length) {
-        ui.finishIFrameLoading($preload, $iframe);
+        MetaLightboxUI.finishIFrameLoading($preload, $iframe);
       }
     }
 
     const $iframe = $('.meta-lightbox-content iframe');
-    $iframe.attr('src', $iframe.attr('src'));
+    if ($iframe.length) {
+      $iframe.attr('src', $iframe.attr('src'));
+    }
   });
 
   W.MetaLightboxUI = MetaLightboxUI;
