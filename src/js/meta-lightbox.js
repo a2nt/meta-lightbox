@@ -285,8 +285,14 @@ const MetaLightboxUI = (($) => {
           classTerm = `${classTerm} meta-lightbox-vimeo`;
         }
 
-        if (src) {
-          ui.loadIframe(src, classTerm);
+        if (!src) {
+          console.warn(`${NAME}: Video loading bad URL`);
+          return false;
+        }
+
+        const $iframe = ui.loadIframe(src, classTerm);
+        if (!$iframe) {
+          return false;
         }
 
         // Set the title
@@ -344,7 +350,12 @@ const MetaLightboxUI = (($) => {
         if ($link.data('force-iframe')) {
           console.log(`${NAME}: IFrame forced`);
 
-          return ui.loadIframe(href, 'meta-lightbox-iframe-content');
+          const $iframe = ui.loadIframe(href, 'meta-lightbox-iframe-content');
+          if (!$iframe) {
+            return false;
+          }
+
+          return true;
         }
 
         console.log(`${NAME}: loading AJAX`);
@@ -489,6 +500,12 @@ const MetaLightboxUI = (($) => {
 
     static loadIframe(href, classTerm) {
       const ui = this;
+
+      // don't load on offline
+      if ($Body.hasClass('is-offline')) {
+        console.warn(`${NAME}: Unable to load iframe offline`);
+        return false;
+      }
 
       const $iframe = $('<iframe>', {
         src: href,
