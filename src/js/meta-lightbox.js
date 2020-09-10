@@ -523,6 +523,11 @@ const MetaLightboxUI = (($) => {
         }, 1000);
       });
 
+      $Body.on(`${Events.BACKONLINE}`, () => {
+        console.log(`${NAME}: reloading iframe`);
+        $iframe[0].contentDocument.location.reload(true);
+      });
+
       return $iframe;
     }
 
