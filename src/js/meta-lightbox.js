@@ -536,7 +536,7 @@ const MetaLightboxUI = (($) => {
       return $iframe;
     }
 
-    static finishIFrameLoading() {
+    static finishIFrameLoading($preload, $iframe) {
       const ui = this;
 
       console.log(`${NAME}: the iframe was loaded`);
