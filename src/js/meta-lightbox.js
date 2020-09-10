@@ -523,11 +523,6 @@ const MetaLightboxUI = (($) => {
         }, 1000);
       });
 
-      $Body.on(`${Events.BACKONLINE}`, () => {
-        console.log(`${NAME}: reloading iframe`);
-        $iframe.attr('src', $iframe.attr('src'));
-      });
-
       return $iframe;
     }
 
@@ -598,6 +593,12 @@ const MetaLightboxUI = (($) => {
 
   $W.on(`MetaLightboxUI.init ${Events.AJAX} ${Events.LOADED}`, () => {
     MetaLightboxUI.init();
+  });
+
+  $W.on(`${Events.BACKONLINE}`, () => {
+    const $iframe = $('.meta-lightbox-content iframe');
+    console.log(`${NAME}: reloading iframe`);
+    $iframe.attr('src', $iframe.attr('src'));
   });
 
   W.MetaLightboxUI = MetaLightboxUI;
