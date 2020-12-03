@@ -621,7 +621,7 @@ const MetaLightboxUI = (($) => {
 
       ui.$content.removeClass('meta-lightbox-loading');
 
-       $(`.meta-lightbox-content .js${NAME},.meta-lightbox-content [data-toggle="lightbox"],.meta-lightbox-content [data-lightbox-gallery]`).on(
+      $(`.meta-lightbox-content .js${NAME},.meta-lightbox-content [data-toggle="lightbox"],.meta-lightbox-content [data-lightbox-gallery]`).on(
         'click',
         (e) => {
           e.preventDefault();
