@@ -414,9 +414,12 @@ const MetaLightboxUI = (($) => {
             }
           },
           success: function (data, status, jqXHR) {
+            console.log(`${NAME}: AJAX success`);
+
             try {
               const dataJson = $.parseJSON(data);
               if (typeof dataJson === 'object') {
+                console.log(`${NAME}: AJAX JSON`);
                 // Replace regions
                 if (
                   typeof dataJson['regions'] === 'object' &&
@@ -508,6 +511,7 @@ const MetaLightboxUI = (($) => {
                 }
               }
             } catch (e) {
+              console.log(`${NAME}: AJAX HTML`);
               const $wrap = $(
                 '<div class="meta-lightbox-ajax" />',
               );
@@ -616,6 +620,18 @@ const MetaLightboxUI = (($) => {
       const ui = this;
 
       ui.$content.removeClass('meta-lightbox-loading');
+
+       $(`.meta-lightbox-content .js${NAME},.meta-lightbox-content [data-toggle="lightbox"],.meta-lightbox-content [data-lightbox-gallery]`).on(
+        'click',
+        (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          const $link = $(e.currentTarget);
+
+          ui.show($link);
+        },
+      );
+
       setTimeout(() => {
         $W.trigger('meta-lightbox-loaded');
       }, 1); // For CSS transitions
