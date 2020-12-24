@@ -11,10 +11,6 @@
 	},
 	"private": false,
 	"main": "src/js/app.js",
-	"repository": {
-		"type": "git",
-		"url": "git+https://github.com/a2nt/webpack-bootstrap-ui-kit"
-	},
 	"engines": {
 		"yarn": ">= 1.0.0"
 	},
