@@ -207,7 +207,10 @@ const MetaLightboxUI = (($) => {
       ui.$content.append(loadingContent).addClass('meta-lightbox-loading');
 
       // Image
-      if (href.match(/\.(jpeg|jpg|gif|png|svg)$/i)) {
+      if (
+        href.match(/\.(jpeg|jpg|gif|png|svg)$/i) ||
+        $link.data('force') === 'image'
+      ) {
         $.ajax({
           url: href,
           success: () => {
@@ -265,7 +268,9 @@ const MetaLightboxUI = (($) => {
       else if (
         href.match(
           /(youtube|youtube-nocookie|youtu|vimeo)\.(com|be)\/(watch\?v=([\w-]+)|([\w-]+))/,
-        )
+        ) ||
+        $link.data('force') === 'youtube' ||
+        $link.data('force') === 'vimeo'
       ) {
         const video = href.match(
           /(youtube|youtube-nocookie|youtu|vimeo)\.(com|be)\/(watch\?v=([\w-]+)|([\w-]+))/,
@@ -314,7 +319,10 @@ const MetaLightboxUI = (($) => {
         }
       }
       // Inline HTML
-      else if (href.substring(0, 1) == '#') {
+      else if (
+        href.substring(0, 1) == '#' ||
+        $link.data('force') === 'inline'
+      ) {
         if ($(href).length) {
           wrap = $('<div class="meta-lightbox-inline" />');
           wrap.append($(href).clone().show());
@@ -354,7 +362,7 @@ const MetaLightboxUI = (($) => {
       }
       // AJAX/iFrame (default)
       else {
-        if ($link.data('force-iframe')) {
+        if ($link.data('force-iframe') || $link.data('force') === 'iframe') {
           console.log(`${NAME}: IFrame forced`);
 
           const $iframe = ui.loadIframe(href, 'meta-lightbox-iframe-content');
