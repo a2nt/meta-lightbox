@@ -22,6 +22,8 @@ const ImageminPlugin = require('image-minimizer-webpack-plugin');
 const ImageSpritePlugin = require('@a2nt/image-sprite-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
+const UIInfo = require('./package.json');
+const UIVERSION = JSON.stringify(UIInfo.version);
 console.log('WebP images: ' + conf['webp']);
 
 let plugins = [
@@ -45,6 +47,9 @@ let plugins = [
 		'process.env': {
 			NODE_ENV: JSON.stringify('production'),
 		},
+		UINAME: JSON.stringify(UIInfo.name),
+		UIVERSION: UIVERSION,
+		UIAUTHOR: JSON.stringify(UIInfo.author),
 	}),
 	new webpack.LoaderOptionsPlugin({
 		minimize: true,
