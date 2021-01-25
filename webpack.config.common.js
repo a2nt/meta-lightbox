@@ -22,7 +22,7 @@ const modules = [
 ];
 
 const _addAppFiles = (theme) => {
-	const dirPath = path.resolve(__dirname, theme);
+	const dirPath = './' + theme;
 	let themeName = path.basename(theme);
 	if (themeName == '.') {
 		themeName = 'app';
@@ -100,6 +100,8 @@ module.exports = {
 	entry: includes,
 	externals: {
 		jquery: 'jQuery',
+		react: 'React',
+		'react-dom': 'ReactDOM',
 	},
 	resolve: {
 		modules: modules,
@@ -108,6 +110,8 @@ module.exports = {
 			$: require.resolve('jquery'),
 			jquery: require.resolve('jquery'),
 			jQuery: require.resolve('jquery'),
+			react: require.resolve('react'),
+			'react-dom': require.resolve('react-dom'),
 		},
 	},
 };

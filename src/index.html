@@ -2,14 +2,12 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-		<meta name="description" content="">
-		<meta name="author" content="">
-		<!-- That's optional dependencies -->
-		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
-		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.0/css/all.css" />
-		<!-- jQuery is required -->
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1, shrink-to-fit=no"
+		/>
+		<meta name="description" content="Meta Lightbox" />
+		<meta name="author" content="Tony Air" />
 		<title>Meta-lightbox Demo</title>
 		<style>
 			.wrapper {
@@ -20,8 +18,28 @@
 	<body>
 		<div class="wrapper">
 			<h1>Meta-lightbox Demo</h1>
-			<%= require('html-loader!./html/meta-lightbox.html') %>
-			<p><b>Note:</b> You can add jquery-zoom plugin and lighbox will zoom photos on hover.</p>
+			NODE_ENV: <%= NODE_ENV %> <%=
+			require('html-loader!./html/meta-lightbox.html') %>
+			<p>
+				<b>Note:</b> You can add jquery-zoom plugin and lighbox will
+				zoom photos on hover.
+			</p>
+			<div id="App"></div>
 		</div>
+
+		<!-- That's optional dependencies -->
+		<link
+			rel="stylesheet"
+			href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+		/>
+		<link
+			rel="stylesheet"
+			href="https://use.fontawesome.com/releases/v5.12.0/css/all.css"
+		/>
+		<!-- React is required -->
+		<%= REACT_SCRIPTS %>
+
+		<!-- jQuery is required -->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 	</body>
 </html>

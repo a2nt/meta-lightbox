@@ -17,8 +17,7 @@ const conf = commonVariables.configuration;
 const IP = process.env.IP || conf.HOSTNAME;
 const PORT = process.env.PORT || conf.PORT;
 
-const UIInfo = require('./node_modules/@a2nt/ss-bootstrap-ui-webpack-boilerplate/package.json');
-const UIMetaInfo = require('./node_modules/@a2nt/meta-lightbox/package.json');
+const UIInfo = require('./package.json');
 
 const config = merge(common, {
   mode: 'development',
@@ -26,7 +25,7 @@ const config = merge(common, {
   entry: {
     hot: [
       'react-hot-loader/patch',
-      'webpack-dev-server/client?https://' + conf.HOSTNAME + ':' + conf.PORT,
+      'webpack-dev-server/?https://' + conf.HOSTNAME + ':' + conf.PORT,
       'webpack/hot/only-dev-server',
     ],
   },
@@ -46,10 +45,16 @@ const config = merge(common, {
         use: {
           loader: 'babel-loader',
           options: {
-            presets: ['@babel/preset-env'], //Preset used for env setup
+            presets: [
+              '@babel/preset-env',
+              '@babel/react',
+              {
+                plugins: ['@babel/plugin-proposal-class-properties'],
+              },
+            ], //Preset used for env setup
             plugins: [['@babel/transform-react-jsx']],
             cacheDirectory: true,
-            cacheCompression: false,
+            cacheCompression: true,
           },
         },
       },
@@ -122,8 +127,6 @@ const config = merge(common, {
       UINAME: JSON.stringify(UIInfo.name),
       UIVERSION: JSON.stringify(UIInfo.version),
       UIAUTHOR: JSON.stringify(UIInfo.author),
-      UIMetaNAME: JSON.stringify(UIMetaInfo.name),
-      UIMetaVersion: JSON.stringify(UIMetaInfo.version),
     }),
   ],
 
