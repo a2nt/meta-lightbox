@@ -1,14 +1,12 @@
 {
-	"name": "@a2nt/meta-lightbox",
+	"name": "@a2nt/meta-lightbox-react",
 	"version": "2.8.6",
 	"description": "ReactJS: Universal Lightbox window",
-	"main": "src/js/app.js",
 	"author": "Tony Air <tony@twma.pro>",
 	"license": "BSD-2-Clause",
-	"publish-branch": "react",
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/a2nt/meta-lightbox.git#react"
+		"url": "git+https://github.com/a2nt/meta-lightbox.git"
 	},
 	"private": false,
 	"engines": {
@@ -30,12 +28,28 @@
 		"postuninstall": "npm run prunecaches",
 		"preinstall": "npx only-allow pnpm"
 	},
-	"browser": "./src/js/app.js",
+	"directories": {
+		"assets": {
+			"css": [
+				"dist/css/app.css"
+			],
+			"js": [
+				"dist/js/app.js"
+			]
+		}
+	},
+	"main": "./dist/js/app.js",
+	"browser": {
+		"app": "./dist/js/app.js"
+	},
+	"module": "./src/js/app.js",
 	"browserslist": [
 		"defaults",
 		"ie>=11"
 	],
 	"dependencies": {
+		"react": "^17.0.1",
+		"react-dom": "^17.0.1",
 		"axios": "^0.21.1",
 		"balanced-match": "^1.0.0",
 		"bootstrap": "^4.6.0",
@@ -45,7 +59,7 @@
 		"minimatch": "^3.0.4",
 		"oembed-github-gist": "^1.0.0",
 		"react-tiny-oembed": "^1.0.1",
-		"setimmediate": "^1.0.5",
+		"setimmediate": "^1.0.5"
 	},
 	"devDependencies": {
 		"@a2nt/image-sprite-webpack-plugin": "^0.2.5",
@@ -94,8 +108,6 @@
 		"prop-types": "^15.7.2",
 		"punycode": "^2.1.1",
 		"querystring": "^0.2.0",
-		"react": "^17.0.1",
-		"react-dom": "^17.0.1",
 		"react-hot-loader": "^4.13.0",
 		"react-is": "^17.0.1",
 		"react-lifecycles-compat": "^3.0.4",
