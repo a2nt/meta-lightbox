@@ -7,7 +7,7 @@
 	"license": "BSD-2-Clause",
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/a2nt/meta-lightbox.git"
+		"url": "git+https://github.com/a2nt/meta-lightbox.git#react"
 	},
 	"private": false,
 	"engines": {
