@@ -1,3 +1,139 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name="description" content=""><meta name="author" content=""><link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"/><link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.0/css/all.css"/><script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script><title>Meta-lightbox Demo</title><style>.wrapper {
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1, shrink-to-fit=no"
+		/>
+		<meta name="description" content="Meta Lightbox" />
+		<meta name="author" content="Tony Air" />
+		<title>Meta-lightbox Demo</title>
+		<style>
+			.wrapper {
 				padding: 2rem;
-			}</style><link href="css/app.css" rel="stylesheet"></head><body><div class="wrapper"><h1>Meta-lightbox Demo</h1><p><a href="../src/img/photo1.png" data-toggle="lightbox" data-lightbox-gallery="demo" data-title="That's first link">Click me to start</a></p><p><a href="../src/img/photo2.jpg" data-toggle="lightbox" data-lightbox-gallery="demo">Use data-toggle="lightbox" attribute to attach lightbox action and href to specify URL.</a></p><p><a href="../src/img/photo1.png" data-toggle="lightbox" data-lightbox-gallery="demo" data-title="Use data-title attribute to specify lightbox title">Use data-lightbox-gallery="YOUR_GALLERY_NAME" to group ligthboxes and use next/prev arrows</a></p><p data-toggle="lightbox" data-href="https://youtu.be/GgnClrx8N2k" data-lightbox-gallery="demo" data-title="Yes you can link vimeo and youtube videos as long as AJAX content">You can use data-href attribute to specify link and attach lightbox to another element</p><p><b>Note:</b> You can add jquery-zoom plugin and lighbox will zoom photos on hover.</p></div><script src="js/app.js"></script></body></html>
+			}
+		</style>
+	<link href="css/app.css" rel="stylesheet"></head>
+	<body>
+		<div class="wrapper">
+			<h1>Meta-lightbox Demo</h1>
+			NODE_ENV: development <style>
+	[data-toggle='lightbox']:hover,
+	[data-toggle='lightbox']:focus {
+		text-decoration: underline;
+	}
+</style>
+
+<h2>Loading data</h2>
+
+<p>
+	<a
+		href="../src/img/photo1.png"
+		data-toggle="lightbox"
+		data-lightbox-gallery="demo"
+		data-title="That's first link"
+		>Load an Image</a
+	>
+
+	<br />
+
+	<a href="../src/test.json" data-toggle="lightbox">
+		Load JSON
+	</a>
+
+	<br />
+	<a href="../src/test-pajax.html" data-toggle="lightbox">
+		Load Partial AJAX HTML </a
+	><br />
+
+	<a href="../src/not-found.html" data-toggle="lightbox"> Not Found test </a>
+</p>
+
+<h2>Embeds</h2>
+<p>
+	<a
+		href="https://www.youtube.com/watch?v=WYvZZYthDRI"
+		data-toggle="lightbox"
+		data-embed="true"
+		>Embed Youtube link</a
+	>
+	<br />
+	<a
+		href="https://vimeo.com/26216129"
+		data-toggle="lightbox"
+		data-embed="true"
+		>Embed Vimeo link</a
+	>
+	<br />
+
+	<a
+		href="https://soundcloud.com/littlenapoleon/led-zeppelin-vs-rolling-stones"
+		data-toggle="lightbox"
+		data-embed="true"
+		>Embed SoundCloud link</a
+	><br />
+	<a
+		href="https://www.instagram.com/p/CKl5n87hf7R/"
+		data-toggle="lightbox"
+		data-embed="true"
+		>Embed Instagram</a
+	>
+</p>
+
+<h2>Other</h2>
+<p>
+	<a
+		href="../src/img/photo2.jpg"
+		data-toggle="lightbox"
+		data-lightbox-gallery="demo"
+	>
+		Use [data-toggle="lightbox"] attribute to attach lightbox action and
+		[href] to specify URL.
+	</a>
+</p>
+<p>
+	<a
+		href="../src/img/photo1.png"
+		data-toggle="lightbox"
+		data-lightbox-gallery="demo"
+		data-title="Use data-title attribute to specify lightbox title"
+	>
+		Use [data-lightbox-gallery="YOUR_GALLERY_NAME"] to group ligthboxes with
+		next/prev arrows
+	</a>
+</p>
+<p
+	data-toggle="lightbox"
+	data-href="https://youtu.be/GgnClrx8N2k"
+	data-lightbox-gallery="demo"
+	data-title="Yes you can link vimeo and youtube videos as long as AJAX content"
+>
+	Use [data-toggle="lightbox"] + [data-href] attribute to toggle lightbox on
+	regular elements.
+	<b>Click me!</b>
+</p>
+
+			<p>
+				<b>Note:</b> You can add jquery-zoom plugin and lighbox will
+				zoom photos on hover.
+			</p>
+			<div id="App"></div>
+		</div>
+
+		<!-- That's optional dependencies -->
+		<link
+			rel="stylesheet"
+			href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+		/>
+		<link
+			rel="stylesheet"
+			href="https://use.fontawesome.com/releases/v5.12.0/css/all.css"
+		/>
+		<!-- React is required -->
+		<script crossorigin src="https://unpkg.com/react@17/umd/react.development.js"></script><script crossorigin src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+
+		<!-- jQuery is required -->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<script src="js/app.js"></script></body>
+</html>

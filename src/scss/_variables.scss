@@ -1,9 +1,36 @@
-$white: #fff !default;
-$black: #000 !default;
-$lightbox-link-hover-color: #007bff !default;
-$lightbox-breakpoint: 576px !default;
-$body-color: #212529 !default;
+@import 'material-design-color/material-color.scss';
 
+$body-bg: $clr-white !default;
+$body-color: $clr-black !default;
+
+$grid-gutter-width: 2rem !default;
+$grid-gutter-height: 2rem !default;
+
+$meta-overlay-bg: transparentize($clr-blue-grey-500, 0.2) !default;
+
+$meta-text-wrapper-bg: $body-bg !default;
+$meta-text-wrapper-color: $body-color !default;
+$meta-text-wrapper-padding-width: $grid-gutter-width/2 !default;
+$meta-text-wrapper-padding-height: $grid-gutter-height/2 !default;
+
+$meta-close-size: 1.2rem !default;
+$meta-close-color: $clr-grey-900 !default;
+$meta-close-hover-color: $clr-blue-grey-50 !default;
+$meta-close-hover-bg: $clr-blue !default;
+$meta-close-hover-shadow: $clr-white !default;
+
+$meta-spinner-color: $clr-white !default;
+$meta-spinner-weight: bold !default;
+$meta-spinner-size: 2rem !default;
+
+$meta-embed-loading-failed-color: $meta-spinner-color !default;
+$meta-embed-loading-failed-size: 1.2rem !default;
+$meta-embed-loading-failed-weight: $meta-spinner-weight !default;
+
+$meta-video-width: 16 !default;
+$meta-video-height: 9 !default;
+
+// extra variables and mixings
 $grid-breakpoints: (
     xs: 0,
     sm: 576px,
@@ -11,7 +38,7 @@ $grid-breakpoints: (
     lg: 992px,
     xl: 1200px,
     xxl: 1390px,
-    xxxl: 1590px
+    xxxl: 1590px,
 ) !default;
 $container-max-widths: (
     sm: 540px,
@@ -19,5 +46,65 @@ $container-max-widths: (
     lg: 960px,
     xl: 1140px,
     xxl: 1330px,
-    xxxl: 1560px
+    xxxl: 1560px,
 ) !default;
+
+// hovers
+@mixin hover-focus() {
+    &:hover,
+    &:focus {
+        @content;
+    }
+}
+
+@mixin hover-focus-active() {
+    &:hover,
+    &:focus,
+    &:active {
+        @content;
+    }
+}
+
+@mixin spinner_style() {
+    font-size: $meta-spinner-size;
+    color: $meta-spinner-color;
+    font-weight: $meta-spinner-weight;
+    text-transform: uppercase;
+}
+
+// screen reader
+// Only display content to screen readers
+//
+// See: https://www.a11yproject.com/posts/2013-01-11-how-to-hide-content/
+// See: https://hugogiraudel.com/2016/10/13/css-hide-and-seek/
+
+@mixin sr-only() {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px; // Fix for https://github.com/twbs/bootstrap/issues/25686
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+@mixin pseudo($display: block, $pos: absolute, $content: '') {
+    content: $content;
+    display: $display;
+    position: $pos;
+}
+
+@mixin responsive-ratio($x, $y, $pseudo: false) {
+    $padding: unquote(($y / $x) * 100 + '%');
+    @if $pseudo {
+        &:before {
+            @include pseudo($pos: relative);
+            width: 100%;
+            padding-top: $padding;
+        }
+    } @else {
+        padding-top: $padding;
+    }
+}
