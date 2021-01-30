@@ -1,5 +1,5 @@
 {
-	"name": "@a2nt/meta-lightbox-react",
+	"name": "@a2nt/meta-lightbox",
 	"version": "2.8.6",
 	"description": "Universal Lightbox window",
 	"main": "src/js/app.js",
