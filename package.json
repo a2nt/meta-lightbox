@@ -1,7 +1,7 @@
 {
 	"name": "@a2nt/meta-lightbox",
-	"version": "2.7.3",
-	"description": "Universal Lightbox window",
+	"version": "2.7.4",
+	"description": "jQuery Universal Lightbox window",
 	"main": "src/js/app.js",
 	"author": "Tony Air <tony@twma.pro>",
 	"license": "BSD-2-Clause",
