@@ -5,6 +5,7 @@
 	"main": "src/js/app.js",
 	"author": "Tony Air <tony@twma.pro>",
 	"license": "BSD-2-Clause",
+	"publish-branch": "react",
 	"repository": {
 		"type": "git",
 		"url": "git+https://github.com/a2nt/meta-lightbox.git#react"
