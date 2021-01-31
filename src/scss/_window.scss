@@ -78,6 +78,7 @@ $module_name: 'meta-MetaWindow';
             color: $meta-nav-hover-color;
             background: $meta-nav-hover-bg;
             text-shadow: none;
+            text-decoration: none;
         }
     }
 
@@ -153,9 +154,6 @@ $module_name: 'meta-MetaWindow';
     // Lightbox types
 
     &__text {
-        .meta-nav {
-            background: $meta-text-wrapper-bg;
-        }
         .meta-content {
             background: $meta-text-wrapper-bg;
             color: $meta-text-wrapper-color;
@@ -178,6 +176,9 @@ $module_name: 'meta-MetaWindow';
             max-height: 100%;
             max-width: 100%;
             min-height: 100%;
+            img {
+                margin: 0;
+            }
         }
     }
     &__video,
