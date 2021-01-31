@@ -4,9 +4,6 @@
  *
  */
 
-/*import '../scss/app.scss';
-import './meta-lightbox';*/
-
 import React from 'react';
 import ReactDOM from 'react-dom';
 import MetaWindow from './_window.jsx';

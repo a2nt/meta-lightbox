@@ -6,7 +6,7 @@ import styles from '../scss/_window.scss';
 
 import Embed, { defaultProviders } from 'react-tiny-oembed';
 
-const TelegramProvider = {
+const InstagramProvider = {
 	provider_name: 'Instagram',
 	provider_url: 'https://instagram.com',
 	endpoints: [
@@ -75,6 +75,8 @@ class MetaWindow extends Component {
 		loading: false,
 		error: false,
 		embed: false,
+		collections: [],
+		current: null,
 	};
 
 	constructor(props) {
@@ -86,14 +88,30 @@ class MetaWindow extends Component {
 
 		ui.axios = axios;
 
-		document.querySelectorAll('[data-toggle="lightbox"]').forEach((i) => {
-			i.addEventListener('click', (e) => {
+		document.querySelectorAll('[data-toggle="lightbox"]').forEach((el) => {
+			// collections
+			const gallery = el.getAttribute('data-gallery');
+			if (gallery) {
+				ui.state.collections[gallery] = [];
+				document
+					.querySelectorAll(
+						`[data-toggle="lightbox"][data-gallery="${gallery}"]`,
+					)
+					.forEach((el) => {
+						ui.state.collections[gallery].push(el);
+					});
+			}
+
+			// click handler
+			el.addEventListener('click', (e) => {
 				e.preventDefault();
+
 				const el = e.currentTarget;
 				const link =
 					el.getAttribute('href') || el.getAttribute('data-href');
 
 				const embed = el.getAttribute('data-embed');
+				ui.state.current = el;
 
 				if (embed) {
 					ui.embed(link);
@@ -104,8 +122,47 @@ class MetaWindow extends Component {
 		});
 	}
 
+	_currIndex = () => {
+		const ui = this;
+		const el = ui.state.current;
+		const gallery = el.getAttribute('data-gallery');
+
+		return ui.state.collections[gallery].indexOf(el);
+	};
+
+	next = () => {
+		const ui = this;
+		const el = ui.state.current;
+		const gallery = el.getAttribute('data-gallery');
+
+		let i = ui._currIndex();
+		if (i < ui.state.collections[gallery].length - 1) {
+			i++;
+		} else {
+			i = 0;
+		}
+
+		ui.state.collections[gallery][i].click();
+	};
+
+	prev = () => {
+		const ui = this;
+		const el = ui.state.current;
+		const gallery = el.getAttribute('data-gallery');
+
+		let i = ui._currIndex();
+		if (i > 0) {
+			i--;
+		} else {
+			i = ui.state.collections[gallery].length - 1;
+		}
+
+		ui.state.collections[gallery][i].click();
+	};
+
 	reset = () => {
 		const ui = this;
+
 		ui.setState({
 			content: '',
 			type: [],
@@ -237,6 +294,7 @@ class MetaWindow extends Component {
 				'',
 			),
 		);
+
 		return b64encoded;
 	};
 
@@ -275,11 +333,37 @@ class MetaWindow extends Component {
 		const ui = this;
 		const name = ui.name;
 
+		let navs = null;
+		const el = ui.state.current;
+		if (el) {
+			const gallery = el.getAttribute('data-gallery');
+			if (gallery && ui.state.collections[gallery].length > 1) {
+				navs = (
+					<nav className="meta-navs">
+						<button
+							className="meta-nav meta-nav-arrow meta-nav-arrow__prev a"
+							onClick={ui.prev}
+						>
+							<i className="fa fas fa-chevron-left"></i>
+							<span className="sr-only">Previous</span>
+						</button>
+						<button
+							className="meta-nav meta-nav-arrow meta-nav-arrow__next a"
+							onClick={ui.next}
+						>
+							<i className="fa fas fa-chevron-right"></i>
+							<span className="sr-only">Next</span>
+						</button>
+					</nav>
+				);
+			}
+		}
+
 		const content = ui.state.embed ? (
 			<section className="meta-wrap typography">
 				<Embed
 					url={ui.state.embed}
-					providers={[...defaultProviders, TelegramProvider]}
+					providers={[...defaultProviders, InstagramProvider]}
 					LoadingFallbackElement=<div className="meta-spinner_embed">
 						... Loading ...
 					</div>
@@ -306,10 +390,12 @@ class MetaWindow extends Component {
 			<div className={className}>
 				<div className={overlayClassName}>
 					<article className="meta-content">
+						{navs}
 						<button
-							className="meta-close fas fa fa-times a"
+							className="meta-nav meta-close a"
 							onClick={ui.hide}
 						>
+							<i className="fa fas fa-times"></i>
 							<span className="sr-only">Close</span>
 						</button>
 

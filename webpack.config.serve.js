@@ -19,7 +19,7 @@ const PORT = process.env.PORT || conf.PORT;
 
 const UIInfo = require('./package.json');
 
-const NODE_ENV = conf.NODE_ENV || process.env.NODE_ENV;
+const NODE_ENV = 'development'; //conf.NODE_ENV || process.env.NODE_ENV;
 const COMPRESS = NODE_ENV === 'production' ? true : false;
 
 console.log('NODE_ENV: ' + NODE_ENV);

@@ -13,11 +13,14 @@ $meta-text-wrapper-color: $body-color !default;
 $meta-text-wrapper-padding-width: $grid-gutter-width/2 !default;
 $meta-text-wrapper-padding-height: $grid-gutter-height/2 !default;
 
-$meta-close-size: 1.2rem !default;
-$meta-close-color: $clr-grey-900 !default;
-$meta-close-hover-color: $clr-blue-grey-50 !default;
-$meta-close-hover-bg: $clr-blue !default;
-$meta-close-hover-shadow: $clr-white !default;
+$meta-nav-size: 2rem !default;
+$meta-nav-arrows-size: 2.5rem !default;
+$meta-nav-color: $clr-grey-900 !default;
+$meta-nav-hover-color: $clr-blue-grey-50 !default;
+$meta-nav-hover-bg: $clr-blue !default;
+$meta-nav-hover-shadow: $clr-white !default;
+
+$meta-nav-padding: 0.25rem 0.5rem !default;
 
 $meta-spinner-color: $clr-white !default;
 $meta-spinner-weight: bold !default;
