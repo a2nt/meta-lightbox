@@ -9,8 +9,8 @@ import ReactDOM from 'react-dom';
 import MetaWindow from './_window.jsx';
 
 const M = ReactDOM.render(
-	<MetaWindow />,
-	document.getElementById('MetaLightboxApp'),
+  <MetaWindow />,
+  document.getElementById('MetaLightboxApp'),
 );
 
 // display custom HTML content manually using JS
