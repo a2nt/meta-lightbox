@@ -6,96 +6,103 @@
 </style>
 
 <div id="MetaLightboxContainer">
-	<h2>Loading data</h2>
+	<div class="typography">
+		<h2>Loading data</h2>
 
-	<p>
-		<a
-			href="../src/img/photo1.png"
+		<p>
+			<a
+				href="../src/img/photo1.png"
+				data-toggle="lightbox"
+				data-gallery="demo"
+				data-title="That's first link"
+				>Load an Image</a
+			>
+
+			<br />
+
+			<a href="../src/test.json" data-toggle="lightbox">
+				Load JSON </a
+			><style>
+				[data-toggle='lightbox']:hover,
+				[data-toggle='lightbox']:focus {
+					text-decoration: underline;
+				}
+			</style>
+
+			<br />
+			<a href="../src/test-pajax.html" data-toggle="lightbox">
+				Load Partial AJAX HTML </a
+			><br />
+
+			<a href="../src/not-found.html" data-toggle="lightbox">
+				Not Found test
+			</a>
+		</p>
+
+		<h2>Embeds</h2>
+		<p>
+			<a
+				href="https://www.youtube.com/watch?v=WYvZZYthDRI"
+				data-toggle="lightbox"
+				data-embed="true"
+				>Embed Youtube link</a
+			>
+			<br />
+			<a
+				href="https://vimeo.com/26216129"
+				data-toggle="lightbox"
+				data-embed="true"
+				>Embed Vimeo link</a
+			>
+			<br />
+
+			<a
+				href="https://soundcloud.com/littlenapoleon/led-zeppelin-vs-rolling-stones"
+				data-toggle="lightbox"
+				data-embed="true"
+				>Embed SoundCloud link</a
+			><br />
+			<a
+				href="https://www.instagram.com/p/CKl5n87hf7R/"
+				data-toggle="lightbox"
+				data-embed="true"
+				>Embed Instagram</a
+			>
+		</p>
+
+		<h2>Other</h2>
+		<p>
+			<a
+				href="../src/img/photo2.jpg"
+				data-toggle="lightbox"
+				data-gallery="demo"
+			>
+				Use [data-toggle="lightbox"] attribute to attach lightbox action
+				and [href] to specify URL.
+			</a>
+		</p>
+		<p>
+			<a
+				href="../src/img/photo1.png"
+				data-toggle="lightbox"
+				data-gallery="demo"
+				data-title="Use data-title attribute to specify lightbox title"
+			>
+				Use [data-gallery="YOUR_GALLERY_NAME"] to group ligthboxes with
+				next/prev arrows
+			</a>
+		</p>
+		<p
 			data-toggle="lightbox"
+			data-href="https://youtu.be/GgnClrx8N2k"
 			data-gallery="demo"
-			data-title="That's first link"
-			>Load an Image</a
+			data-title="Yes you can link vimeo and youtube videos as long as AJAX content"
 		>
-
-		<br />
-
-		<a href="../src/test.json" data-toggle="lightbox">
-			Load JSON
-		</a>
-
-		<br />
-		<a href="../src/test-pajax.html" data-toggle="lightbox">
-			Load Partial AJAX HTML </a
-		><br />
-
-		<a href="../src/not-found.html" data-toggle="lightbox">
-			Not Found test
-		</a>
-	</p>
-
-	<h2>Embeds</h2>
-	<p>
-		<a
-			href="https://www.youtube.com/watch?v=WYvZZYthDRI"
-			data-toggle="lightbox"
-			data-embed="true"
-			>Embed Youtube link</a
-		>
-		<br />
-		<a
-			href="https://vimeo.com/26216129"
-			data-toggle="lightbox"
-			data-embed="true"
-			>Embed Vimeo link</a
-		>
-		<br />
-
-		<a
-			href="https://soundcloud.com/littlenapoleon/led-zeppelin-vs-rolling-stones"
-			data-toggle="lightbox"
-			data-embed="true"
-			>Embed SoundCloud link</a
-		><br />
-		<a
-			href="https://www.instagram.com/p/CKl5n87hf7R/"
-			data-toggle="lightbox"
-			data-embed="true"
-			>Embed Instagram</a
-		>
-	</p>
-
-	<h2>Other</h2>
-	<p>
-		<a
-			href="../src/img/photo2.jpg"
-			data-toggle="lightbox"
-			data-gallery="demo"
-		>
-			Use [data-toggle="lightbox"] attribute to attach lightbox action and
-			[href] to specify URL.
-		</a>
-	</p>
-	<p>
-		<a
-			href="../src/img/photo1.png"
-			data-toggle="lightbox"
-			data-gallery="demo"
-			data-title="Use data-title attribute to specify lightbox title"
-		>
-			Use [data-gallery="YOUR_GALLERY_NAME"] to group ligthboxes with
-			next/prev arrows
-		</a>
-	</p>
-	<p
-		data-toggle="lightbox"
-		data-href="https://youtu.be/GgnClrx8N2k"
-		data-gallery="demo"
-		data-title="Yes you can link vimeo and youtube videos as long as AJAX content"
-	>
-		Use [data-toggle="lightbox"] + [data-href] attribute to toggle lightbox
-		on regular elements.
-		<b>Click me!</b>
-	</p>
+			Use [data-toggle="lightbox"] + [data-href] attribute to toggle
+			lightbox on regular elements.
+			<b>Click me!</b>
+		</p>
+	</div>
 
 	<div id="MetaLightboxApp"></div>
 </div>
