@@ -1,6 +1,8 @@
 /*
  * Lightbox window
  */
+
+import Events from './_events';
 import { Component } from 'react';
 import styles from '../scss/_window.scss';
 
@@ -109,6 +111,8 @@ class MetaWindow extends Component {
         }
 
         ui.state.collections[gallery][i].click();
+
+        W.dispatchEvent(new Event('MetaLightboxUI.next'));
     };
 
     prev = () => {
@@ -124,6 +128,8 @@ class MetaWindow extends Component {
         }
 
         ui.state.collections[gallery][i].click();
+
+        W.dispatchEvent(new Event('MetaLightboxUI.prev'));
     };
 
     reset = () => {
@@ -214,6 +220,8 @@ class MetaWindow extends Component {
                         );
                         break;
                 }
+
+                W.dispatchEvent(new Event('MetaLightboxUI.loaded'));
             })
             .catch((error) => {
                 console.error(error);
@@ -239,6 +247,8 @@ class MetaWindow extends Component {
                 }
 
                 ui.setState({ error: msg });
+
+                W.dispatchEvent(new Event('MetaLightboxUI.error'));
             })
             .then(() => {
                 ui.setState({ loading: false });
@@ -281,6 +291,7 @@ class MetaWindow extends Component {
         console.log(`${ui.name}: show`);
 
         ui.setState({ shown: true });
+        W.dispatchEvent(new Event('MetaLightboxUI.show'));
     };
 
     hide = () => {
@@ -288,6 +299,7 @@ class MetaWindow extends Component {
 
         console.log(`${ui.name}: hide`);
         ui.setState({ shown: false });
+        W.dispatchEvent(new Event('MetaLightboxUI.hide'));
     };
 
     getHtml = () => {
