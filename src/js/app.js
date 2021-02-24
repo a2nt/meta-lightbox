@@ -55,7 +55,7 @@ const AppUI = ((W) => {
 
   W.addEventListener(`${Events.LOADED}`, initMetaWindowLinks);
   W.addEventListener(`${Events.AJAX}`, initMetaWindowLinks);
-  W.addEventListener(`MetaLightboxUI.initLinks`, initMetaWindowLinks);
+  W.addEventListener(`MetaWindow.initLinks`, initMetaWindowLinks);
 
   return MetaLightbox;
 })(window);

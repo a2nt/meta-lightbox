@@ -90,7 +90,7 @@ class MetaWindow extends Component {
         console.log(`${ui.name}: init`);
         ui.axios = axios;
 
-        W.dispatchEvent(new Event('MetaLightboxUI.init'));
+        W.dispatchEvent(new Event(`{ui.name}.init`));
     }
 
     _currIndex = () => {
@@ -115,7 +115,7 @@ class MetaWindow extends Component {
 
         ui.state.collections[gallery][i].click();
 
-        W.dispatchEvent(new Event('MetaLightboxUI.next'));
+        W.dispatchEvent(new Event(`{ui.name}.next`));
     };
 
     prev = () => {
@@ -132,7 +132,7 @@ class MetaWindow extends Component {
 
         ui.state.collections[gallery][i].click();
 
-        W.dispatchEvent(new Event('MetaLightboxUI.prev'));
+        W.dispatchEvent(new Event(`{ui.name}.prev`));
     };
 
     reset = () => {
@@ -224,7 +224,7 @@ class MetaWindow extends Component {
                         break;
                 }
 
-                W.dispatchEvent(new Event('MetaLightboxUI.loaded'));
+                W.dispatchEvent(new Event(`{ui.name}.loaded`));
             })
             .catch((error) => {
                 console.error(error);
@@ -251,7 +251,7 @@ class MetaWindow extends Component {
 
                 ui.setState({ error: msg });
 
-                W.dispatchEvent(new Event('MetaLightboxUI.error'));
+                W.dispatchEvent(new Event(`{ui.name}.error`));
             })
             .then(() => {
                 ui.setState({ loading: false });
@@ -294,7 +294,7 @@ class MetaWindow extends Component {
         console.log(`${ui.name}: show`);
 
         ui.setState({ shown: true });
-        W.dispatchEvent(new Event('MetaLightboxUI.show'));
+        W.dispatchEvent(new Event(`{ui.name}.show`));
     };
 
     hide = () => {
@@ -302,7 +302,7 @@ class MetaWindow extends Component {
 
         console.log(`${ui.name}: hide`);
         ui.setState({ shown: false });
-        W.dispatchEvent(new Event('MetaLightboxUI.hide'));
+        W.dispatchEvent(new Event(`{ui.name}.hide`));
     };
 
     getHtml = () => {
