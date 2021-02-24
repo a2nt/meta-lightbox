@@ -18,8 +18,9 @@ const AppUI = ((W) => {
 
   const initMetaWindowLinks = () => {
     const ui = MetaLightbox;
+    console.log(`MetaWindow: [links] init`);
 
-    document.querySelectorAll('[data-toggle="lightbox"]').forEach((el) => {
+    document.querySelectorAll('[data-toggle="lightbox"],[data-gallery="${gallery}"]').forEach((el) => {
       // collections
       const gallery = el.getAttribute('data-gallery');
       if (gallery) {
@@ -36,11 +37,11 @@ const AppUI = ((W) => {
       // click handler
       el.addEventListener('click', (e) => {
         e.preventDefault();
+        console.log(`MetaWindow: [link] click`);
 
         const el = e.currentTarget;
         const link =
                     el.getAttribute('href') || el.getAttribute('data-href');
-
         const embed = el.getAttribute('data-embed');
         ui.state.current = el;
 
