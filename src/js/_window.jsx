@@ -8,6 +8,8 @@ import styles from '../scss/_window.scss';
 
 import Embed, { defaultProviders } from 'react-tiny-oembed';
 
+const W = window;
+
 const InstagramProvider = {
     provider_name: 'Instagram',
     provider_url: 'https://instagram.com',
@@ -86,8 +88,9 @@ class MetaWindow extends Component {
         const ui = this;
         ui.name = ui.constructor.name;
         console.log(`${ui.name}: init`);
-
         ui.axios = axios;
+
+        W.dispatchEvent(new Event('MetaLightboxUI.init'));
     }
 
     _currIndex = () => {
