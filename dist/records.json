@@ -35,6 +35,31 @@
       143
     ]
   },
+  "mini-css-extract-plugin /mnt/data/srv/dist/repositories/meta-lightbox/node_modules/.pnpm/css-loader@5.0.1_webpack@5.19.0/node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[1].use[1]!./node_modules/.pnpm/resolve-url-loader@3.1.2/node_modules/resolve-url-loader/index.js!./node_modules/.pnpm/sass-loader@10.1.1_node-sass@5.0.0+webpack@5.19.0/node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[1].use[3]!./src/scss/_window.scss": [
+    {
+      "chunks": {
+        "byName": {
+          "mini-css-extract-plugin": 323
+        },
+        "bySource": {
+          "0 mini-css-extract-plugin": 323
+        },
+        "usedIds": [
+          323
+        ]
+      },
+      "modules": {
+        "byIdentifier": {
+          "./node_modules/.pnpm/babel-loader@8.2.2_cfa6fea171df94783407619dd74e11fe/node_modules/babel-loader/lib/index.js??ruleSet[1].rules[0].use!./node_modules/.pnpm/css-loader@5.0.1_webpack@5.19.0/node_modules/css-loader/dist/runtime/api.js": 646,
+          "./node_modules/.pnpm/css-loader@5.0.1_webpack@5.19.0/node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[1].use[1]!./node_modules/.pnpm/resolve-url-loader@3.1.2/node_modules/resolve-url-loader/index.js!./node_modules/.pnpm/sass-loader@10.1.1_node-sass@5.0.0+webpack@5.19.0/node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[1].use[3]!./src/scss/_window.scss": 488
+        },
+        "usedIds": [
+          488,
+          646
+        ]
+      }
+    }
+  ],
   "modules": {
     "byIdentifier": {
       "./node_modules/.pnpm/babel-loader@8.2.2_cfa6fea171df94783407619dd74e11fe/node_modules/babel-loader/lib/index.js??ruleSet[1].rules[0].use!./node_modules/.pnpm/axios@0.21.1/node_modules/axios/index.js": 313,
@@ -68,7 +93,7 @@
       "./node_modules/.pnpm/babel-loader@8.2.2_cfa6fea171df94783407619dd74e11fe/node_modules/babel-loader/lib/index.js??ruleSet[1].rules[0].use!./node_modules/.pnpm/brace-expansion@2.0.0/node_modules/brace-expansion/index.js": 708,
       "./node_modules/.pnpm/babel-loader@8.2.2_cfa6fea171df94783407619dd74e11fe/node_modules/babel-loader/lib/index.js??ruleSet[1].rules[0].use!./node_modules/.pnpm/minimatch@3.0.4/node_modules/minimatch/minimatch.js": 158,
       "./node_modules/.pnpm/babel-loader@8.2.2_cfa6fea171df94783407619dd74e11fe/node_modules/babel-loader/lib/index.js??ruleSet[1].rules[0].use!./node_modules/.pnpm/react-tiny-oembed@1.0.1_react-dom@17.0.1+react@17.0.1/node_modules/react-tiny-oembed/lib/index.js": 555,
-      "./node_modules/.pnpm/babel-loader@8.2.2_cfa6fea171df94783407619dd74e11fe/node_modules/babel-loader/lib/index.js??ruleSet[1].rules[0].use!./src/js/app.js|13e97a4e07d84c458f75bd03e53eb349": 994,
+      "./node_modules/.pnpm/babel-loader@8.2.2_cfa6fea171df94783407619dd74e11fe/node_modules/babel-loader/lib/index.js??ruleSet[1].rules[0].use!./src/js/app.js|d1f4b90b1dbcfd6f2d4b65e681707857": 80,
       "external \"React\"": 804,
       "ignored|path": 386
     },
@@ -76,6 +101,7 @@
       32,
       66,
       67,
+      80,
       96,
       109,
       158,
@@ -105,8 +131,7 @@
       804,
       906,
       954,
-      969,
-      994
+      969
     ]
   }
 }

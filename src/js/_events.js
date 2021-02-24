@@ -18,7 +18,7 @@ export default {
   SWIPERIGHT: 'swiperight panright',
   ALLERTAPPEARED: 'alert-appeared',
   ALERTREMOVED: 'alert-removed',
-  LODEDANDREADY: 'load-ready',
+  LOADEDANDREADY: 'load-ready',
   LAZYIMAGEREADY: 'image-lazy-bg-loaded',
   LAZYIMAGESREADY: 'images-lazy-loaded',
   MAPLOADED: 'map-loaded',

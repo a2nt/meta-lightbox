@@ -6,7 +6,7 @@ $body-color: $clr-black !default;
 $grid-gutter-width: 2rem !default;
 $grid-gutter-height: 2rem !default;
 
-$meta-overlay-bg: transparentize($clr-blue-grey-500, 0.2) !default;
+$meta-overlay-bg: transparentize($clr-grey-600, 0.2) !default;
 
 $meta-text-wrapper-bg: $body-bg !default;
 $meta-text-wrapper-color: $body-color !default;
@@ -34,26 +34,25 @@ $meta-video-width: 16 !default;
 $meta-video-height: 9 !default;
 
 // extra variables and mixings
-$grid-breakpoints: (
-    xs: 0,
-    sm: 576px,
-    md: 768px,
-    lg: 992px,
-    xl: 1200px,
-    xxl: 1390px,
-    xxxl: 1590px,
+$grid-breakpoints: (xs: 0,
+sm: 576px,
+md: 768px,
+lg: 992px,
+xl: 1200px,
+xxl: 1390px,
+xxxl: 1590px,
 ) !default;
-$container-max-widths: (
-    sm: 540px,
-    md: 720px,
-    lg: 960px,
-    xl: 1140px,
-    xxl: 1330px,
-    xxxl: 1560px,
+$container-max-widths: (sm: 540px,
+md: 720px,
+lg: 960px,
+xl: 1140px,
+xxl: 1330px,
+xxxl: 1560px,
 ) !default;
 
 // hovers
 @mixin hover-focus() {
+
     &:hover,
     &:focus {
         @content;
@@ -61,6 +60,7 @@ $container-max-widths: (
 }
 
 @mixin hover-focus-active() {
+
     &:hover,
     &:focus,
     &:active {
@@ -101,13 +101,16 @@ $container-max-widths: (
 
 @mixin responsive-ratio($x, $y, $pseudo: false) {
     $padding: unquote(($y / $x) * 100 + '%');
+
     @if $pseudo {
         &:before {
             @include pseudo($pos: relative);
             width: 100%;
             padding-top: $padding;
         }
-    } @else {
+    }
+
+    @else {
         padding-top: $padding;
     }
 }
