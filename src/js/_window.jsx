@@ -5,6 +5,7 @@
 import Events from './_events';
 import { Component } from 'react';
 import Swipe from 'react-easy-swipe';
+import KeyboardJS from 'keyboardjs';
 
 import Embed, { defaultProviders } from 'react-tiny-oembed';
 
@@ -115,6 +116,7 @@ class MetaWindow extends Component {
 
         ui.state.collections[gallery][i].click();
 
+        console.log(`${ui.name}: next`);
         W.dispatchEvent(new Event(`{ui.name}.next`));
     };
 
@@ -132,6 +134,7 @@ class MetaWindow extends Component {
 
         ui.state.collections[gallery][i].click();
 
+        console.log(`${ui.name}: prev`);
         W.dispatchEvent(new Event(`{ui.name}.prev`));
     };
 
@@ -301,6 +304,14 @@ class MetaWindow extends Component {
         const ui = this;
 
         console.log(`${ui.name}: hide`);
+
+        KeyboardJS.withContext(name, () => {
+            KeyboardJS.unbind('left', ui.prev);
+            KeyboardJS.unbind('right', ui.next);
+        });
+
+        KeyboardJS.setContext('index');
+
         ui.setState({ shown: false });
         W.dispatchEvent(new Event(`{ui.name}.hide`));
     };
@@ -340,6 +351,12 @@ class MetaWindow extends Component {
 
         let navs = null;
         const el = ui.state.current;
+        KeyboardJS.setContext(name);
+        KeyboardJS.withContext(name, () => {
+            KeyboardJS.unbind('left', ui.prev);
+            KeyboardJS.unbind('right', ui.next);
+        });
+
         if (el) {
             const gallery = el.getAttribute('data-gallery');
             if (gallery && ui.state.collections[gallery].length > 1) {
@@ -361,6 +378,11 @@ class MetaWindow extends Component {
                         </button>
                     </nav>
                 );
+
+                KeyboardJS.withContext(name, () => {
+                    KeyboardJS.bind('left', ui.prev);
+                    KeyboardJS.bind('right', ui.next);
+                });
             }
         }
 
