@@ -4,7 +4,6 @@
 
 import Events from './_events';
 import { Component } from 'react';
-import styles from '../scss/_window.scss';
 
 import Embed, { defaultProviders } from 'react-tiny-oembed';
 

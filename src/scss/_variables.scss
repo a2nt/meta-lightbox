@@ -6,7 +6,7 @@ $body-color: $clr-black !default;
 $grid-gutter-width: 2rem !default;
 $grid-gutter-height: 2rem !default;
 
-$meta-overlay-bg: transparentize($clr-grey-600, 0.2) !default;
+$meta-overlay-bg: transparentize($clr-black, 0.2) !default;
 
 $meta-text-wrapper-bg: $body-bg !default;
 $meta-text-wrapper-color: $body-color !default;
@@ -15,10 +15,12 @@ $meta-text-wrapper-padding-height: $grid-gutter-height/2 !default;
 
 $meta-nav-size: 2rem !default;
 $meta-nav-arrows-size: 2.5rem !default;
-$meta-nav-color: $clr-grey-900 !default;
+$meta-nav-color: $clr-white !default;
 $meta-nav-hover-color: $clr-blue-grey-50 !default;
-$meta-nav-hover-bg: $clr-blue !default;
-$meta-nav-hover-shadow: $clr-white !default;
+$meta-nav-hover-bg: none !default;
+$meta-nav-hover-shadow: $clr-black !default;
+$meta-nav-hover-transform: scale(1.5) !default;
+$meta-nav-close-hover-transform: rotate(-180deg) !default;
 
 $meta-nav-padding: 0.25rem 0.5rem !default;
 
