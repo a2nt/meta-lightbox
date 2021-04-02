@@ -4,6 +4,7 @@
 
 import Events from './_events';
 import { Component } from 'react';
+import Swipe from 'react-easy-swipe';
 
 import Embed, { defaultProviders } from 'react-tiny-oembed';
 
@@ -191,8 +192,8 @@ class MetaWindow extends Component {
                     case 'image/svg':
                         ui.setContent(
                             `<img src="data:${
-								resp.headers['content-type']
-							};base64,${ui._imageEncode(resp.data)}" />`,
+                                resp.headers['content-type']
+                            };base64,${ui._imageEncode(resp.data)}" />`,
                             'image',
                         );
                         break;
@@ -309,6 +310,30 @@ class MetaWindow extends Component {
         return { __html: ui.state.content };
     };
 
+
+    onSwipeMove(position, event) {
+        const ui = this.ui;
+        const x = position.x;
+
+        if (ui.locked || Math.abs(x) < 50) {
+            return;
+        }
+
+        ui.locked = true;
+        setTimeout(() => {
+            ui.locked = false;
+        }, 1000);
+
+        if (x > 0) {
+            console.log(`${ui.name}: swipe right`);
+            ui.prev();
+        } else {
+            console.log(`${ui.name}: swipe left`);
+            ui.next();
+        }
+    }
+
+
     render() {
         const ui = this;
         const name = ui.name;
@@ -320,74 +345,74 @@ class MetaWindow extends Component {
             if (gallery && ui.state.collections[gallery].length > 1) {
                 navs = (
                     <nav className="meta-navs">
-						<button
-							className="meta-nav meta-nav-arrow meta-nav-arrow__prev a"
-							onClick={ui.prev}
-						>
-							<i className="fa fas fa-chevron-left"></i>
-							<span className="sr-only">Previous</span>
-						</button>
-						<button
-							className="meta-nav meta-nav-arrow meta-nav-arrow__next a"
-							onClick={ui.next}
-						>
-							<i className="fa fas fa-chevron-right"></i>
-							<span className="sr-only">Next</span>
-						</button>
-					</nav>
+                        <button
+                            className="meta-nav meta-nav-arrow meta-nav-arrow__prev a"
+                            onClick={ui.prev}
+                        >
+                            <i className="fa fas fa-chevron-left"></i>
+                            <span className="sr-only">Previous</span>
+                        </button>
+                        <button
+                            className="meta-nav meta-nav-arrow meta-nav-arrow__next a"
+                            onClick={ui.next}
+                        >
+                            <i className="fa fas fa-chevron-right"></i>
+                            <span className="sr-only">Next</span>
+                        </button>
+                    </nav>
                 );
             }
         }
 
         const content = ui.state.embed ? (
             <section className="meta-wrap typography">
-				<Embed
-					url={ui.state.embed}
-					providers={[...defaultProviders, InstagramProvider]}
-					LoadingFallbackElement=<div className="meta-spinner_embed">
-						... Loading ...
-					</div>
-				/>
-			</section>
-		) : (
-			<section
-				className="meta-wrap typography"
-				dangerouslySetInnerHTML={ui.getHtml()}
-			></section>
+                <Embed
+                    url={ui.state.embed}
+                    providers={[...defaultProviders, InstagramProvider]}
+                    LoadingFallbackElement=<div className="meta-spinner_embed">
+                        ... Loading ...
+                    </div>
+                />
+            </section>
+        ) : (
+            <section
+                className="meta-wrap typography"
+                dangerouslySetInnerHTML={ui.getHtml()}
+            ></section>
         );
 
         const className = `meta-${name} meta-${name}__${ui.state.type.join(
-			` meta-${name}__`,
-		)}`;
+            ` meta-${name}__`,
+        )}`;
 
         const overlayClassName = `meta-${name}-overlay${
-			ui.state.shown ? ` meta-${name}-overlay__open` : ''
-		}${ui.state.loading ? ` meta-${name}-overlay__loading` : ''}${
-			ui.state.error ? ` meta-${name}-overlay__error` : ''
-		}`;
+            ui.state.shown ? ` meta-${name}-overlay__open` : ''
+        }${ui.state.loading ? ` meta-${name}-overlay__loading` : ''}${
+            ui.state.error ? ` meta-${name}-overlay__error` : ''
+        }`;
 
         return (
-            <div className={className}>
-				<div className={overlayClassName}>
-					<article className="meta-content">
-						{navs}
-						<button
-							className="meta-nav meta-close a"
-							onClick={ui.hide}
-						>
-							<i className="fa fas fa-times"></i>
-							<span className="sr-only">Close</span>
-						</button>
+            <Swipe className={className} ui={ui} onSwipeMove={ui.onSwipeMove}>
+                <div className={overlayClassName}>
+                    <article className="meta-content">
+                        {navs}
+                        <button
+                            className="meta-nav meta-close a"
+                            onClick={ui.hide}
+                        >
+                            <i className="fa fas fa-times"></i>
+                            <span className="sr-only">Close</span>
+                        </button>
 
-						<div className="meta-spinner">... Loading ...</div>
-						<div className="meta-error alert alert-danger">
-							{ui.state.error}
-						</div>
+                        <div className="meta-spinner">... Loading ...</div>
+                        <div className="meta-error alert alert-danger">
+                            {ui.state.error}
+                        </div>
 
-						{content}
-					</article>
-				</div>
-			</div>
+                        {content}
+                    </article>
+                </div>
+            </Swipe>
         );
     }
 }
