@@ -3,11 +3,15 @@
  */
 
 import Events from './_events';
-import { Component } from 'react';
+import {
+    Component
+} from 'react';
 import Swipe from 'react-easy-swipe';
 import KeyboardJS from 'keyboardjs';
 
-import Embed, { defaultProviders } from 'react-tiny-oembed';
+import Embed, {
+    defaultProviders
+} from 'react-tiny-oembed';
 
 const W = window;
 
@@ -15,58 +19,57 @@ const InstagramProvider = {
     provider_name: 'Instagram',
     provider_url: 'https://instagram.com',
     endpoints: [{
-            schemes: [
-                'http://instagram.com/*/p/*,',
-                'http://www.instagram.com/*/p/*,',
-                'https://instagram.com/*/p/*,',
-                'https://www.instagram.com/*/p/*,',
-                'http://instagram.com/p/*',
-                'http://instagr.am/p/*',
-                'http://www.instagram.com/p/*',
-                'http://www.instagr.am/p/*',
-                'https://instagram.com/p/*',
-                'https://instagr.am/p/*',
-                'https://www.instagram.com/p/*',
-                'https://www.instagr.am/p/*',
-                'http://instagram.com/tv/*',
-                'http://instagr.am/tv/*',
-                'http://www.instagram.com/tv/*',
-                'http://www.instagr.am/tv/*',
-                'https://instagram.com/tv/*',
-                'https://instagr.am/tv/*',
-                'https://www.instagram.com/tv/*',
-                'https://www.instagr.am/tv/*',
-            ],
-            url: 'https://graph.facebook.com/v9.0/instagram_oembed',
-            formats: ['json'],
-        },
-        {
-            schemes: [
-                'http://instagram.com/*/p/*,',
-                'http://www.instagram.com/*/p/*,',
-                'https://instagram.com/*/p/*,',
-                'https://www.instagram.com/*/p/*,',
-                'http://instagram.com/p/*',
-                'http://instagr.am/p/*',
-                'http://www.instagram.com/p/*',
-                'http://www.instagr.am/p/*',
-                'https://instagram.com/p/*',
-                'https://instagr.am/p/*',
-                'https://www.instagram.com/p/*',
-                'https://www.instagr.am/p/*',
-                'http://instagram.com/tv/*',
-                'http://instagr.am/tv/*',
-                'http://www.instagram.com/tv/*',
-                'http://www.instagr.am/tv/*',
-                'https://instagram.com/tv/*',
-                'https://instagr.am/tv/*',
-                'https://www.instagram.com/tv/*',
-                'https://www.instagr.am/tv/*',
-            ],
-            url: 'https://api.instagram.com/oembed',
-            formats: ['json'],
-        },
-    ],
+        schemes: [
+            'http://instagram.com/*/p/*,',
+            'http://www.instagram.com/*/p/*,',
+            'https://instagram.com/*/p/*,',
+            'https://www.instagram.com/*/p/*,',
+            'http://instagram.com/p/*',
+            'http://instagr.am/p/*',
+            'http://www.instagram.com/p/*',
+            'http://www.instagr.am/p/*',
+            'https://instagram.com/p/*',
+            'https://instagr.am/p/*',
+            'https://www.instagram.com/p/*',
+            'https://www.instagr.am/p/*',
+            'http://instagram.com/tv/*',
+            'http://instagr.am/tv/*',
+            'http://www.instagram.com/tv/*',
+            'http://www.instagr.am/tv/*',
+            'https://instagram.com/tv/*',
+            'https://instagr.am/tv/*',
+            'https://www.instagram.com/tv/*',
+            'https://www.instagr.am/tv/*',
+        ],
+        url: 'https://graph.facebook.com/v9.0/instagram_oembed',
+        formats: ['json'],
+    },
+    {
+        schemes: [
+            'http://instagram.com/*/p/*,',
+            'http://www.instagram.com/*/p/*,',
+            'https://instagram.com/*/p/*,',
+            'https://www.instagram.com/*/p/*,',
+            'http://instagram.com/p/*',
+            'http://instagr.am/p/*',
+            'http://www.instagram.com/p/*',
+            'http://www.instagr.am/p/*',
+            'https://instagram.com/p/*',
+            'https://instagr.am/p/*',
+            'https://www.instagram.com/p/*',
+            'https://www.instagr.am/p/*',
+            'http://instagram.com/tv/*',
+            'http://instagr.am/tv/*',
+            'http://www.instagram.com/tv/*',
+            'http://www.instagr.am/tv/*',
+            'https://instagram.com/tv/*',
+            'https://instagr.am/tv/*',
+            'https://www.instagram.com/tv/*',
+            'https://www.instagr.am/tv/*',
+        ],
+        url: 'https://api.instagram.com/oembed',
+        formats: ['json'],
+    }, ],
 };
 
 const axios = require('axios');
@@ -164,12 +167,28 @@ class MetaWindow extends Component {
         ui.show();
     };
 
+    setCaption = (title) => {
+        const ui = this;
+        console.log(`${ui.name}: setCaption`);
+
+        ui.state.caption = title;
+    };
+
+    getCaption = () => {
+        const ui = this;
+        return {
+            __html: ui.state.caption
+        };
+    }
+
     load = (link) => {
         const ui = this;
         const axios = ui.axios;
 
         ui.reset();
-        ui.setState({ loading: true });
+        ui.setState({
+            loading: true
+        });
         ui.show();
 
         axios
@@ -252,12 +271,16 @@ class MetaWindow extends Component {
                     console.warn('Error', error.message);
                 }
 
-                ui.setState({ error: msg });
+                ui.setState({
+                    error: msg
+                });
 
                 W.dispatchEvent(new Event(`{ui.name}.error`));
             })
             .then(() => {
-                ui.setState({ loading: false });
+                ui.setState({
+                    loading: false
+                });
             });
     };
 
@@ -289,14 +312,19 @@ class MetaWindow extends Component {
             typeArr = type.split(' ');
         }
 
-        ui.setState({ content: html, type: typeArr });
+        ui.setState({
+            content: html,
+            type: typeArr
+        });
     };
 
     show = () => {
         const ui = this;
         console.log(`${ui.name}: show`);
 
-        ui.setState({ shown: true });
+        ui.setState({
+            shown: true
+        });
         W.dispatchEvent(new Event(`{ui.name}.show`));
     };
 
@@ -312,13 +340,17 @@ class MetaWindow extends Component {
 
         KeyboardJS.setContext('index');
 
-        ui.setState({ shown: false });
+        ui.setState({
+            shown: false
+        });
         W.dispatchEvent(new Event(`{ui.name}.hide`));
     };
 
     getHtml = () => {
         const ui = this;
-        return { __html: ui.state.content };
+        return {
+            __html: ui.state.content
+        };
     };
 
 
@@ -413,6 +445,10 @@ class MetaWindow extends Component {
             ui.state.error ? ` meta-${name}-overlay__error` : ''
         }`;
 
+        const caption = ui.state.caption ?
+            <div className="meta-caption" dangerouslySetInnerHTML={ui.getCaption()}></div> :
+            '';
+
         return (
             <Swipe className={className} ui={ui} onSwipeMove={ui.onSwipeMove}>
                 <div className={overlayClassName}>
@@ -432,6 +468,8 @@ class MetaWindow extends Component {
                         </div>
 
                         {content}
+
+                        {caption}
                     </article>
                 </div>
             </Swipe>

@@ -11,54 +11,59 @@ import ReactDOM from 'react-dom';
 import MetaWindow from './_window.jsx';
 
 const AppUI = ((W) => {
-  const MetaLightbox = ReactDOM.render(
-    <MetaWindow />,
-    document.getElementById('MetaLightboxApp'),
-  );
+    const MetaLightbox = ReactDOM.render(
+        <MetaWindow />,
+        document.getElementById('MetaLightboxApp'),
+    );
 
-  const initMetaWindowLinks = () => {
-    const ui = MetaLightbox;
-    console.log(`MetaWindow: [links] init`);
+    const initMetaWindowLinks = () => {
+        const ui = MetaLightbox;
+        console.log(`MetaWindow: [links] init`);
 
-    document.querySelectorAll('[data-toggle="lightbox"],[data-gallery="${gallery}"]').forEach((el) => {
-      // collections
-      const gallery = el.getAttribute('data-gallery');
-      if (gallery) {
-        ui.state.collections[gallery] = [];
-        document
-          .querySelectorAll(
-            `[data-toggle="lightbox"][data-gallery="${gallery}"]`,
-          )
-          .forEach((el) => {
-            ui.state.collections[gallery].push(el);
-          });
-      }
+        document.querySelectorAll('[data-toggle="lightbox"],[data-gallery="${gallery}"]').forEach((el) => {
+            // collections
+            const gallery = el.getAttribute('data-gallery');
+            if (gallery) {
+                ui.state.collections[gallery] = [];
+                document
+                    .querySelectorAll(
+                        `[data-toggle="lightbox"][data-gallery="${gallery}"]`,
+                    )
+                    .forEach((el) => {
+                        ui.state.collections[gallery].push(el);
+                    });
+            }
 
-      // click handler
-      el.addEventListener('click', (e) => {
-        e.preventDefault();
-        console.log(`MetaWindow: [link] click`);
+            // click handler
+            el.addEventListener('click', (e) => {
+                e.preventDefault();
+                console.log(`MetaWindow: [link] click`);
 
-        const el = e.currentTarget;
-        const link =
+                const el = e.currentTarget;
+                const link =
                     el.getAttribute('href') || el.getAttribute('data-href');
-        const embed = el.getAttribute('data-embed');
-        ui.state.current = el;
+                const embed = el.getAttribute('data-embed');
+                ui.state.current = el;
 
-        if (embed) {
-          ui.embed(link);
-        } else {
-          ui.load(link);
-        }
-      });
-    });
-  };
+                if (embed) {
+                    ui.embed(link);
+                } else {
+                    ui.load(link);
+                }
 
-  W.addEventListener(`${Events.LOADED}`, initMetaWindowLinks);
-  W.addEventListener(`${Events.AJAX}`, initMetaWindowLinks);
-  W.addEventListener(`MetaWindow.initLinks`, initMetaWindowLinks);
+                const title = el.getAttribute('data-title');
+                if (title) {
+                    ui.setCaption(title);
+                }
+            });
+        });
+    };
 
-  return MetaLightbox;
+    W.addEventListener(`${Events.LOADED}`, initMetaWindowLinks);
+    W.addEventListener(`${Events.AJAX}`, initMetaWindowLinks);
+    W.addEventListener(`MetaWindow.initLinks`, initMetaWindowLinks);
+
+    return MetaLightbox;
 })(window);
 
 export default AppUI;
