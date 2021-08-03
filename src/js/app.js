@@ -21,12 +21,12 @@ window.addEventListener(`${Events.LOADED}`, init);
 window.addEventListener(`${Events.AJAX}`, init);
 window.addEventListener(`MetaWindow.initLinks`, init);
 
-function importAll(r) {
+/*function importAll(r) {
   return r.keys().map(r);
 }
 
 const images = importAll(
   require.context('../img/', false, /\.(png|jpe?g|svg)$/),
-);
+);*/
 
 export default ui;
