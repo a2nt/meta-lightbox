@@ -1,5 +1,5 @@
 {
-  "name": "@a2nt/meta-lightbox",
+  "name": "@a2nt/meta-lightbox-js",
   "version": "4.0.0",
   "description": "Universal lightbox",
   "author": "Tony Air <tony@twma.pro>",
@@ -137,7 +137,7 @@
     "svg-url-loader": "^7.1.1",
     "symbol-observable": "^4.0.0",
     "terser-webpack-plugin": "^5.1.4",
-    "ts-invariant": "^0.9.0",
+    "ts-invariant": "^0.9.1",
     "tslib": "^2.3.0",
     "url": "^0.11.0",
     "url-loader": "^4.1.1",
