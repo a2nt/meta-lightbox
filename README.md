@@ -1,7 +1,7 @@
 # meta-lightbox
 
-React.JS Universal lightbox.
-Compatible to bootstrap4 and fontawesome
+Vanilla Universal lightbox.
+Compatible to bootstrap 5 and fontawesome
 
 ## Demo
 
