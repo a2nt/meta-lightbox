@@ -1,7 +1,11 @@
 # meta-lightbox
 
 Vanilla Universal lightbox.
-Compatible to bootstrap 5 and fontawesome
+Compatible with bootstrap 5 and fontawesome
+
+## Requirements
++ Axios (https://github.com/axios/axios)
+
 
 ## Demo
 

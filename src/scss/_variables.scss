@@ -1,3 +1,5 @@
+@use "sass:math";
+
 @import 'material-design-color/material-color.scss';
 
 $body-bg: $clr-white !default;
@@ -10,8 +12,8 @@ $meta-overlay-bg: transparentize($clr-black, 0.2) !default;
 
 $meta-text-wrapper-bg: $body-bg !default;
 $meta-text-wrapper-color: $body-color !default;
-$meta-text-wrapper-padding-width: $grid-gutter-width/2 !default;
-$meta-text-wrapper-padding-height: $grid-gutter-height/2 !default;
+$meta-text-wrapper-padding-width: $grid-gutter-width*0.5 !default;
+$meta-text-wrapper-padding-height: $grid-gutter-height*0.5 !default;
 
 $meta-nav-size: 2rem !default;
 $meta-nav-arrows-size: 2.5rem !default;
@@ -102,7 +104,7 @@ xxxl: 1560px,
 }
 
 @mixin responsive-ratio($x, $y, $pseudo: false) {
-    $padding: unquote(($y / $x) * 100 + '%');
+    $padding: unquote(math.div($y, $x) * 100 + '%');
 
     @if $pseudo {
         &:before {
