@@ -274,6 +274,7 @@ class MetaWindow {
         loading: false,
         type: ['embed', 'video'],
       });
+
       ui.show();
     };
 
@@ -405,11 +406,10 @@ class MetaWindow {
       }
 
       let content = '';
+      const youtubeEmbed = require('youtube-embed');
       if (ui.state.embed) {
-        content = '<section class="meta-wrap typography">' +
-                '<Embed url={ui.state.embed} providers={[...defaultProviders, InstagramProvider]}' +
-                ' LoadingFallbackElement=<div className="meta-spinner_embed"> ... Loading ... </div>' +
-                '</section>';
+        const embedLink = youtubeEmbed(ui.state.embed);
+        content = `<iframe width="600" height="380" src="${embedLink}" frameborder="0"></iframe>`;
       } else {
         const content = document.createElement('section');
         content.classList.add('meta-wrap', 'typography');

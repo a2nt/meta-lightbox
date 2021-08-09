@@ -1,6 +1,6 @@
 {
   "name": "@a2nt/meta-lightbox-js",
-  "version": "4.0.3",
+  "version": "4.0.4",
   "description": "Universal lightbox",
   "author": "Tony Air <tony@twma.pro>",
   "license": "BSD-2-Clause",
@@ -51,7 +51,8 @@
   "dependencies": {
     "axios": "^0.21.1",
     "es6-template": "^1.0.4",
-    "material-design-color": "^2.3.2"
+    "material-design-color": "^2.3.2",
+    "youtube-embed": "^1.0.0"
   },
   "devDependencies": {
     "@a2nt/image-sprite-webpack-plugin": "^0.2.5",
