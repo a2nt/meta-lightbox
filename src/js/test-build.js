@@ -5,6 +5,8 @@
  */
 
 import ui from './app';
+import '../scss/app.scss';
+import '../scss/test-build.scss';
 
 function importAll(r) {
   return r.keys().map(r);

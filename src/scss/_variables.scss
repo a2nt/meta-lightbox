@@ -1,7 +1,7 @@
 @use "sass:math";
 
 @import 'material-design-color/material-color.scss';
-
+$red: $clr-red;
 $body-bg: $clr-white !default;
 $body-color: $clr-black !default;
 

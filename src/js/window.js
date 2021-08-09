@@ -20,13 +20,9 @@ class MetaWindow {
       target: null,
     };
 
-    init(target) {
+    init() {
       const ui = this;
       console.log(`MetaWindow: [links] init`);
-
-      ui.state.target = target;
-      // reset collections
-      ui.state.collections = {};
 
       // collect new collections
       document.querySelectorAll('[data-toggle="lightbox"],[data-gallery="${gallery}"]').forEach((el) => {
@@ -67,11 +63,24 @@ class MetaWindow {
       });
     }
 
-    constructor(props) {
+    constructor(state = {
+      shown: false,
+    }, action) {
       const ui = this;
+
       ui.name = ui.constructor.name;
       console.log(`${ui.name}: init`);
       ui.axios = axios;
+
+      ui.setState(state);
+      switch (action) {
+        case 'show':
+          ui.hide();
+          break;
+        case 'hide':
+          ui.hide();
+          break;
+      }
 
       W.dispatchEvent(new Event(`{ui.name}.init`));
     }
@@ -319,9 +328,9 @@ class MetaWindow {
       return ui.state.content;
     };
 
-    setState(newState) {
+    setState(state) {
       const ui = this;
-      ui.state = Object.assign({}, ui.state, newState);
+      ui.state = Object.assign({}, ui.state, state);
       ui.render();
     }
 
@@ -382,7 +391,7 @@ class MetaWindow {
           navs.append(prevBtn);
 
           const nextBtn = document.createElement('button');
-          nextBtn.classList.add('meta-nav', 'meta-nav-arrow', 'meta-nav-arrow__prev', 'a');
+          nextBtn.classList.add('meta-nav', 'meta-nav-arrow', 'meta-nav-arrow__next', 'a');
           nextBtn.innerHTML = '<i class="icon fa fas fa-chevron-right"></i>' +
                     ' <span class="visually-hidden">Next</span>';
           nextBtn.addEventListener('click', (e) => {
