@@ -10,7 +10,7 @@ const axios = require('axios');
 class MetaWindow {
     state = {
       content: '',
-      type: [],
+      type: ['empty'],
       shown: false,
       loading: false,
       error: false,
@@ -146,7 +146,7 @@ class MetaWindow {
 
       ui.setState({
         content: '',
-        type: [],
+        type: ['empty'],
         shown: false,
         loading: false,
         error: false,
@@ -272,7 +272,7 @@ class MetaWindow {
       ui.setState({
         embed: link,
         loading: false,
-        type: ['embed', 'video'],
+        type: [`meta-${ui.name}__embed`, `meta-${ui.name}__video`],
       });
 
       ui.show();
@@ -326,6 +326,13 @@ class MetaWindow {
 
     getHtml = () => {
       const ui = this;
+
+      if (ui.state.embed) {
+        const youtubeEmbed = require('youtube-embed');
+        const embedLink = youtubeEmbed(ui.state.embed);
+        ui.state.content = `<iframe width="600" height="380" src="${embedLink}" frameborder="0"></iframe>`;
+      }
+
       return ui.state.content;
     };
 
@@ -344,7 +351,8 @@ class MetaWindow {
 
       ui.state.target.innerHTML = '';
       const meta = document.createElement('div');
-      meta.classList.add(`meta-${name}`, `meta-${name}__${ui.state.type.join(` meta-${name}__`)}`);
+      meta.classList.add(`meta-${name}`);
+      meta.classList.add(...ui.state.type);
       ui.state.target.append(meta);
 
       const metaOverlay = document.createElement('div');
@@ -405,17 +413,10 @@ class MetaWindow {
         }
       }
 
-      let content = '';
-      const youtubeEmbed = require('youtube-embed');
-      if (ui.state.embed) {
-        const embedLink = youtubeEmbed(ui.state.embed);
-        content = `<iframe width="600" height="380" src="${embedLink}" frameborder="0"></iframe>`;
-      } else {
-        const content = document.createElement('section');
-        content.classList.add('meta-wrap', 'typography');
-        content.innerHTML = ui.getHtml();
-        metaContent.append(content);
-      }
+      const content = document.createElement('section');
+      content.classList.add('meta-wrap', 'typography');
+      content.innerHTML = ui.getHtml();
+      metaContent.append(content);
 
       if (ui.state.error) {
         const error = document.createElement('div');
