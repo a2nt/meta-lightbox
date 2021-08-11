@@ -9,16 +9,16 @@ import MetaWindow from './window';
 
 const container = document.getElementById('MetaLightboxApp');
 if (!container) {
-    console.log(`MetaWindow: missing container`);
+  console.log(`MetaWindow: missing container`);
 }
 
 
 const ui = new MetaWindow({
-    target: container,
+  target: container,
 });
 
 const init = () => {
-    ui.init();
+  ui.init();
 };
 
 window.addEventListener(`${Events.LOADED}`, init);
