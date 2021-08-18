@@ -192,14 +192,18 @@ class MetaWindow {
               //json = JSON.parse(ui._abToString(resp.data));
               ui.setContent(
                 `<img src="data:${resp.headers['content-type']};base64,${ui._imageEncode(resp.data)}" />`,
-                'image',
+                `meta-${ui.name}__image`,
               );
               break;
             case 'application/json':
             case 'application/ld+json':
               // irregular types:
             case 'application/json; charset=UTF-8':
-              ui.setContent(`${json['Content']}`, 'text html json');
+              ui.setContent(`${json['Content']}`, [
+                `meta-${ui.name}__text`, 
+                `meta-${ui.name}__html`, 
+                `meta-${ui.name}__json`,
+              ]);
 
               break;
             case 'text/html':
@@ -210,9 +214,11 @@ class MetaWindow {
             case 'application/xhtml+xml; charset=UTF-8':
             case 'text/plain; charset=UTF-8':
               ui.setContent(
-                ui._abToString(resp.data),
-                'text html pajax',
-              );
+                ui._abToString(resp.data),[
+                  `meta-${ui.name}__text`, 
+                  `meta-${ui.name}__html`,
+                  `meta-${ui.name}__pajax`,
+                ]);
               break;
             default:
               console.warn(
@@ -316,7 +322,7 @@ class MetaWindow {
       const ui = this;
       console.log(`${ui.name}: setContent`);
 
-      let typeArr = type ? type : ['html', 'text'];
+      let typeArr = type ? type : [`meta-${ui.name}__html`, `meta-${ui.name}__text`];
       if (!Array.isArray(typeArr)) {
         typeArr = type.split(' ');
       }

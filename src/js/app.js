@@ -9,7 +9,7 @@ import MetaWindow from './window';
 
 const container = document.getElementById('MetaLightboxApp');
 if (!container) {
-  console.log(`MetaWindow: missing container`);
+  console.log(`MetaWindow: missing container #MetaLightboxApp`);
 }
 
 
