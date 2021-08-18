@@ -1,6 +1,6 @@
 @use "sass:math";
 
-@import 'material-design-color/material-color.scss';
+@import "material-design-color/material-color";
 $red: $clr-red;
 $body-bg: $clr-white !default;
 $body-color: $clr-black !default;
@@ -12,8 +12,8 @@ $meta-overlay-bg: transparentize($clr-black, 0.2) !default;
 
 $meta-text-wrapper-bg: $body-bg !default;
 $meta-text-wrapper-color: $body-color !default;
-$meta-text-wrapper-padding-width: $grid-gutter-width*0.5 !default;
-$meta-text-wrapper-padding-height: $grid-gutter-height*0.5 !default;
+$meta-text-wrapper-padding-width: $grid-gutter-width * 0.5 !default;
+$meta-text-wrapper-padding-height: $grid-gutter-height * 0.5 !default;
 
 $meta-nav-size: 2rem !default;
 $meta-nav-arrows-size: 2.5rem !default;
@@ -38,45 +38,45 @@ $meta-video-width: 16 !default;
 $meta-video-height: 9 !default;
 
 // extra variables and mixings
-$grid-breakpoints: (xs: 0,
-sm: 576px,
-md: 768px,
-lg: 992px,
-xl: 1200px,
-xxl: 1390px,
-xxxl: 1590px,
+$grid-breakpoints: (
+  xs: 0,
+  sm: 576px,
+  md: 768px,
+  lg: 992px,
+  xl: 1200px,
+  xxl: 1390px,
+  xxxl: 1590px,
 ) !default;
-$container-max-widths: (sm: 540px,
-md: 720px,
-lg: 960px,
-xl: 1140px,
-xxl: 1330px,
-xxxl: 1560px,
+$container-max-widths: (
+  sm: 540px,
+  md: 720px,
+  lg: 960px,
+  xl: 1140px,
+  xxl: 1330px,
+  xxxl: 1560px,
 ) !default;
 
 // hovers
 @mixin hover-focus() {
-
-    &:hover,
-    &:focus {
-        @content;
-    }
+  &:hover,
+  &:focus {
+    @content;
+  }
 }
 
 @mixin hover-focus-active() {
-
-    &:hover,
-    &:focus,
-    &:active {
-        @content;
-    }
+  &:hover,
+  &:focus,
+  &:active {
+    @content;
+  }
 }
 
 @mixin spinner_style() {
-    color: $meta-spinner-color;
-    font-size: $meta-spinner-size;
-    font-weight: $meta-spinner-weight;
-    text-transform: uppercase;
+  color: $meta-spinner-color;
+  font-size: $meta-spinner-size;
+  font-weight: $meta-spinner-weight;
+  text-transform: uppercase;
 }
 
 // screen reader
@@ -86,35 +86,33 @@ xxxl: 1560px,
 // See: https://hugogiraudel.com/2016/10/13/css-hide-and-seek/
 
 @mixin sr-only() {
-    border: 0;
-    clip: rect(0, 0, 0, 0);
-    height: 1px;
-    margin: -1px; // Fix for https://github.com/twbs/bootstrap/issues/25686
-    overflow: hidden;
-    padding: 0;
-    position: absolute;
-    white-space: nowrap;
-    width: 1px;
+  border: 0;
+  clip: rect(0, 0, 0, 0);
+  height: 1px;
+  margin: -1px; // Fix for https://github.com/twbs/bootstrap/issues/25686
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
 }
 
-@mixin pseudo($display: block, $pos: absolute, $content: '') {
-    content: $content;
-    display: $display;
-    position: $pos;
+@mixin pseudo($display: block, $pos: absolute, $content: "") {
+  content: $content;
+  display: $display;
+  position: $pos;
 }
 
 @mixin responsive-ratio($x, $y, $pseudo: false) {
-    $padding: unquote(math.div($y, $x) * 100 + '%');
+  $padding: unquote(math.div($y, $x) * 100 + "%");
 
-    @if $pseudo {
-        &:before {
-            @include pseudo($pos: relative);
-            padding-top: $padding;
-            width: 100%;
-        }
+  @if $pseudo {
+    &:before {
+      @include pseudo($pos: relative);
+      padding-top: $padding;
+      width: 100%;
     }
-
-    @else {
-        padding-top: $padding;
-    }
+  } @else {
+    padding-top: $padding;
+  }
 }

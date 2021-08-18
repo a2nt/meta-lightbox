@@ -1,6 +1,6 @@
 {
   "name": "@a2nt/meta-lightbox-js",
-  "version": "4.1.0",
+  "version": "4.1.1",
   "description": "Universal lightbox",
   "author": "Tony Air <tony@twma.pro>",
   "license": "BSD-2-Clause",
@@ -14,20 +14,19 @@
     "yarn": ">= 1.22.0"
   },
   "scripts": {
-    "start": "cross-env NODE_ENV=development webpack-dev-server --config webpack.config.serve.js",
+     "start": "cross-env NODE_ENV=development webpack-dev-server --config webpack.config.serve.js",
     "dash": "cross-env NODE_ENV=development webpack-dashboard -- webpack-dev-server --config webpack.config.serve.js",
     "build": "cross-env NODE_ENV=production webpack --progress --stats-all",
-    "lint:check": "eslint ./src --config eslint.config.json && sass-lint ./src --config sass-lint.yml -v -q",
-    "lint:fix": "eslint ./src --config eslint.config.json --fix && sass-lint-auto-fix -c ./sass-lint.yml './src/scss/*'",
-    "lint:js": "eslint ./src --config eslint.config.json",
-    "lint:sass": "sass-lint ./src --config sass-lint.yml -v -q",
-    "prebuild": "yarn lint:fix && rimraf dist",
-    "prepare": "yarn lint:fix && yarn build",
+    "lint:fix": "eslint './src/**/*.js' -c eslint.config.json --fix && sass-lint-auto-fix -s -c ./sass-lint.yml './src/**/*.scss'",
+    "lint:js": "eslint './src/**/*.js' -c eslint.config.json",
+    "lint:scss": "sass-lint ./src/**/*.scss -c sass-lint.yml -v",
+    "lint:check": "yarn lint:js && yarn lint:scss",
+    "prebuild": "yarn lint:fix && yarn lint:check && rimraf dist",
+    "prepare": "yarn build",
     "prunecaches": "rimraf ./node_modules/.cache/",
     "postinstall": "npm run prunecaches",
     "postuninstall": "npm run prunecaches",
-    "preinstall": "npx only-allow pnpm",
-    "update": "npx msw init ./src/_graphql"
+    "preinstall": "npx only-allow pnpm"
   },
   "directories": {
     "assets": {
