@@ -73,8 +73,8 @@ xxxl: 1560px,
 }
 
 @mixin spinner_style() {
-    font-size: $meta-spinner-size;
     color: $meta-spinner-color;
+    font-size: $meta-spinner-size;
     font-weight: $meta-spinner-weight;
     text-transform: uppercase;
 }
@@ -86,15 +86,15 @@ xxxl: 1560px,
 // See: https://hugogiraudel.com/2016/10/13/css-hide-and-seek/
 
 @mixin sr-only() {
-    position: absolute;
-    width: 1px;
+    border: 0;
+    clip: rect(0, 0, 0, 0);
     height: 1px;
-    padding: 0;
     margin: -1px; // Fix for https://github.com/twbs/bootstrap/issues/25686
     overflow: hidden;
-    clip: rect(0, 0, 0, 0);
+    padding: 0;
+    position: absolute;
     white-space: nowrap;
-    border: 0;
+    width: 1px;
 }
 
 @mixin pseudo($display: block, $pos: absolute, $content: '') {
@@ -109,8 +109,8 @@ xxxl: 1560px,
     @if $pseudo {
         &:before {
             @include pseudo($pos: relative);
-            width: 100%;
             padding-top: $padding;
+            width: 100%;
         }
     }
 

@@ -9,28 +9,28 @@ $module_name: 'meta-MetaWindow';
     .meta-spinner_embed,
     .meta-spinner,
     .meta-error {
-        display: none;
         align-items: center;
+        display: none;
         justify-content: center;
-        z-index: 2;
         text-align: center;
+        z-index: 2;
     }
 
     .meta-spinner_embed,
     .meta-spinner {
         @include spinner_style();
 
-        position: absolute;
+        bottom: 0;
         left: 0;
+        position: absolute;
         right: 0;
         top: 0;
-        bottom: 0;
     }
 
     .meta-error {
         color: $clr-red;
-        font-weight: bold;
         font-size: 1.5em;
+        font-weight: bold;
     }
 
     .meta-spinner_embed {
@@ -38,15 +38,15 @@ $module_name: 'meta-MetaWindow';
     }
 
     &-overlay {
+        align-items: center;
         background: $meta-overlay-bg;
+        bottom: 0;
         display: none;
-        position: fixed;
+        justify-content: center;
         left: 0;
+        position: fixed;
         right: 0;
         top: 0;
-        bottom: 0;
-        align-items: center;
-        justify-content: center;
         z-index: 98;
 
         // meta states
@@ -73,11 +73,11 @@ $module_name: 'meta-MetaWindow';
 
     // navs
     .meta-nav {
-        font-size: $meta-nav-size;
-        color: $meta-nav-color;
-        text-shadow: $meta-nav-hover-shadow 0 0 0.25em;
-        border: 0;
         background: none;
+        border: 0;
+        color: $meta-nav-color;
+        font-size: $meta-nav-size;
+        text-shadow: $meta-nav-hover-shadow 0 0 0.25em;
         z-index: 2;
 
         @include hover-focus() {
@@ -85,23 +85,23 @@ $module_name: 'meta-MetaWindow';
         }
 
         &:hover {
-            color: $meta-nav-hover-color;
             background: $meta-nav-hover-bg;
-            text-shadow: none;
+            color: $meta-nav-hover-color;
             text-decoration: none;
+            text-shadow: none;
         }
 
     }
 
     .meta-nav-arrow {
-        position: absolute;
-        bottom: 0;
-        top: auto;
-        display: flex;
-        justify-content: center;
         align-items: center;
+        bottom: 0;
+        display: flex;
         font-size: $meta-nav-arrows-size;
+        justify-content: center;
         padding: $meta-nav-padding;
+        position: absolute;
+        top: auto;
         z-index: 2;
 
         @include hover-focus() {
@@ -115,8 +115,8 @@ $module_name: 'meta-MetaWindow';
         }
 
         @media (min-width: map-get($grid-breakpoints, 'lg')) {
-            top: 0;
             bottom: 0;
+            top: 0;
         }
 
         &__next {
@@ -140,8 +140,8 @@ $module_name: 'meta-MetaWindow';
 
     .meta-close {
         position: absolute;
-        top: -3rem;
         right: 0;
+        top: -3rem;
         width: 1.25em;
 
         &:hover {
@@ -155,41 +155,41 @@ $module_name: 'meta-MetaWindow';
         }
 
         @media (min-width: map-get($grid-breakpoints, 'lg')) {
-            top: -($meta-nav-arrows-size + 0.5);
             right: -($meta-nav-arrows-size + 0.5);
+            top: -($meta-nav-arrows-size + 0.5);
         }
     }
 
     .meta-content {
-        position: relative;
-        width: 100%;
-        height: 80%;
         display: flex;
         flex-direction: column;
+        height: 80%;
+        position: relative;
+        width: 100%;
         z-index: 1;
 
         @media (min-width: map-get($grid-breakpoints, 'lg')) {
-            width: 90%;
             height: 90%;
-            width: calc(90% - 3rem);
             height: calc(90% - 3rem);
+            width: 90%;
+            width: calc(90% - 3rem);
         }
     }
 
     .meta-wrap {
         display: flex;
+        height: 100%;
+        margin: 0 auto;
         max-height: 100%;
         max-width: 100%;
-        width: 100%;
-        height: 100%;
         overflow: auto;
+        width: 100%;
         word-break: break-word;
-        margin: 0 auto;
 
         img {
-            object-fit: cover;
-            max-width: 100%;
             max-height: 100%;
+            max-width: 100%;
+            object-fit: cover;
         }
     }
 
@@ -213,10 +213,10 @@ $module_name: 'meta-MetaWindow';
 
         .typography,
         .meta-wrap {
-            overflow: hidden;
+            align-items: center;
+            justify-content: center;
             min-height: 100%;
-                align-items: center;
-    justify-content: center;
+            overflow: hidden;
 
             img {
                 margin: 0;
@@ -240,11 +240,11 @@ $module_name: 'meta-MetaWindow';
         }
 
         iframe {
+            height: 100%;
+            left: 0;
             position: absolute;
             top: 0;
-            left: 0;
             width: 100%;
-            height: 100%;
         }
     }
 }
