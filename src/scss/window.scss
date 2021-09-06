@@ -160,11 +160,13 @@ $module-name: "meta-MetaWindow";
   .meta-content {
     display: flex;
     flex-direction: column;
-    height: 80%;
     position: relative;
     width: 100%;
     z-index: 1;
 
+    @media (min-width: map-get($grid-breakpoints, "md")) {
+      height: 80%;
+    }
     @media (min-width: map-get($grid-breakpoints, "lg")) {
       height: 90%;
       height: calc(90% - 3rem);
