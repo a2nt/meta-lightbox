@@ -4,10 +4,10 @@
  *
  */
 
-import Events from "./_events";
-import MetaWindow from "./window";
+import Events from './_events';
+import MetaWindow from './window';
 
-const container = document.getElementById("MetaLightboxApp");
+const container = document.getElementById('MetaLightboxApp');
 if (!container) {
   console.log(`MetaWindow: missing container #MetaLightboxApp`);
 }
@@ -20,7 +20,7 @@ const init = () => {
   ui.init();
 };
 
-window.addEventListener(`${Events.LOADED}`, init);
+window.addEventListener(`${Events.LOADEDANDREADY}`, init);
 window.addEventListener(`${Events.AJAX}`, init);
 window.addEventListener(`MetaWindow.initLinks`, init);
 
