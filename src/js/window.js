@@ -2,15 +2,15 @@
  * Lightbox window
  */
 
-import Events from "./_events";
+import Events from './_events';
 
 const W = window;
-const axios = require("axios");
+const axios = require('axios');
 
 class MetaWindow {
   state = {
-    content: "",
-    type: ["empty"],
+    content: '',
+    type: ['empty'],
     shown: false,
     loading: false,
     error: false,
@@ -28,7 +28,7 @@ class MetaWindow {
     document
       .querySelectorAll('[data-toggle="lightbox"],[data-gallery="${gallery}"]')
       .forEach((el) => {
-        const gallery = el.getAttribute("data-gallery");
+        const gallery = el.getAttribute('data-gallery');
         if (gallery) {
           ui.state.collections[gallery] = [];
           document
@@ -41,13 +41,13 @@ class MetaWindow {
         }
 
         // click handler
-        el.addEventListener("click", (e) => {
+        el.addEventListener('click', (e) => {
           e.preventDefault();
           console.log(`MetaWindow: [link] click`);
 
           const el = e.currentTarget;
-          const link = el.getAttribute("href") || el.getAttribute("data-href");
-          const embed = el.getAttribute("data-embed");
+          const link = el.getAttribute('href') || el.getAttribute('data-href');
+          const embed = el.getAttribute('data-embed');
           ui.state.current = el;
 
           if (embed) {
@@ -56,7 +56,7 @@ class MetaWindow {
             ui.load(link);
           }
 
-          const title = el.getAttribute("data-title");
+          const title = el.getAttribute('data-title');
           if (title) {
             ui.setCaption(title);
           }
@@ -78,10 +78,10 @@ class MetaWindow {
 
     ui.setState(state);
     switch (action) {
-      case "show":
+      case 'show':
         ui.hide();
         break;
-      case "hide":
+      case 'hide':
         ui.hide();
         break;
     }
@@ -112,7 +112,7 @@ class MetaWindow {
   next = () => {
     const ui = this;
     const el = ui.state.current;
-    const gallery = el.getAttribute("data-gallery");
+    const gallery = el.getAttribute('data-gallery');
 
     let i = ui._currIndex();
     if (i < ui.state.collections[gallery].length - 1) {
@@ -130,7 +130,7 @@ class MetaWindow {
   prev = () => {
     const ui = this;
     const el = ui.state.current;
-    const gallery = el.getAttribute("data-gallery");
+    const gallery = el.getAttribute('data-gallery');
 
     let i = ui._currIndex();
     if (i > 0) {
@@ -149,8 +149,8 @@ class MetaWindow {
     const ui = this;
 
     ui.setState({
-      content: "",
-      type: ["empty"],
+      content: '',
+      type: ['empty'],
       shown: false,
       loading: false,
       error: false,
@@ -173,52 +173,52 @@ class MetaWindow {
 
     axios
       .get(link, {
-        responseType: "arraybuffer",
+        responseType: 'arraybuffer',
       })
       .then((resp) => {
         // handle success
         console.log(
-          `${ui.name}: response content-type: ${resp.headers["content-type"]}`
+          `${ui.name}: response content-type: ${resp.headers['content-type']}`
         );
         const json = false;
 
-        switch (resp.headers["content-type"]) {
-          case "image/jpeg":
-          case "image/png":
-          case "image/svg+xml":
-          case "image/bmp":
-          case "image/gif":
-          case "image/tiff":
-          case "image/webp":
+        switch (resp.headers['content-type']) {
+          case 'image/jpeg':
+          case 'image/png':
+          case 'image/svg+xml':
+          case 'image/bmp':
+          case 'image/gif':
+          case 'image/tiff':
+          case 'image/webp':
           // irregular types:
-          case "image/jpg":
-          case "image/svg":
+          case 'image/jpg':
+          case 'image/svg':
             //json = JSON.parse(ui._abToString(resp.data));
             ui.setContent(
               `<img src="data:${
-                resp.headers["content-type"]
+                resp.headers['content-type']
               };base64,${ui._imageEncode(resp.data)}" />`,
               `meta-${ui.name}--image`
             );
             break;
-          case "application/json":
-          case "application/ld+json":
+          case 'application/json':
+          case 'application/ld+json':
           // irregular types:
-          case "application/json; charset=UTF-8":
-            ui.setContent(`${json["Content"]}`, [
+          case 'application/json; charset=UTF-8':
+            ui.setContent(`${json['Content']}`, [
               `meta-${ui.name}--text`,
               `meta-${ui.name}--html`,
               `meta-${ui.name}--json`,
             ]);
 
             break;
-          case "text/html":
-          case "application/xhtml+xml":
-          case "text/plain":
+          case 'text/html':
+          case 'application/xhtml+xml':
+          case 'text/plain':
           // irregular types:
-          case "text/html; charset=UTF-8":
-          case "application/xhtml+xml; charset=UTF-8":
-          case "text/plain; charset=UTF-8":
+          case 'text/html; charset=UTF-8':
+          case 'application/xhtml+xml; charset=UTF-8':
+          case 'text/plain; charset=UTF-8':
             ui.setContent(ui._abToString(resp.data), [
               `meta-${ui.name}--text`,
               `meta-${ui.name}--html`,
@@ -235,24 +235,24 @@ class MetaWindow {
       .catch((error) => {
         console.error(error);
 
-        let msg = "";
+        let msg = '';
 
         if (error.response) {
           switch (error.response.status) {
             case 404:
-              msg = "Not Found.";
+              msg = 'Not Found.';
               break;
             case 500:
-              msg = "Server issue, please try again latter.";
+              msg = 'Server issue, please try again latter.';
               break;
             default:
-              msg = "Something went wrong.";
+              msg = 'Something went wrong.';
               break;
           }
         } else if (error.request) {
-          msg = "No response received";
+          msg = 'No response received';
         } else {
-          console.warn("Error", error.message);
+          console.warn('Error', error.message);
         }
 
         ui.setState({
@@ -271,7 +271,7 @@ class MetaWindow {
   _currIndex = () => {
     const ui = this;
     const el = ui.state.current;
-    const gallery = el.getAttribute("data-gallery");
+    const gallery = el.getAttribute('data-gallery');
 
     return ui.state.collections[gallery].indexOf(el);
   };
@@ -314,7 +314,8 @@ class MetaWindow {
         (p, c) => {
           return p + String.fromCharCode(c);
         },
-        ""
+
+        ''
       )
     );
 
@@ -329,7 +330,7 @@ class MetaWindow {
       ? type
       : [`meta-${ui.name}--html`, `meta-${ui.name}--text`];
     if (!Array.isArray(typeArr)) {
-      typeArr = type.split(" ");
+      typeArr = type.split(' ');
     }
 
     ui.setState({
@@ -342,7 +343,7 @@ class MetaWindow {
     const ui = this;
 
     if (ui.state.embed) {
-      const youtubeEmbed = require("youtube-embed");
+      const youtubeEmbed = require('youtube-embed');
       const embedLink = youtubeEmbed(ui.state.embed);
       ui.state.content = `<iframe width="600" height="380" src="${embedLink}" frameborder="0"></iframe>`;
     }
@@ -363,73 +364,76 @@ class MetaWindow {
     const navs = null;
     const el = ui.state.current;
 
-    ui.state.target.innerHTML = "";
-    const meta = document.createElement("div");
+    ui.state.target.innerHTML = '';
+    const meta = document.createElement('div');
     meta.classList.add(`meta-${name}`);
     meta.classList.add(...ui.state.type);
     ui.state.target.append(meta);
 
-    const metaOverlay = document.createElement("div");
+    const metaOverlay = document.createElement('div');
     metaOverlay.classList.add(`meta-${name}-overlay`);
     if (ui.state.shown) {
       metaOverlay.classList.add(`meta-${name}-overlay--open`);
     }
+
     if (ui.state.loading) {
       metaOverlay.classList.add(`meta-${name}-overlay--loading`);
     }
+
     if (ui.state.error) {
       metaOverlay.classList.add(`meta-${name}-overlay--error`);
     }
+
     meta.append(metaOverlay);
 
-    const metaContent = document.createElement("div");
-    metaContent.classList.add("meta-content");
+    const metaContent = document.createElement('div');
+    metaContent.classList.add('meta-content');
     metaOverlay.append(metaContent);
 
-    const btnClose = document.createElement("button");
-    btnClose.classList.add("meta-nav", "meta-close", "a");
+    const btnClose = document.createElement('button');
+    btnClose.classList.add('meta-nav', 'meta-close', 'a');
     btnClose.innerHTML =
       '<i class="icon fa fas fa-times"></i>' +
       ' <span class="visually-hidden">Close</span>';
-    btnClose.addEventListener("click", (e) => {
+    btnClose.addEventListener('click', (e) => {
       e.preventDefault();
       ui.hide();
     });
     metaContent.append(btnClose);
 
     if (el) {
-      const gallery = el.getAttribute("data-gallery");
+      const gallery = el.getAttribute('data-gallery');
       if (gallery && ui.state.collections[gallery].length > 1) {
-        const navs = document.createElement("nav");
-        navs.classList.add("meta-navs");
+        const navs = document.createElement('nav');
+        navs.classList.add('meta-navs');
 
-        const prevBtn = document.createElement("button");
+        const prevBtn = document.createElement('button');
         prevBtn.classList.add(
-          "meta-nav",
-          "meta-nav-arrow",
-          "meta-nav-arrow__prev",
-          "a"
+          'meta-nav',
+          'meta-nav-arrow',
+          'meta-nav-arrow__prev',
+          'a'
         );
         prevBtn.innerHTML =
           '<i class="icon fa fas fa-chevron-left"></i>' +
           ' <span class="visually-hidden">Previous</span>';
-        prevBtn.addEventListener("click", (e) => {
+        prevBtn.addEventListener('click', (e) => {
           e.preventDefault();
           ui.prev();
         });
         navs.append(prevBtn);
 
-        const nextBtn = document.createElement("button");
+        const nextBtn = document.createElement('button');
         nextBtn.classList.add(
-          "meta-nav",
-          "meta-nav-arrow",
-          "meta-nav-arrow__next",
-          "a"
+          'meta-nav',
+          'meta-nav-arrow',
+          'meta-nav-arrow__next',
+          'a'
         );
         nextBtn.innerHTML =
           '<i class="icon fa fas fa-chevron-right"></i>' +
           ' <span class="visually-hidden">Next</span>';
-        nextBtn.addEventListener("click", (e) => {
+        nextBtn.addEventListener('click', (e) => {
           e.preventDefault();
           ui.next();
         });
@@ -439,21 +443,26 @@ class MetaWindow {
       }
     }
 
-    const content = document.createElement("section");
-    content.classList.add("meta-wrap", "typography");
+    const content = document.createElement('section');
+    content.classList.add('meta-wrap', 'typography');
     content.innerHTML = ui.getHtml();
     metaContent.append(content);
 
     if (ui.state.error) {
-      const error = document.createElement("div");
-      error.classList.add("meta-error");
+      const error = document.createElement('div');
+      error.classList.add('meta-error');
       error.innerHTML = ui.state.error;
       metaContent.append(error);
     } else if (ui.state.caption) {
-      const caption = document.createElement("div");
-      caption.classList.add("meta-caption");
+      const caption = document.createElement('div');
+      caption.classList.add('meta-caption');
       caption.innerHTML = ui.getCaption();
       metaContent.append(caption);
+    }
+
+    // update fontawesome dome
+    if (typeof window.FontAwesome !== 'undefined') {
+      window.FontAwesome.dom.i2svg();
     }
 
     return ui;
