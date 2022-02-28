@@ -212,6 +212,12 @@ class MetaWindow {
             ]);
 
             break;
+          case 'video/mp4':
+            ui.setContent(`<video controls autoplay><source src="${link}" type="video/mp4">Your browser does not support the video tag.</video>`, [
+              `meta-${ui.name}--image`,
+              `meta-${ui.name}--video`,
+            ]);
+            break;
           case 'text/html':
           case 'application/xhtml+xml':
           case 'text/plain':

@@ -1,248 +1,275 @@
 @import "variables";
-
 $module-name: "meta-MetaWindow";
 
+@keyframes fade {
+    0% {
+        opacity: 1;
+
+        filter: grayscale(0);
+    }
+
+    50% {
+        opacity: .5;
+
+        filter: grayscale(1);
+    }
+
+    100% {
+        opacity: 1;
+
+        filter: grayscale(0);
+    }
+}
+
 .#{$module-name} {
-  position: fixed;
-
-  // lightbox inner elements
-  .meta-spinner--embed,
-  .meta-spinner,
-  .meta-error {
-    align-items: center;
-    display: none;
-    justify-content: center;
-    text-align: center;
-    z-index: 2;
-  }
-
-  .meta-spinner--embed,
-  .meta-spinner {
-    @include spinner_style();
-
-    bottom: 0;
-    left: 0;
-    position: absolute;
-    right: 0;
-    top: 0;
-  }
-
-  .meta-error {
-    color: $clr-red;
-    font-size: 1.5em;
-    font-weight: bold;
-  }
-
-  .meta-spinner--embed {
-    display: flex;
-  }
-
-  &-overlay {
-    align-items: center;
-    background: $meta-overlay-bg;
-    bottom: 0;
-    display: none;
-    justify-content: center;
-    left: 0;
     position: fixed;
-    right: 0;
-    top: 0;
-    z-index: 98;
 
-    // meta states
-    &--open {
-      display: flex;
-    }
+    // lightbox inner elements
+    .meta-spinner--embed,
+    .meta-spinner,
+    .meta-error {
+        z-index: 2;
+        display: none;
+        text-align: center;
 
-    &--loading {
-      .meta-spinner {
-        display: flex;
-      }
-    }
-
-    &--error {
-      .meta-content {
+        align-items: center;
         justify-content: center;
-      }
+    }
 
-      .meta-error {
+    .meta-spinner--embed,
+    .meta-spinner {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+
+        @include spinner_style();
+    }
+
+    .meta-error {
+        font-size: 1.5em;
+        font-weight: bold;
+        color: $clr-red;
+    }
+
+    .meta-spinner--embed {
         display: flex;
-      }
-    }
-  }
-
-  // navs
-  .meta-nav {
-    background: none;
-    border: 0;
-    color: $meta-nav-color;
-    font-size: $meta-nav-size;
-    text-shadow: $meta-nav-hover-shadow 0 0 0.25em;
-    z-index: 2;
-
-    @include hover-focus() {
-      color: $meta-nav-color;
     }
 
-    &:hover {
-      background: $meta-nav-hover-bg;
-      color: $meta-nav-hover-color;
-      text-decoration: none;
-      text-shadow: none;
-    }
-  }
+    &-overlay {
+        position: fixed;
+        z-index: 98;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        display: none;
+        background: $meta-overlay-bg;
 
-  .meta-nav-arrow {
-    align-items: center;
-    bottom: 0;
-    display: flex;
-    font-size: $meta-nav-arrows-size;
-    justify-content: center;
-    padding: $meta-nav-padding;
-    position: absolute;
-    top: auto;
-    z-index: 2;
+        align-items: center;
+        justify-content: center;
 
-    @include hover-focus() {
-      .fa,
-      .fas,
-      .far,
-      .fab {
-        transform: $meta-nav-hover-transform;
-      }
-    }
+        // meta states
+        &--open {
+            display: flex;
+        }
 
-    @media (min-width: map-get($grid-breakpoints, "lg")) {
-      bottom: 0;
-      top: 0;
-    }
+        &--loading {
+            animation-name: fade;
+            animation-duration: 5s;
+            animation-iteration-count: infinite;
 
-    &__next {
-      right: 0;
-    }
+            .meta-spinner {
+                display: flex;
+            }
+        }
 
-    &__prev {
-      left: 0;
+        &--error {
+            .meta-content {
+                justify-content: center;
+            }
+
+            .meta-error {
+                display: flex;
+            }
+        }
     }
 
-    @media (min-width: map-get($grid-breakpoints, "lg")) {
-      &__next {
-        right: -($meta-nav-arrows-size + 0.5);
-      }
+    // navs
+    .meta-nav {
+        font-size: $meta-nav-size;
+        z-index: 2;
+        color: $meta-nav-color;
+        border: 0;
+        background: none;
+        text-shadow: $meta-nav-hover-shadow 0 0 .25em;
 
-      &__prev {
-        left: -($meta-nav-arrows-size + 0.5);
-      }
-    }
-  }
+        @include hover-focus() {
+            color: $meta-nav-color;
+        }
 
-  .meta-close {
-    position: absolute;
-    right: 0;
-    top: -3rem;
-    width: 1.25em;
-
-    &:hover {
-      .fa,
-      .fas,
-      .far,
-      .fab {
-        transform: $meta-nav-close-hover-transform;
-      }
+        &:hover {
+            text-decoration: none;
+            color: $meta-nav-hover-color;
+            background: $meta-nav-hover-bg;
+            text-shadow: none;
+        }
     }
 
-    @media (min-width: map-get($grid-breakpoints, "lg")) {
-      right: -($meta-nav-arrows-size + 0.5);
-      top: -($meta-nav-arrows-size + 0.5);
+    .meta-nav-arrow {
+        font-size: $meta-nav-arrows-size;
+        position: absolute;
+        z-index: 2;
+        top: auto;
+        bottom: 0;
+        display: flex;
+        padding: $meta-nav-padding;
+
+        align-items: center;
+        justify-content: center;
+        @include hover-focus() {
+            .fa,
+            .fas,
+            .far,
+            .fab {
+                transform: $meta-nav-hover-transform;
+            }
+        }
+
+        @media (min-width: map-get($grid-breakpoints, "lg")) {
+            top: 0;
+            bottom: 0;
+        }
+
+        &__next {
+            right: 0;
+        }
+
+        &__prev {
+            left: 0;
+        }
+
+        @media (min-width: map-get($grid-breakpoints, "lg")) {
+            &__next {
+                right: -($meta-nav-arrows-size + .5);
+            }
+
+            &__prev {
+                left: -($meta-nav-arrows-size + .5);
+            }
+        }
     }
-  }
 
-  .meta-content {
-    display: flex;
-    flex-direction: column;
-    position: relative;
-    width: 100%;
-    z-index: 1;
+    .meta-close {
+        position: absolute;
+        top: -3rem;
+        right: 0;
+        width: 1.25em;
 
-    @media (min-width: map-get($grid-breakpoints, "md")) {
-      height: 80%;
+        &:hover {
+            .fa,
+            .fas,
+            .far,
+            .fab {
+                transform: $meta-nav-close-hover-transform;
+            }
+        }
+
+        @media (min-width: map-get($grid-breakpoints, "lg")) {
+            top: -($meta-nav-arrows-size + .5);
+            right: -($meta-nav-arrows-size + .5);
+        }
     }
-    @media (min-width: map-get($grid-breakpoints, "lg")) {
-      height: 90%;
-      height: calc(90% - 3rem);
-      width: 90%;
-      width: calc(90% - 3rem);
-    }
-  }
 
-  .meta-wrap {
-    display: flex;
-    height: 100%;
-    margin: 0 auto;
-    max-height: 100%;
-    max-width: 100%;
-    overflow: auto;
-    width: 100%;
-    word-break: break-word;
-
-    img {
-      max-height: 100%;
-      max-width: 100%;
-      object-fit: cover;
-    }
-  }
-
-  // Lightbox types
-
-  &--text {
     .meta-content {
-      background: $meta-text-wrapper-bg;
-      color: $meta-text-wrapper-color;
-      padding: $meta-text-wrapper-padding-height $meta-text-wrapper-padding-width;
-      padding-right: 0;
+        position: relative;
+        z-index: 1;
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+
+        @media (min-width: map-get($grid-breakpoints, "md")) {
+            height: 80%;
+        }
+        @media (min-width: map-get($grid-breakpoints, "lg")) {
+            width: 90%;
+            width: calc(90% - 3rem);
+            height: 90%;
+            height: calc(90% - 3rem);
+        }
     }
 
     .meta-wrap {
-      padding-right: $meta-text-wrapper-padding-width;
-    }
-  }
+        display: flex;
+        overflow: auto;
+        width: 100%;
+        max-width: 100%;
+        height: 100%;
+        max-height: 100%;
+        margin: 0 auto;
+        word-break: break-word;
 
-  &--image,
-  &--video {
-    .typography,
-    .meta-wrap {
-      align-items: center;
-      justify-content: center;
-      min-height: 100%;
-      overflow: hidden;
+        img {
+            max-width: 100%;
+            max-height: 100%;
 
-      img {
-        margin: 0;
-      }
-    }
-  }
-
-  &--video,
-  &--embed {
-    @include responsive-ratio($meta-video-width, $meta-video-height, true);
-
-    a[rel="nofollow noreferrer noopener"] {
-      color: $meta-embed-loading-failed-color;
-      font-size: $meta-embed-loading-failed-size;
-      font-weight: $meta-embed-loading-failed-weight;
-
-      &:before {
-        content: "Unable to load. Please follow the provided link: ";
-        display: block;
-      }
+            object-fit: cover;
+        }
     }
 
-    iframe {
-      height: 100%;
-      left: 0;
-      position: absolute;
-      top: 0;
-      width: 100%;
+    // Lightbox types
+
+    &--text {
+        .meta-content {
+            padding: $meta-text-wrapper-padding-height $meta-text-wrapper-padding-width;
+            padding-right: 0;
+            color: $meta-text-wrapper-color;
+            background: $meta-text-wrapper-bg;
+        }
+
+        .meta-wrap {
+            padding-right: $meta-text-wrapper-padding-width;
+        }
     }
-  }
+
+    &--image,
+    &--video {
+        .typography,
+        .meta-wrap {
+            overflow: hidden;
+            min-height: 100%;
+
+            align-items: center;
+            justify-content: center;
+
+            img {
+                margin: 0;
+            }
+        }
+    }
+
+    &--video,
+    &--embed {
+        @include responsive-ratio($meta-video-width, $meta-video-height, true);
+
+        a[rel="nofollow noreferrer noopener"] {
+            font-size: $meta-embed-loading-failed-size;
+            font-weight: $meta-embed-loading-failed-weight;
+            color: $meta-embed-loading-failed-color;
+
+            &:before {
+                display: block;
+                content: "Unable to load. Please follow the provided link: ";
+            }
+        }
+
+        iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+    }
 }
