@@ -39,8 +39,8 @@ rules:
   # Errors
   # Things that can be easily fixed are marked as errors
   indentation:
-    - 2
-    - size: 2
+    - 4
+    - size: 4
   final-newline:
     - 2
     - include: true
