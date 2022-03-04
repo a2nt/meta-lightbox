@@ -18,6 +18,7 @@ class MetaWindow {
     collections: [],
     current: null,
     target: null,
+    extraClass: null,
   };
 
   init() {
@@ -48,6 +49,7 @@ class MetaWindow {
           const el = e.currentTarget;
           const link = el.getAttribute('href') || el.getAttribute('data-href');
           const embed = el.getAttribute('data-embed');
+          el.classList.add('loading');
           ui.state.current = el;
 
           if (embed) {
@@ -60,6 +62,8 @@ class MetaWindow {
           if (title) {
             ui.setCaption(title);
           }
+
+          ui.addExtraClass(el.getAttribute('data-lightbox-class'));
         });
       });
   }
@@ -96,6 +100,7 @@ class MetaWindow {
     ui.setState({
       shown: true,
     });
+
     W.dispatchEvent(new Event(`{ui.name}.show`));
   };
 
@@ -271,6 +276,10 @@ class MetaWindow {
         ui.setState({
           loading: false,
         });
+
+        setTimeout(() => {
+          ui.state.current.classList.remove('loading');
+        }, 3000);
       });
   };
 
@@ -301,6 +310,17 @@ class MetaWindow {
     console.log(`${ui.name}: setCaption`);
 
     ui.state.caption = title;
+  };
+
+  addExtraClass = (cls) => {
+    const ui = this;
+
+    if (!cls.length) {
+      return;
+    }
+
+    console.log(`${ui.name}: addExtraClass(${cls})`);
+    ui.state.extraClass = cls;
   };
 
   getCaption = () => {
@@ -451,6 +471,10 @@ class MetaWindow {
 
     const content = document.createElement('section');
     content.classList.add('meta-wrap', 'typography');
+    if (ui.state.extraClass) {
+      content.classList.add(ui.state.extraClass);
+    }
+
     content.innerHTML = ui.getHtml();
     metaContent.append(content);
 
