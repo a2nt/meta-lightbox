@@ -1,6 +1,6 @@
 {
   "name": "@a2nt/meta-lightbox-js",
-  "version": "4.2.0",
+  "version": "4.2.1",
   "description": "Universal lightbox",
   "author": "Tony Air <tony@twma.pro>",
   "license": "BSD-2-Clause",
@@ -53,7 +53,6 @@
   "dependencies": {
     "es6-template": "^1.0.4",
     "material-design-color": "^2.3.2",
-    "redaxios": "^0.4.1",
     "youtube-embed": "^1.0.0"
   },
   "devDependencies": {

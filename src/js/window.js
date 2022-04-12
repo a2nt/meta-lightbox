@@ -1,8 +1,6 @@
 /*
  * Lightbox window
  */
-import axios from "redaxios";
-
 import Events from './_events';
 const W = window;
 
@@ -77,7 +75,6 @@ class MetaWindow {
 
     ui.name = ui.constructor.name;
     console.log(`${ui.name}: init`);
-    ui.axios = axios;
 
     ui.setState(state);
     switch (action) {
@@ -167,7 +164,6 @@ class MetaWindow {
 
   load = (link) => {
     const ui = this;
-    const axios = ui.axios;
 
     ui.reset();
     ui.setState({
@@ -175,73 +171,72 @@ class MetaWindow {
     });
     ui.show();
 
-    axios
-      .get(link, {
-        responseType: 'arraybuffer',
-      })
-      .then((resp) => {
-        // handle success
-        console.log(
-          `${ui.name}: response content-type: ${resp.headers['content-type']}`
-        );
-        const json = false;
+    fetch(link).then((resp) => {
+      // handle success
+      const type = resp.headers.get("content-type");
+      console.log(resp);
 
-        switch (resp.headers['content-type']) {
-          case 'image/jpeg':
-          case 'image/png':
-          case 'image/svg+xml':
-          case 'image/bmp':
-          case 'image/gif':
-          case 'image/tiff':
-          case 'image/webp':
+      console.log(
+        `${ui.name}: response content-type: ${type}`
+      );
+      const json = false;
+
+      switch (type) {
+        case 'image/jpeg':
+        case 'image/png':
+        case 'image/svg+xml':
+        case 'image/bmp':
+        case 'image/gif':
+        case 'image/tiff':
+        case 'image/webp':
           // irregular types:
-          case 'image/jpg':
-          case 'image/svg':
-            //json = JSON.parse(ui._abToString(resp.data));
+        case 'image/jpg':
+        case 'image/svg':
+          //json = JSON.parse(ui._abToString(resp.data));
+          resp.arrayBuffer().then((buffer) => {
             ui.setContent(
-              `<img src="data:${
-                resp.headers['content-type']
-              };base64,${ui._imageEncode(resp.data)}" />`,
+              `<img src="data:${type};base64,${ui._imageEncode(buffer)}" />`,
               `meta-${ui.name}--image`
             );
-            break;
-          case 'application/json':
-          case 'application/ld+json':
+          });
+          break;
+        case 'application/json':
+        case 'application/ld+json':
           // irregular types:
-          case 'application/json; charset=UTF-8':
-            ui.setContent(`${json['Content']}`, [
-              `meta-${ui.name}--text`,
-              `meta-${ui.name}--html`,
-              `meta-${ui.name}--json`,
-            ]);
+        case 'application/json; charset=UTF-8':
+          ui.setContent(`${json['Content']}`, [
+            `meta-${ui.name}--text`,
+            `meta-${ui.name}--html`,
+            `meta-${ui.name}--json`,
+          ]);
 
-            break;
-          case 'video/mp4':
-            ui.setContent(`<video controls autoplay><source src="${link}" type="video/mp4">Your browser does not support the video tag.</video>`, [
-              `meta-${ui.name}--image`,
-              `meta-${ui.name}--video`,
-            ]);
-            break;
-          case 'text/html':
-          case 'application/xhtml+xml':
-          case 'text/plain':
+          break;
+        case 'video/mp4':
+          ui.setContent(`<video controls autoplay><source src="${link}" type="video/mp4">Your browser does not support the video tag.</video>`, [
+            `meta-${ui.name}--image`,
+            `meta-${ui.name}--video`,
+          ]);
+          break;
+        case 'text/html':
+        case 'application/xhtml+xml':
+        case 'text/plain':
           // irregular types:
-          case 'text/html; charset=UTF-8':
-          case 'application/xhtml+xml; charset=UTF-8':
-          case 'text/plain; charset=UTF-8':
-            ui.setContent(ui._abToString(resp.data), [
-              `meta-${ui.name}--text`,
-              `meta-${ui.name}--html`,
-              `meta-${ui.name}--pajax`,
-            ]);
-            break;
-          default:
-            console.warn(`${ui.name}: Unknown response content-type!`);
-            break;
-        }
+        case 'text/html; charset=UTF-8':
+        case 'application/xhtml+xml; charset=UTF-8':
+        case 'text/plain; charset=UTF-8':
+          ui.setContent(resp.data, [
+            `meta-${ui.name}--text`,
+            `meta-${ui.name}--html`,
+            `meta-${ui.name}--pajax`,
+          ]);
+          break;
+        default:
+          console.warn(`${ui.name}: Unknown response content-type!`);
+          break;
+      }
 
-        W.dispatchEvent(new Event(`{ui.name}.loaded`));
-      })
+      W.dispatchEvent(new Event(`{ui.name}.loaded`));
+    })
       .catch((error) => {
         console.error(error);
 
@@ -314,7 +309,7 @@ class MetaWindow {
   addExtraClass = (cls) => {
     const ui = this;
 
-    if (!cls.length) {
+    if (!cls || !cls.length) {
       return;
     }
 
@@ -327,24 +322,15 @@ class MetaWindow {
     return ui.state.caption;
   };
 
-  _abToString = (arrayBuffer) => {
+  /*_abToString = (arrayBuffer) => {
     return String.fromCharCode.apply(null, new Uint8Array(arrayBuffer));
-  };
+  };*/
 
-  _imageEncode = (arrayBuffer) => {
-    const u8 = new Uint8Array(arrayBuffer);
-    const b64encoded = btoa(
-      [].reduce.call(
-        new Uint8Array(arrayBuffer),
-        (p, c) => {
-          return p + String.fromCharCode(c);
-        },
-
-        ''
-      )
-    );
-
-    return b64encoded;
+  _imageEncode = (buffer) => {
+    let binary = '';
+    const bytes = [].slice.call(new Uint8Array(buffer));
+    bytes.forEach((b) => binary += String.fromCharCode(b));
+    return window.btoa(binary);
   };
 
   setContent = (html, type) => {
