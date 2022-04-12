@@ -1,11 +1,10 @@
 /*
  * Lightbox window
  */
+import axios from "redaxios";
 
 import Events from './_events';
-
 const W = window;
-const axios = require('axios');
 
 class MetaWindow {
   state = {

@@ -14,14 +14,14 @@
       },
       "modules": {
         "byIdentifier": {
-          "./node_modules/.pnpm/html-loader@3.1.0_webpack@5.65.0/node_modules/html-loader/dist/cjs.js!./src/html/meta-lightbox.html": 464,
-          "./node_modules/.pnpm/html-webpack-plugin@5.5.0_webpack@5.65.0/node_modules/html-webpack-plugin/lib/loader.js!./src/index.html": 42,
+          "./node_modules/.pnpm/html-loader@3.1.0_webpack@5.72.0/node_modules/html-loader/dist/cjs.js!./src/html/meta-lightbox.html": 99,
+          "./node_modules/.pnpm/html-webpack-plugin@5.5.0_webpack@5.72.0/node_modules/html-webpack-plugin/lib/loader.js!./src/index.html": 813,
           "javascript/esm|data:text/javascript,__webpack_public_path__ = __webpack_base_uri__ = htmlWebpackPluginPublicPath;": 163
         },
         "usedIds": [
-          42,
+          99,
           163,
-          464
+          813
         ]
       }
     }
@@ -39,70 +39,12 @@
   },
   "modules": {
     "byIdentifier": {
-      "./node_modules/.pnpm/babel-loader@8.2.3_c391fd7145c194be609b87ed083bbc6a/node_modules/babel-loader/lib/index.js??ruleSet[1].rules[0].use!./node_modules/.pnpm/axios@0.24.0_debug@4.3.3/node_modules/axios/index.js": 252,
-      "./node_modules/.pnpm/babel-loader@8.2.3_c391fd7145c194be609b87ed083bbc6a/node_modules/babel-loader/lib/index.js??ruleSet[1].rules[0].use!./node_modules/.pnpm/axios@0.24.0_debug@4.3.3/node_modules/axios/lib/adapters/xhr.js": 679,
-      "./node_modules/.pnpm/babel-loader@8.2.3_c391fd7145c194be609b87ed083bbc6a/node_modules/babel-loader/lib/index.js??ruleSet[1].rules[0].use!./node_modules/.pnpm/axios@0.24.0_debug@4.3.3/node_modules/axios/lib/axios.js": 302,
-      "./node_modules/.pnpm/babel-loader@8.2.3_c391fd7145c194be609b87ed083bbc6a/node_modules/babel-loader/lib/index.js??ruleSet[1].rules[0].use!./node_modules/.pnpm/axios@0.24.0_debug@4.3.3/node_modules/axios/lib/cancel/Cancel.js": 625,
-      "./node_modules/.pnpm/babel-loader@8.2.3_c391fd7145c194be609b87ed083bbc6a/node_modules/babel-loader/lib/index.js??ruleSet[1].rules[0].use!./node_modules/.pnpm/axios@0.24.0_debug@4.3.3/node_modules/axios/lib/cancel/CancelToken.js": 237,
-      "./node_modules/.pnpm/babel-loader@8.2.3_c391fd7145c194be609b87ed083bbc6a/node_modules/babel-loader/lib/index.js??ruleSet[1].rules[0].use!./node_modules/.pnpm/axios@0.24.0_debug@4.3.3/node_modules/axios/lib/cancel/isCancel.js": 919,
-      "./node_modules/.pnpm/babel-loader@8.2.3_c391fd7145c194be609b87ed083bbc6a/node_modules/babel-loader/lib/index.js??ruleSet[1].rules[0].use!./node_modules/.pnpm/axios@0.24.0_debug@4.3.3/node_modules/axios/lib/core/Axios.js": 858,
-      "./node_modules/.pnpm/babel-loader@8.2.3_c391fd7145c194be609b87ed083bbc6a/node_modules/babel-loader/lib/index.js??ruleSet[1].rules[0].use!./node_modules/.pnpm/axios@0.24.0_debug@4.3.3/node_modules/axios/lib/core/InterceptorManager.js": 881,
-      "./node_modules/.pnpm/babel-loader@8.2.3_c391fd7145c194be609b87ed083bbc6a/node_modules/babel-loader/lib/index.js??ruleSet[1].rules[0].use!./node_modules/.pnpm/axios@0.24.0_debug@4.3.3/node_modules/axios/lib/core/buildFullPath.js": 703,
-      "./node_modules/.pnpm/babel-loader@8.2.3_c391fd7145c194be609b87ed083bbc6a/node_modules/babel-loader/lib/index.js??ruleSet[1].rules[0].use!./node_modules/.pnpm/axios@0.24.0_debug@4.3.3/node_modules/axios/lib/core/createError.js": 726,
-      "./node_modules/.pnpm/babel-loader@8.2.3_c391fd7145c194be609b87ed083bbc6a/node_modules/babel-loader/lib/index.js??ruleSet[1].rules[0].use!./node_modules/.pnpm/axios@0.24.0_debug@4.3.3/node_modules/axios/lib/core/dispatchRequest.js": 550,
-      "./node_modules/.pnpm/babel-loader@8.2.3_c391fd7145c194be609b87ed083bbc6a/node_modules/babel-loader/lib/index.js??ruleSet[1].rules[0].use!./node_modules/.pnpm/axios@0.24.0_debug@4.3.3/node_modules/axios/lib/core/enhanceError.js": 730,
-      "./node_modules/.pnpm/babel-loader@8.2.3_c391fd7145c194be609b87ed083bbc6a/node_modules/babel-loader/lib/index.js??ruleSet[1].rules[0].use!./node_modules/.pnpm/axios@0.24.0_debug@4.3.3/node_modules/axios/lib/core/mergeConfig.js": 778,
-      "./node_modules/.pnpm/babel-loader@8.2.3_c391fd7145c194be609b87ed083bbc6a/node_modules/babel-loader/lib/index.js??ruleSet[1].rules[0].use!./node_modules/.pnpm/axios@0.24.0_debug@4.3.3/node_modules/axios/lib/core/settle.js": 124,
-      "./node_modules/.pnpm/babel-loader@8.2.3_c391fd7145c194be609b87ed083bbc6a/node_modules/babel-loader/lib/index.js??ruleSet[1].rules[0].use!./node_modules/.pnpm/axios@0.24.0_debug@4.3.3/node_modules/axios/lib/core/transformData.js": 148,
-      "./node_modules/.pnpm/babel-loader@8.2.3_c391fd7145c194be609b87ed083bbc6a/node_modules/babel-loader/lib/index.js??ruleSet[1].rules[0].use!./node_modules/.pnpm/axios@0.24.0_debug@4.3.3/node_modules/axios/lib/defaults.js": 174,
-      "./node_modules/.pnpm/babel-loader@8.2.3_c391fd7145c194be609b87ed083bbc6a/node_modules/babel-loader/lib/index.js??ruleSet[1].rules[0].use!./node_modules/.pnpm/axios@0.24.0_debug@4.3.3/node_modules/axios/lib/env/data.js": 206,
-      "./node_modules/.pnpm/babel-loader@8.2.3_c391fd7145c194be609b87ed083bbc6a/node_modules/babel-loader/lib/index.js??ruleSet[1].rules[0].use!./node_modules/.pnpm/axios@0.24.0_debug@4.3.3/node_modules/axios/lib/helpers/bind.js": 688,
-      "./node_modules/.pnpm/babel-loader@8.2.3_c391fd7145c194be609b87ed083bbc6a/node_modules/babel-loader/lib/index.js??ruleSet[1].rules[0].use!./node_modules/.pnpm/axios@0.24.0_debug@4.3.3/node_modules/axios/lib/helpers/buildURL.js": 903,
-      "./node_modules/.pnpm/babel-loader@8.2.3_c391fd7145c194be609b87ed083bbc6a/node_modules/babel-loader/lib/index.js??ruleSet[1].rules[0].use!./node_modules/.pnpm/axios@0.24.0_debug@4.3.3/node_modules/axios/lib/helpers/combineURLs.js": 308,
-      "./node_modules/.pnpm/babel-loader@8.2.3_c391fd7145c194be609b87ed083bbc6a/node_modules/babel-loader/lib/index.js??ruleSet[1].rules[0].use!./node_modules/.pnpm/axios@0.24.0_debug@4.3.3/node_modules/axios/lib/helpers/cookies.js": 75,
-      "./node_modules/.pnpm/babel-loader@8.2.3_c391fd7145c194be609b87ed083bbc6a/node_modules/babel-loader/lib/index.js??ruleSet[1].rules[0].use!./node_modules/.pnpm/axios@0.24.0_debug@4.3.3/node_modules/axios/lib/helpers/isAbsoluteURL.js": 849,
-      "./node_modules/.pnpm/babel-loader@8.2.3_c391fd7145c194be609b87ed083bbc6a/node_modules/babel-loader/lib/index.js??ruleSet[1].rules[0].use!./node_modules/.pnpm/axios@0.24.0_debug@4.3.3/node_modules/axios/lib/helpers/isAxiosError.js": 567,
-      "./node_modules/.pnpm/babel-loader@8.2.3_c391fd7145c194be609b87ed083bbc6a/node_modules/babel-loader/lib/index.js??ruleSet[1].rules[0].use!./node_modules/.pnpm/axios@0.24.0_debug@4.3.3/node_modules/axios/lib/helpers/isURLSameOrigin.js": 899,
-      "./node_modules/.pnpm/babel-loader@8.2.3_c391fd7145c194be609b87ed083bbc6a/node_modules/babel-loader/lib/index.js??ruleSet[1].rules[0].use!./node_modules/.pnpm/axios@0.24.0_debug@4.3.3/node_modules/axios/lib/helpers/normalizeHeaderName.js": 135,
-      "./node_modules/.pnpm/babel-loader@8.2.3_c391fd7145c194be609b87ed083bbc6a/node_modules/babel-loader/lib/index.js??ruleSet[1].rules[0].use!./node_modules/.pnpm/axios@0.24.0_debug@4.3.3/node_modules/axios/lib/helpers/parseHeaders.js": 604,
-      "./node_modules/.pnpm/babel-loader@8.2.3_c391fd7145c194be609b87ed083bbc6a/node_modules/babel-loader/lib/index.js??ruleSet[1].rules[0].use!./node_modules/.pnpm/axios@0.24.0_debug@4.3.3/node_modules/axios/lib/helpers/spread.js": 272,
-      "./node_modules/.pnpm/babel-loader@8.2.3_c391fd7145c194be609b87ed083bbc6a/node_modules/babel-loader/lib/index.js??ruleSet[1].rules[0].use!./node_modules/.pnpm/axios@0.24.0_debug@4.3.3/node_modules/axios/lib/helpers/validator.js": 16,
-      "./node_modules/.pnpm/babel-loader@8.2.3_c391fd7145c194be609b87ed083bbc6a/node_modules/babel-loader/lib/index.js??ruleSet[1].rules[0].use!./node_modules/.pnpm/axios@0.24.0_debug@4.3.3/node_modules/axios/lib/utils.js": 26,
-      "./node_modules/.pnpm/babel-loader@8.2.3_c391fd7145c194be609b87ed083bbc6a/node_modules/babel-loader/lib/index.js??ruleSet[1].rules[0].use!./node_modules/.pnpm/youtube-embed@1.0.0/node_modules/youtube-embed/index.js": 74,
-      "./node_modules/.pnpm/babel-loader@8.2.3_c391fd7145c194be609b87ed083bbc6a/node_modules/babel-loader/lib/index.js??ruleSet[1].rules[0].use!./src/js/test-build.js|b9b8d5769b6c9b4ee9003f0d29c0b8a1": 80
+      "./node_modules/.pnpm/babel-loader@8.2.4_acba72ea4bf9d339cdfcd8f55cdb7006/node_modules/babel-loader/lib/index.js??ruleSet[1].rules[0].use!./node_modules/.pnpm/youtube-embed@1.0.0/node_modules/youtube-embed/index.js": 758,
+      "./node_modules/.pnpm/babel-loader@8.2.4_acba72ea4bf9d339cdfcd8f55cdb7006/node_modules/babel-loader/lib/index.js??ruleSet[1].rules[0].use!./src/js/test-build.js|1ed43bc8d29104c7b835ffb17c3534db": 929
     },
     "usedIds": [
-      16,
-      26,
-      74,
-      75,
-      80,
-      124,
-      135,
-      148,
-      174,
-      206,
-      237,
-      252,
-      272,
-      302,
-      308,
-      550,
-      567,
-      604,
-      625,
-      679,
-      688,
-      703,
-      726,
-      730,
-      778,
-      849,
-      858,
-      881,
-      899,
-      903,
-      919
+      758,
+      929
     ]
   }
 }
