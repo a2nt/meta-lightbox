@@ -39,12 +39,12 @@
   },
   "modules": {
     "byIdentifier": {
-      "./node_modules/.pnpm/babel-loader@8.2.4_acba72ea4bf9d339cdfcd8f55cdb7006/node_modules/babel-loader/lib/index.js??ruleSet[1].rules[0].use!./node_modules/.pnpm/youtube-embed@1.0.0/node_modules/youtube-embed/index.js": 758,
-      "./node_modules/.pnpm/babel-loader@8.2.4_acba72ea4bf9d339cdfcd8f55cdb7006/node_modules/babel-loader/lib/index.js??ruleSet[1].rules[0].use!./src/js/test-build.js|89bc82bff836a55d46c449c4ba13ebb9": 822
+      "./node_modules/.pnpm/babel-loader@8.2.5_rb5fcebzp6kx3hqg3ucus54t3m/node_modules/babel-loader/lib/index.js??ruleSet[1].rules[0].use!./node_modules/.pnpm/youtube-embed@1.0.0/node_modules/youtube-embed/index.js": 826,
+      "./node_modules/.pnpm/babel-loader@8.2.5_rb5fcebzp6kx3hqg3ucus54t3m/node_modules/babel-loader/lib/index.js??ruleSet[1].rules[0].use!./src/js/test-build.js|bb7e39ae93eb42f5e247580063dd4b68": 348
     },
     "usedIds": [
-      758,
-      822
+      348,
+      826
     ]
   }
 }
