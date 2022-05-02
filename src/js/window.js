@@ -18,25 +18,63 @@ class MetaWindow {
     extraClass: null,
   };
 
+  cleanLinks() {
+    document.querySelectorAll(`[data-toggle="lightbox"]`)
+      .forEach((el) => {
+        el.classList.remove('loading');
+      });
+  }
+
+  collectGaleries(gallery) {
+    const ui = this;
+
+    if (!gallery) {
+      return;
+    }
+
+    ui.state.collections[gallery] = [];
+    document
+      .querySelectorAll(
+        `[data-toggle="lightbox"][data-gallery="${gallery}"]`
+      )
+      .forEach((el) => {
+        ui.state.collections[gallery].push(el);
+      });
+  }
+
+  toggle(el) {
+    const ui = this;
+
+    ui.cleanLinks();
+
+    const link = el.getAttribute('href') || el.getAttribute('data-href');
+    const embed = el.getAttribute('data-embed');
+    el.classList.add('loading');
+    ui.state.current = el;
+
+    const title = el.getAttribute('data-title');
+    if (title) {
+      ui.setCaption(title);
+    }
+
+    if (embed) {
+      ui.embed(link);
+    } else {
+      ui.load(link);
+    }
+
+    ui.addExtraClass(el.getAttribute('data-lightbox-class'));
+  }
+
   init() {
     const ui = this;
     console.log(`MetaWindow: [links] init`);
 
-    // collect new collections
     document
-      .querySelectorAll('[data-toggle="lightbox"],[data-gallery="${gallery}"]')
+      .querySelectorAll(`[data-toggle="lightbox"],[data-gallery]`)
       .forEach((el) => {
         const gallery = el.getAttribute('data-gallery');
-        if (gallery) {
-          ui.state.collections[gallery] = [];
-          document
-            .querySelectorAll(
-              `[data-toggle="lightbox"][data-gallery="${gallery}"]`
-            )
-            .forEach((el) => {
-              ui.state.collections[gallery].push(el);
-            });
-        }
+        ui.collectGaleries(gallery);
 
         // click handler
         el.addEventListener('click', (e) => {
@@ -44,23 +82,7 @@ class MetaWindow {
           console.log(`MetaWindow: [link] click`);
 
           const el = e.currentTarget;
-          const link = el.getAttribute('href') || el.getAttribute('data-href');
-          const embed = el.getAttribute('data-embed');
-          el.classList.add('loading');
-          ui.state.current = el;
-
-          if (embed) {
-            ui.embed(link);
-          } else {
-            ui.load(link);
-          }
-
-          const title = el.getAttribute('data-title');
-          if (title) {
-            ui.setCaption(title);
-          }
-
-          ui.addExtraClass(el.getAttribute('data-lightbox-class'));
+          ui.toggle(el);
         });
       });
   }
@@ -273,7 +295,7 @@ class MetaWindow {
 
         setTimeout(() => {
           ui.state.current.classList.remove('loading');
-        }, 3000);
+        }, 1000);
       });
   };
 
