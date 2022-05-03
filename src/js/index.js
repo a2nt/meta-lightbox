@@ -1,2 +1,2 @@
-import styles from "../scss/window.scss";
-import "./app.js";
+import '../scss/window.scss'
+import './app.js'
