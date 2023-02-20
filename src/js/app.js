@@ -7,9 +7,12 @@
 import Events from './_events'
 import MetaWindow from './window'
 
-const container = document.getElementById('MetaLightboxApp')
+let container = document.getElementById('MetaLightboxApp');
 if (!container) {
-  console.log('MetaWindow: missing container #MetaLightboxApp')
+  console.warn(`MetaWindow: missing container #MetaLightboxApp - create new one`);
+  container = document.createElement("div");
+  container.setAttribute("id", "MetaLightboxApp");
+  document.querySelector("body").append(container);
 }
 
 const init = () => {
