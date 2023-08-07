@@ -14,14 +14,14 @@
       },
       "modules": {
         "byIdentifier": {
-          "./node_modules/.pnpm/html-loader@3.1.0_webpack@5.72.0/node_modules/html-loader/dist/cjs.js!./src/html/meta-lightbox.html": 99,
-          "./node_modules/.pnpm/html-webpack-plugin@5.5.0_webpack@5.72.0/node_modules/html-webpack-plugin/lib/loader.js!./src/index.html": 813,
+          "./node_modules/.pnpm/html-loader@4.2.0_webpack@5.88.2/node_modules/html-loader/dist/cjs.js!./src/html/meta-lightbox.html": 696,
+          "./node_modules/.pnpm/html-webpack-plugin@5.5.3_webpack@5.88.2/node_modules/html-webpack-plugin/lib/loader.js!./src/index.html": 210,
           "javascript/esm|data:text/javascript,__webpack_public_path__ = __webpack_base_uri__ = htmlWebpackPluginPublicPath;": 163
         },
         "usedIds": [
-          99,
           163,
-          813
+          210,
+          696
         ]
       }
     }
@@ -39,12 +39,12 @@
   },
   "modules": {
     "byIdentifier": {
-      "./node_modules/.pnpm/babel-loader@8.2.5_rb5fcebzp6kx3hqg3ucus54t3m/node_modules/babel-loader/lib/index.js??ruleSet[1].rules[0].use!./node_modules/.pnpm/youtube-embed@1.0.0/node_modules/youtube-embed/index.js": 826,
-      "./node_modules/.pnpm/babel-loader@8.2.5_rb5fcebzp6kx3hqg3ucus54t3m/node_modules/babel-loader/lib/index.js??ruleSet[1].rules[0].use!./src/js/test-build.js|bb7e39ae93eb42f5e247580063dd4b68": 348
+      "./node_modules/.pnpm/babel-loader@9.1.3_@babel+core@7.22.9_webpack@5.88.2/node_modules/babel-loader/lib/index.js??ruleSet[1].rules[0].use!./node_modules/.pnpm/youtube-embed@1.0.0/node_modules/youtube-embed/index.js": 627,
+      "./node_modules/.pnpm/babel-loader@9.1.3_@babel+core@7.22.9_webpack@5.88.2/node_modules/babel-loader/lib/index.js??ruleSet[1].rules[0].use!./src/js/test-build.js|a115d7a7c4af8d20c48b9c4b7ae48edf": 820
     },
     "usedIds": [
-      348,
-      826
+      627,
+      820
     ]
   }
 }

@@ -55,6 +55,8 @@ class MetaWindow {
     const title = el.getAttribute('data-title')
     if (title) {
       ui.setCaption(title)
+    }else{
+      ui.setCaption('')
     }
 
     if (embed) {
@@ -193,7 +195,7 @@ class MetaWindow {
     })
     ui.show()
 
-    window.fetch(link).then((resp) => {
+    window.fetch(link, { mode: "no-cors" }).then((resp) => {
       // handle success
       const type = resp.headers.get('content-type')
       console.log(resp)
