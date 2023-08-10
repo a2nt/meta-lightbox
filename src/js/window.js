@@ -197,7 +197,7 @@ class MetaWindow {
 
     window.fetch(link, { mode: "no-cors" }).then((resp) => {
       // handle success
-      const type = resp.headers.get('content-type')
+      const type = resp.headers.get('content-type').toLowerCase()
       console.log(resp)
 
       console.log(
@@ -225,7 +225,7 @@ class MetaWindow {
           break
         case 'application/json':
         case 'application/ld+json':
-        case 'application/json; charset=UTF-8':
+        case 'application/json; charset=utf-8':
           ui.setContent(`${json.Content}`, [
             `meta-${ui.name}--text`,
             `meta-${ui.name}--html`,
@@ -242,14 +242,16 @@ class MetaWindow {
         case 'text/html':
         case 'application/xhtml+xml':
         case 'text/plain':
-        case 'text/html; charset=UTF-8':
-        case 'application/xhtml+xml; charset=UTF-8':
-        case 'text/plain; charset=UTF-8':
-          ui.setContent(resp.data, [
-            `meta-${ui.name}--text`,
-            `meta-${ui.name}--html`,
-            `meta-${ui.name}--pajax`,
-          ])
+        case 'text/html; charset=utf-8':
+        case 'application/xhtml+xml; charset=utf-8':
+        case 'text/plain; charset=utf-8':
+          resp.text().then((buffer) => {
+            ui.setContent(buffer, [
+              `meta-${ui.name}--text`,
+              `meta-${ui.name}--html`,
+              `meta-${ui.name}--pajax`,
+            ])
+          })
           break
         default:
           console.warn(`${ui.name}: Unknown response content-type!`)
