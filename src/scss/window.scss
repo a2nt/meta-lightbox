@@ -168,12 +168,7 @@ $module-name: "meta-MetaWindow";
         width: 1.25em;
 
         &:hover {
-            .fa,
-            .fas,
-            .far,
-            .fab {
-                transform: $meta-nav-close-hover-transform;
-            }
+            transform: $meta-nav-close-hover-transform;
         }
 
         @media (min-width: map-get($grid-breakpoints, "lg")) {
