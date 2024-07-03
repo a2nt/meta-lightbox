@@ -3,6 +3,7 @@
  */
 // import Events from './_events'
 const W = window
+const NAME = 'MetaWindow'
 
 class MetaWindow {
   state = {
@@ -18,14 +19,14 @@ class MetaWindow {
     extraClass: null,
   }
 
-  cleanLinks () {
+  cleanLinks() {
     document.querySelectorAll('[data-toggle="lightbox"]')
       .forEach((el) => {
         el.classList.remove('loading')
       })
   }
 
-  collectGaleries (gallery) {
+  collectGaleries(gallery) {
     const ui = this
 
     if (!gallery) {
@@ -42,25 +43,26 @@ class MetaWindow {
       })
   }
 
-  toggle (el) {
+  toggle(el) {
     const ui = this
 
     ui.cleanLinks()
 
     const link = el.getAttribute('href') || el.getAttribute('data-href')
-    const embed = el.getAttribute('data-embed')
+    const embed = el.getAttribute('data-embed') || el.getAttribute('data-video-preview')
     el.classList.add('loading')
     ui.state.current = el
 
     const title = el.getAttribute('data-title')
     if (title) {
       ui.setCaption(title)
-    }else{
+    } else {
       ui.setCaption('')
     }
 
     if (embed) {
       ui.embed(link)
+      el.classList.remove('loading')
     } else {
       ui.load(link)
     }
@@ -68,9 +70,9 @@ class MetaWindow {
     ui.addExtraClass(el.getAttribute('data-lightbox-class'))
   }
 
-  init () {
+  init() {
     const ui = this
-    console.log('MetaWindow: [links] init')
+    console.log(`${NAME}: [links] init`)
 
     document
       .querySelectorAll('[data-toggle="lightbox"],[data-gallery]')
@@ -81,7 +83,9 @@ class MetaWindow {
         // click handler
         el.addEventListener('click', (e) => {
           e.preventDefault()
-          console.log('MetaWindow: [link] click')
+          e.stopPropagation()
+
+          console.log(`${NAME}: [link] click`)
 
           const el = e.currentTarget
           ui.toggle(el)
@@ -89,7 +93,7 @@ class MetaWindow {
       })
   }
 
-  constructor (
+  constructor(
     state = {
       shown: false,
     },
@@ -385,13 +389,13 @@ class MetaWindow {
     return ui.state.content
   }
 
-  setState (state) {
+  setState(state) {
     const ui = this
     ui.state = Object.assign({}, ui.state, state)
     ui.render()
   }
 
-  render () {
+  render() {
     const ui = this
     const name = ui.name
     const el = ui.state.current
