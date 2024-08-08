@@ -74,6 +74,15 @@ class MetaWindow {
     const ui = this
     console.log(`${NAME}: [links] init`)
 
+    // remove all handlers
+    document
+      .querySelectorAll('[data-toggle="lightbox"],[data-gallery]')
+      .forEach((el) => {
+        const html = el.outerHTML.replace('<a', '<button').replace('</a>', '</button>')
+        el.outerHTML = html
+      })
+
+    // add handlers
     document
       .querySelectorAll('[data-toggle="lightbox"],[data-gallery]')
       .forEach((el) => {
@@ -88,6 +97,7 @@ class MetaWindow {
           console.log(`${NAME}: [link] click`)
 
           const el = e.currentTarget
+
           ui.toggle(el)
         })
       })
