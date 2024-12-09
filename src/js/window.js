@@ -72,7 +72,6 @@ class MetaWindow {
 
   init() {
     const ui = this
-    console.log(`${NAME}: [links] init`)
 
     // remove all handlers
     document
@@ -94,8 +93,6 @@ class MetaWindow {
           e.preventDefault()
           e.stopPropagation()
 
-          console.log(`${NAME}: [link] click`)
-
           const el = e.currentTarget
 
           ui.toggle(el)
@@ -112,7 +109,6 @@ class MetaWindow {
     const ui = this
 
     ui.name = ui.constructor.name
-    console.log(`${ui.name}: init`)
 
     ui.setState(state)
     switch (action) {
@@ -129,7 +125,6 @@ class MetaWindow {
 
   show = () => {
     const ui = this
-    console.log(`${ui.name}: show`)
 
     ui.setState({
       shown: true,
@@ -141,7 +136,6 @@ class MetaWindow {
   hide = () => {
     const ui = this
 
-    console.log(`${ui.name}: hide`)
     ui.setState({
       shown: false,
     })
@@ -162,7 +156,6 @@ class MetaWindow {
 
     ui.state.collections[gallery][i].click()
 
-    console.log(`${ui.name}: next`)
     W.dispatchEvent(new Event('{ui.name}.next'))
   }
 
@@ -180,7 +173,6 @@ class MetaWindow {
 
     ui.state.collections[gallery][i].click()
 
-    console.log(`${ui.name}: prev`)
     W.dispatchEvent(new Event('{ui.name}.prev'))
   }
 
@@ -212,11 +204,6 @@ class MetaWindow {
     window.fetch(link, { mode: "no-cors" }).then((resp) => {
       // handle success
       const type = resp.headers.get('content-type').toLowerCase()
-      console.log(resp)
-
-      console.log(
-        `${ui.name}: response content-type: ${type}`
-      )
       const json = false
 
       switch (type) {
@@ -324,7 +311,6 @@ class MetaWindow {
 
   embed = (link) => {
     const ui = this
-    console.log(`${ui.name}: embed`)
 
     ui.reset()
     ui.setState({
@@ -338,7 +324,6 @@ class MetaWindow {
 
   setCaption = (title) => {
     const ui = this
-    console.log(`${ui.name}: setCaption`)
 
     ui.state.caption = title
   }
@@ -350,7 +335,6 @@ class MetaWindow {
       return
     }
 
-    console.log(`${ui.name}: addExtraClass(${cls})`)
     ui.state.extraClass = cls
   }
 
@@ -374,7 +358,6 @@ class MetaWindow {
 
   setContent = (html, type) => {
     const ui = this
-    console.log(`${ui.name}: setContent`)
 
     let typeArr = type || [`meta-${ui.name}--html`, `meta-${ui.name}--text`]
     if (!Array.isArray(typeArr)) {

@@ -9,7 +9,6 @@ import MetaWindow from './window'
 
 let container = document.getElementById('MetaLightboxApp');
 if (!container) {
-  console.warn(`MetaWindow: missing container #MetaLightboxApp - create new one`);
   container = document.createElement("div");
   container.setAttribute("id", "MetaLightboxApp");
   document.querySelector("body").append(container);
