@@ -1,5 +1,5 @@
 @import "variables";
-$module-name: "meta-MetaWindow";
+$meta-module-name: "meta-MetaWindow" !default;
 
 @keyframes fade {
     0% {
@@ -21,7 +21,7 @@ $module-name: "meta-MetaWindow";
     }
 }
 
-.#{$module-name} {
+.#{$meta-module-name} {
     position: fixed;
 
     // lightbox inner elements
